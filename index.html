@@ -16,7 +16,7 @@ body { background: #f1f5f9; color: #0f172a; display: flex; min-height: 100vh; }
 .nav-btn.admin-btn:hover { background: #3730a3; color: white; }
 /* HLAVNÁ PLOCHA /
 .main-content { flex: 1; padding: 25px; }
-/* SKRÝVANIE STRÁNOK /
+/* SKRÝVANIE STRÁNOK - DÔLEŽITÉ PRE PREPÍNANIE /
 .page-pane { display: none; }
 .page-pane.active { display: block; }
 .card { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
@@ -351,8 +351,8 @@ body { flex-direction: column; }
 </div>
 </div>
 <script>
-// SEM VLOŽTE URL ZO SKRIPTU GOOGLE SHEETS
-const GOOGLE_SCRIPT_URL = "TUTO_VLOZTE_URL_GOOGLE_APPS_SCRIPTU";
+// GOOGLE SHEETS SCRIPT URL (ak nepoužívate, nechajte prázdne)
+const GOOGLE_SCRIPT_URL = "";
 let events = JSON.parse(localStorage.getItem('rct_events')) || [
 { id: 1, name: "RC Trial Zubrohlava - 1. Kolo", location: "Zubrohlava - Areál", date: "2026-04-25", sectionsCount: 4, categories: ["Profi", "Hobby"] },
 { id: 2, name: "Oravský RC Trial Cup", location: "Námestovo", date: "2026-05-16", sectionsCount: 5, categories: ["Profi", "Hobby", "Special"] }
@@ -362,9 +362,8 @@ let marshalsList = JSON.parse(localStorage.getItem('rct_marshals')) || [];
 let raceRegistrations = JSON.parse(localStorage.getItem('rct_race_regs')) || [];
 let raceResults = JSON.parse(localStorage.getItem('rct_results')) || [];
 let sectionOccupancy = JSON.parse(localStorage.getItem('rct_section_occupancy')) || {};
-// ONLINE NAČÍTANIE Z GOOGLE SHEETS
 async function loadFromCloud() {
-if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("TUTO_VLOZTE")) return;
+if(!GOOGLE_SCRIPT_URL) return;
 try {
 const res = await fetch(GOOGLE_SCRIPT_URL);
 const data = await res.json();
@@ -377,9 +376,8 @@ if(data.results) raceResults = data.results;
 if(data.occupancy) sectionOccupancy = data.occupancy;
 renderCurrentActiveTab();
 }
-} catch(e) { console.log("Chyba načítania z cloudu:", e); }
+} catch(e) {}
 }
-// ONLINE ULOŽENIE DO GOOGLE SHEETS
 async function syncToCloud() {
 localStorage.setItem('rct_events', JSON.stringify(events));
 localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
@@ -387,7 +385,7 @@ localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
 localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
 localStorage.setItem('rct_results', JSON.stringify(raceResults));
 localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
-if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("TUTO_VLOZTE")) return;
+if(!GOOGLE_SCRIPT_URL) return;
 try {
 await fetch(GOOGLE_SCRIPT_URL, {
 method: 'POST',
@@ -395,7 +393,7 @@ mode: 'no-cors',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({ events, users: registeredUsers, marshals: marshalsList, regs: raceRegistrations, results: raceResults, occupancy: sectionOccupancy })
 });
-} catch(e) { console.log("Chyba zápisu do cloudu:", e); }
+} catch(e) {}
 }
 let loggedUser = JSON.parse(localStorage.getItem('rct_logged_user')) || null;
 let loggedMarshal = JSON.parse(localStorage.getItem('rct_logged_marshal')) || null;
@@ -405,11 +403,13 @@ let timerInterval = null, startTime = 0, elapsedTime = 0, isRunning = false;
 let activeTab = 'calendar';
 function switchTab(tabId) {
 activeTab = tabId;
-document.querySelectorAll('.page-pane').forEach(pane => {
+const panes = document.querySelectorAll('.page-pane');
+const btns = document.querySelectorAll('.nav-btn');
+panes.forEach(pane => {
 pane.style.display = 'none';
 pane.classList.remove('active');
 });
-document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
+btns.forEach(btn => btn.classList.remove('active'));
 const targetPane = document.getElementById('pane-' + tabId);
 if (targetPane) {
 targetPane.style.display = 'block';
@@ -762,7 +762,6 @@ document.getElementById('stats-marshals-body').innerHTML = Object.keys(marshalSt
 <tr><td><strong>${m}</strong></td><td>${marshalStats[m].count} sekcií</td><td><strong>${(marshalStats[m].penalties / marshalStats[m].count).toFixed(1)} b / sekcia</strong></td></tr>
 `).join('') || '<tr><td colspan="3">Žiadne merania komisárov.</td></tr>';
 }
-// ADMIN FUNKCIE
 function loginAdmin() {
 if(document.getElementById('admin-user').value === 'admin' && document.getElementById('admin-pass').value === 'admin123') {
 document.getElementById('admin-login-card').style.display = 'none';
