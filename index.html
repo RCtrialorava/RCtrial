@@ -56,6 +56,8 @@ body { flex-direction: column; }
 <div class="sidebar">
 <h2>RCTRIAL ORAVA</h2>
 <button class="nav-btn active" onclick="switchTab('calendar')">📅 Kalendár udalostí</button>
+<button class="nav-btn" onclick="switchTab('rules')">📜 Pravidlá pretekov</button>
+<button class="nav-btn" onclick="switchTab('startlist')">📋 Listina prihlásených</button>
 <button class="nav-btn" onclick="switchTab('driver-portal')">🚗 Účet pretekára</button>
 <button class="nav-btn" onclick="switchTab('marshal')">⏱️ Časomiera (Komisár)</button>
 <button class="nav-btn" onclick="switchTab('results')">🏆 Výsledky pretekov</button>
@@ -76,7 +78,49 @@ body { flex-direction: column; }
 </table>
 </div>
 </div>
-<!-- 2. ÚČET PRETEKÁRA -->
+<!-- 2. PRAVIDLÁ PRETEKOV -->
+<div id="pane-rules" class="page-pane">
+<div class="card">
+<h1>Oficiálne pravidlá a bodovanie RCTRIAL ORAVA</h1>
+<p style="margin-bottom:15px; color:#475569;">Pravidlá trestných bodov a časových limitov pre všetky preteky:</p>
+<h2>Tabuľka trestných bodov za priestupky</h2>
+<table>
+<thead>
+<tr><th>Priestupok / Úkon</th><th>Trestné body</th><th>Popis</th></tr>
+</thead>
+<tbody>
+<tr><td><strong>Navijak / lano</strong></td><td><strong style="color:#dc2626">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr>
+<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#dc2626">+25 b</strong></td><td>Akovýkoľvek dotyk tyčky bránky vozidlom</td></tr>
+<tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:#dc2626">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr>
+<tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:#dc2626">+250 b</strong></td><td>Vynechanie bránky alebo neprejazd v správnom smere</td></tr>
+<tr><td><strong>Oprava v depe</strong></td><td><strong style="color:#dc2626">+300 b</strong></td><td>Oprava vozidla počas prejazdu v depe</td></tr>
+<tr><td><strong>Pomoc rukou</strong></td><td><strong style="color:#dc2626">+500 b</strong></td><td>Fyzické dotknutie sa vozidla rukou v sekcii</td></tr>
+</tbody>
+</table>
+<h2 style="margin-top:25px;">Časové limity a penalizácie za čas</h2>
+<table>
+<thead>
+<tr><th>Časový interval</th><th>Penalizácia</th></tr>
+</thead>
+<tbody>
+<tr><td>Do 11:00 minút</td><td><strong>0 b</strong> (bez penalizácie)</td></tr>
+<tr><td>Nad 11:00 minút</td><td><strong style="color:#d97706">+0,5 b za každú započatú minútu</strong></td></tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- 3. LISTINA PRIHLÁSENÝCH -->
+<div id="pane-startlist" class="page-pane">
+<div class="card">
+<h1>Listina prihlásených pretekárov</h1>
+<div class="form-group">
+<label>Vyberte preteky:</label>
+<select id="startlist-event-select" onchange="renderStartList()"></select>
+</div>
+<div id="startlist-container"></div>
+</div>
+</div>
+<!-- 4. ÚČET PRETEKÁRA -->
 <div id="pane-driver-portal" class="page-pane">
 <div id="driver-auth-section">
 <div class="card">
@@ -110,9 +154,8 @@ body { flex-direction: column; }
 </div>
 </div>
 </div>
-<!-- 3. ČASOMIERA (KOMISÁR) -->
+<!-- 5. ČASOMIERA (KOMISÁR) -->
 <div id="pane-marshal" class="page-pane">
-<!-- PRIHLÁSENIE KOMISÁRA -->
 <div class="card" id="marshal-auth-card">
 <h1>Prihlásenie traťového komisára</h1>
 <div class="form-group"><label>Meno komisára:</label><input type="text" id="marshal-login-name" placeholder="napr. Jozef"></div>
@@ -123,7 +166,6 @@ body { flex-direction: column; }
 <div class="form-group"><label>Heslo:</label><input type="password" id="marshal-reg-pass"></div>
 <button class="btn btn-success" onclick="registerMarshal()">Registrovať komisára</button>
 </div>
-<!-- HLAVNÝ PANEL KOMISÁRA -->
 <div id="marshal-dashboard" style="display:none;">
 <div class="card">
 <span id="logged-marshal-name" style="font-weight:bold; color:#0369a1;"></span>
@@ -143,7 +185,7 @@ body { flex-direction: column; }
 <button class="btn" onclick="startMarshal()">Obsadiť sekciu a spustiť meranie</button>
 </div>
 <div class="card" id="marshal-timer-card" style="display:none;">
-<h2 id="active-marshal-info" style="color:var(--success);">Meranie prebieha</h2>
+<h2 id="active-marshal-info" style="color:#16a34a;">Meranie prebieha</h2>
 <div class="form-group">
 <label>Filtrovať jazdcov podľa kategórie:</label>
 <select id="marshal-category-filter" onchange="filterMarshalDrivers()"></select>
@@ -166,13 +208,15 @@ body { flex-direction: column; }
 <button class="score-btn" onclick="addPts(500)">Pomoc rukou <span>+500 b</span></button>
 <button class="score-btn" onclick="addPts(300)">Oprava v depe <span>+300 b</span></button>
 </div>
-<p style="font-size:18px; margin-bottom:10px;">Trestné body: <strong id="penalty-count" style="color:#dc2626">0</strong></p>
+<p style="font-size:16px; margin-top:10px;">Manuálne trestné body: <strong id="penalty-count" style="color:#dc2626">0</strong></p>
+<p style="font-size:16px; margin-bottom:10px;">Časové trestné body (>11 min): <strong id="time-penalty-count" style="color:#d97706">0 b</strong></p>
+<p style="font-size:18px; margin-bottom:15px; font-weight:bold;">Celkové body v sekcii: <strong id="total-section-pts" style="color:#2563eb">0 b</strong></p>
 <button class="btn btn-success" onclick="saveRaceResult()">Uložiť výsledok jazdy</button>
 <button class="btn" onclick="stopMarshal()" style="background:#64748b; margin-top:10px;">Uvoľniť sekciu a ukončiť</button>
 </div>
 </div>
 </div>
-<!-- 4. VÝSLEDKY PRETEKOV -->
+<!-- 6. VÝSLEDKY PRETEKOV -->
 <div id="pane-results" class="page-pane">
 <div class="card">
 <h1>Výsledky pretekov</h1>
@@ -184,6 +228,14 @@ body { flex-direction: column; }
 <label>Vyberte kategóriu:</label>
 <select id="results-category-select" onchange="renderRaceResults()"></select>
 </div>
+<h2>Celkové poradie na pretekoch (Súčet zo všetkých sekcií)</h2>
+<table>
+<thead>
+<tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Odjazdené sekcie</th><th>Celkové body</th><th>Celkový čas</th></tr>
+</thead>
+<tbody id="race-total-results-body"></tbody>
+</table>
+<h2 style="margin-top:30px;">Detailné výsledky jednotlivých sekcií</h2>
 <table>
 <thead>
 <tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Sekcia</th><th>Body</th><th>Čas</th><th>Komisár</th></tr>
@@ -192,7 +244,7 @@ body { flex-direction: column; }
 </table>
 </div>
 </div>
-<!-- 5. CELKOVÉ VÝSLEDKY -->
+<!-- 7. CELKOVÉ VÝSLEDKY ŠAMPIONÁTU -->
 <div id="pane-overall" class="page-pane">
 <div class="card">
 <h1>Celkové výsledky - Šampionát RCTRIAL ORAVA</h1>
@@ -204,7 +256,7 @@ body { flex-direction: column; }
 </table>
 </div>
 </div>
-<!-- 6. ADMIN SPRÁVA -->
+<!-- 8. ADMIN SPRÁVA -->
 <div id="pane-admin" class="page-pane">
 <div id="admin-login-card" class="card">
 <h1>Prihlásenie Administrátora</h1>
@@ -231,10 +283,10 @@ body { flex-direction: column; }
 </table>
 </div>
 <div class="card">
-<h2>Správa traťových komisárov</h2>
+<h2>Schvaľovanie a správa traťových komisárov</h2>
 <table>
 <thead>
-<tr><th>Meno komisára</th><th>Akcia</th></tr>
+<tr><th>Meno komisára</th><th>Stav</th><th>Akcia</th></tr>
 </thead>
 <tbody id="admin-marshals-list"></tbody>
 </table>
@@ -268,7 +320,7 @@ let loggedUser = JSON.parse(localStorage.getItem('rct_logged_user')) || null;
 let loggedMarshal = JSON.parse(localStorage.getItem('rct_logged_marshal')) || null;
 let sectionOccupancy = JSON.parse(localStorage.getItem('rct_section_occupancy')) || {};
 let currentEvent = "", currentSection = "";
-let penalties = 0;
+let manualPenalties = 0, timePenalties = 0;
 let timerInterval = null, startTime = 0, elapsedTime = 0, isRunning = false;
 function switchTab(tabId) {
 document.querySelectorAll('.page-pane').forEach(pane => {
@@ -285,6 +337,7 @@ if (event && event.currentTarget) {
 event.currentTarget.classList.add('active');
 }
 if(tabId === 'calendar') renderCalendar();
+if(tabId === 'startlist') loadStartListEvents();
 if(tabId === 'driver-portal') checkDriverAuth();
 if(tabId === 'marshal') checkMarshalAuth();
 if(tabId === 'results') loadResultsEvents();
@@ -295,6 +348,30 @@ function renderCalendar() {
 document.getElementById('calendar-body').innerHTML = events.map(e => `
 <tr><td><strong>${e.name}</strong></td><td>${e.location}</td><td>${e.date}</td><td><strong>${e.sectionsCount || 4} ks</strong></td><td>${(e.categories || []).join(', ')}</td></tr>
 `).join('') || '<tr><td colspan="5">Žiadne udalosti.</td></tr>';
+}
+function loadStartListEvents() {
+document.getElementById('startlist-event-select').innerHTML = events.map(e => `<option value="${e.name}">${e.name}</option>`).join('');
+renderStartList();
+}
+function renderStartList() {
+const evName = document.getElementById('startlist-event-select').value;
+const ev = events.find(e => e.name === evName);
+const cats = ev && ev.categories ? ev.categories : ["Profi", "Hobby"];
+const container = document.getElementById('startlist-container');
+const filteredRegs = raceRegistrations.filter(r => r.eventName === evName);
+let html = '';
+cats.forEach(cat => {
+const driversInCat = filteredRegs.filter(r => r.category === cat);
+html += `<h3>Kategória: ${cat}</h3>`;
+if(driversInCat.length > 0) {
+html += `<table><thead><tr><th>#</th><th>Jazdec</th><th>Model auta</th></tr></thead><tbody>`;
+html += driversInCat.map((d, i) => `<tr><td>${i+1}</td><td>${d.username}</td><td>${d.car}</td></tr>`).join('');
+html += `</tbody></table><br>`;
+} else {
+html += `<p style="margin-bottom:15px; color:#64748b;">Žiadni pretekári v tejto kategórii.</p>`;
+}
+});
+container.innerHTML = html || '<p>Zatiaľ žiadne prihlášky.</p>';
 }
 function registerDriver() {
 const u = document.getElementById('reg-username').value.trim();
@@ -350,15 +427,14 @@ raceRegistrations.push({ userId: loggedUser.id, username: loggedUser.username, c
 localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
 alert('Boli ste úspešne prihlásený na preteky v kategórii ' + category + '!');
 }
-// KOMISÁR
 function registerMarshal() {
 const name = document.getElementById('marshal-reg-name').value.trim();
 const pass = document.getElementById('marshal-reg-pass').value.trim();
 if(!name || !pass) { alert('Zadajte meno a heslo komisára!'); return; }
 if(marshalsList.find(m => m.name === name)) { alert('Tento komisár už existuje!'); return; }
-marshalsList.push({ id: Date.now(), name, pass });
+marshalsList.push({ id: Date.now(), name, pass, approved: false });
 localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
-alert('Účet komisára bol vytvorený!');
+alert('Účet komisára bol vytvorený! Počkajte, kým ho schváli administrátor.');
 document.getElementById('marshal-reg-name').value = '';
 document.getElementById('marshal-reg-pass').value = '';
 }
@@ -367,6 +443,7 @@ const name = document.getElementById('marshal-login-name').value.trim();
 const pass = document.getElementById('marshal-login-pass').value.trim();
 const m = marshalsList.find(x => x.name === name && x.pass === pass);
 if(!m) { alert('Nesprávne meno alebo heslo komisára!'); return; }
+if(!m.approved) { alert('Váš účet zatiaľ nebol schválený administrátorom!'); return; }
 loggedMarshal = m;
 localStorage.setItem('rct_logged_marshal', JSON.stringify(loggedMarshal));
 checkMarshalAuth();
@@ -427,7 +504,6 @@ localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
 document.getElementById('marshal-login-section').style.display = 'none';
 document.getElementById('marshal-timer-card').style.display = 'block';
 document.getElementById('active-marshal-info').innerText = `Meranie prebieha: ${currentSection} | Komisár: ${loggedMarshal.name} | Preteky: ${currentEvent}`;
-// Naplnenie filtrov kategórií pre komisára
 const ev = events.find(e => e.name === currentEvent);
 const cats = ev && ev.categories ? ev.categories : ["Profi", "Hobby"];
 document.getElementById('marshal-category-filter').innerHTML = `<option value="ALL">Všetky kategórie</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
@@ -451,7 +527,8 @@ startTime = Date.now() - elapsedTime;
 timerInterval = setInterval(() => {
 elapsedTime = Date.now() - startTime;
 document.getElementById('stopwatch').innerText = formatTime(elapsedTime);
-}, 10);
+calculateTimePenalty();
+}, 100);
 isRunning = true;
 btn.innerText = 'Stop';
 btn.className = 'btn btn-danger';
@@ -466,20 +543,50 @@ function resetTimer() {
 clearInterval(timerInterval);
 isRunning = false;
 elapsedTime = 0;
-penalties = 0;
+manualPenalties = 0;
+timePenalties = 0;
 document.getElementById('stopwatch').innerText = '00:00.00';
 document.getElementById('penalty-count').innerText = '0';
+document.getElementById('time-penalty-count').innerText = '0 b';
+document.getElementById('total-section-pts').innerText = '0 b';
 document.getElementById('timer-btn').innerText = 'Štart';
 document.getElementById('timer-btn').className = 'btn btn-success';
 }
-function addPts(pts) { penalties += pts; document.getElementById('penalty-count').innerText = penalties; }
+function calculateTimePenalty() {
+let totalSeconds = Math.floor(elapsedTime / 1000);
+let limitSeconds = 11 * 60; // 11 minút
+if (totalSeconds > limitSeconds) {
+let overSeconds = totalSeconds - limitSeconds;
+let overMinutes = Math.ceil(overSeconds / 60);
+timePenalties = overMinutes * 0.5;
+} else {
+timePenalties = 0;
+}
+document.getElementById('time-penalty-count').innerText = `+${timePenalties} b`;
+document.getElementById('total-section-pts').innerText = `${manualPenalties + timePenalties} b`;
+}
+function addPts(pts) {
+manualPenalties += pts;
+document.getElementById('penalty-count').innerText = manualPenalties;
+document.getElementById('total-section-pts').innerText = `${manualPenalties + timePenalties} b`;
+}
 function saveRaceResult() {
 const val = document.getElementById('active-driver-select').value;
 if(!val) { alert('Vyberte jazdca!'); return; }
 const [driverName, car, category] = val.split('|');
-raceResults.push({ eventName: currentEvent, section: currentSection, driverName, car, category: category || 'Profi', penalties, time: elapsedTime, marshal: loggedMarshal.name });
+const totalPts = manualPenalties + timePenalties;
+raceResults.push({
+eventName: currentEvent,
+section: currentSection,
+driverName,
+car,
+category: category || 'Profi',
+penalties: totalPts,
+time: elapsedTime,
+marshal: loggedMarshal.name
+});
 localStorage.setItem('rct_results', JSON.stringify(raceResults));
-alert('Výsledok jazdy v sekcii bol uložený!');
+alert(`Výsledok jazdy v sekcii bol uložený! Celkové body: ${totalPts}`);
 resetTimer();
 }
 function stopMarshal() {
@@ -516,7 +623,27 @@ const filtered = raceResults.filter(r => r.eventName === ev && (cat === 'ALL' ||
 filtered.sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
 document.getElementById('race-results-body').innerHTML = filtered.map((r, i) => `
 <tr><td>#${i+1}</td><td>${r.driverName}</td><td>${r.car}</td><td>${r.category || '-'}</td><td>${r.section || '-'}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td><td>${r.marshal}</td></tr>
-`).join('') || '<tr><td colspan="8">Zatiaľ žiadne výsledky.</td></tr>';
+`).join('') || '<tr><td colspan="8">Zatiaľ žiadne výsledky sekcií.</td></tr>';
+const driverSummary = {};
+filtered.forEach(r => {
+if(!driverSummary[r.driverName]) {
+driverSummary[r.driverName] = { car: r.car, category: r.category, penalties: 0, time: 0, sectionsCount: 0 };
+}
+driverSummary[r.driverName].penalties += r.penalties;
+driverSummary[r.driverName].time += r.time;
+driverSummary[r.driverName].sectionsCount += 1;
+});
+const totalList = Object.keys(driverSummary).map(name => ({
+name,
+car: driverSummary[name].car,
+category: driverSummary[name].category,
+sectionsCount: driverSummary[name].sectionsCount,
+penalties: driverSummary[name].penalties,
+time: driverSummary[name].time
+})).sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
+document.getElementById('race-total-results-body').innerHTML = totalList.map((r, i) => `
+<tr style="background:#f8fafc;"><td><strong>#${i+1}</strong></td><td><strong>${r.name}</strong></td><td>${r.car}</td><td>${r.category}</td><td>${r.sectionsCount} sekcií</td><td><strong style="color:red; font-size:16px;">${r.penalties} b</strong></td><td><strong>${formatTime(r.time)}</strong></td></tr>
+`).join('') || '<tr><td colspan="7">Žiadne celkové výsledky pretekov.</td></tr>';
 }
 function renderOverallResults() {
 const summary = {};
@@ -530,7 +657,6 @@ document.getElementById('overall-results-body').innerHTML = list.map((r, i) => `
 <tr><td>#${i+1}</td><td>${r.name}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>
 `).join('') || '<tr><td colspan="4">Žiadne výsledky.</td></tr>';
 }
-// ADMIN FUNKCIE
 function loginAdmin() {
 if(document.getElementById('admin-user').value === 'admin' && document.getElementById('admin-pass').value === 'admin123') {
 document.getElementById('admin-login-card').style.display = 'none';
@@ -578,6 +704,14 @@ localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
 renderAdminLists();
 }
 }
+function adminToggleApproveMarshal(id) {
+const m = marshalsList.find(x => x.id === id);
+if(m) {
+m.approved = !m.approved;
+localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
+renderAdminLists();
+}
+}
 function adminDeleteMarshal(id) {
 if(confirm('Vymazať tohto komisára?')) {
 marshalsList = marshalsList.filter(m => m.id !== id);
@@ -597,8 +731,15 @@ document.getElementById('admin-events-list').innerHTML = events.map(e => `
 <tr><td>${e.name} (${e.date})</td><td>${e.sectionsCount || 4} ks</td><td>${(e.categories || []).join(', ')}</td><td><button onclick="adminDeleteEvent(${e.id})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>
 `).join('');
 document.getElementById('admin-marshals-list').innerHTML = marshalsList.map(m => `
-<tr><td>${m.name}</td><td><button onclick="adminDeleteMarshal(${m.id})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>
-`).join('') || '<tr><td colspan="2">Žiadni registrovaní komisári.</td></tr>';
+<tr>
+<td>${m.name}</td>
+<td>${m.approved ? '<span style="color:green; font-weight:bold;">Schválený</span>' : '<span style="color:orange; font-weight:bold;">Čaká na schválenie</span>'}</td>
+<td>
+<button onclick="adminToggleApproveMarshal(${m.id})" class="btn ${m.approved ? 'btn-warning' : 'btn-success'} btn-sm">${m.approved ? 'Zrušiť schválenie' : 'Schváliť'}</button>
+<button onclick="adminDeleteMarshal(${m.id})" class="btn btn-danger btn-sm">Vymazať</button>
+</td>
+</tr>
+`).join('') || '<tr><td colspan="3">Žiadni registrovaní komisári.</td></tr>';
 document.getElementById('admin-users-list').innerHTML = registeredUsers.map(u => `
 <tr><td>${u.username}</td><td>${u.car}</td><td><button onclick="adminDeleteUser(${u.id})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>
 `).join('');
