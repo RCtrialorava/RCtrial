@@ -4,9 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RCTRIAL ORAVA</title>
-<!-- Firebase SDK -->
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
-<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-database.js"></script>
 <style>
 { box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
 body { background: #f1f5f9; color: #0f172a; display: flex; min-height: 100vh; }
@@ -97,7 +94,7 @@ body { flex-direction: column; }
 </thead>
 <tbody>
 <tr><td><strong>Navijak / lano</strong></td><td><strong style="color:#dc2626">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr>
-<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#dc2626">+25 b</strong></td><td>Akovýkoľvek dotyk tyčky bránky vozidlom</td></tr>
+<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#dc2626">+25 b</strong></td><td>Akýkoľvek dotyk tyčky bránky vozidlom</td></tr>
 <tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:#dc2626">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr>
 <tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:#dc2626">+250 b</strong></td><td>Vynechanie bránky alebo neprejazd v správnom smere</td></tr>
 <tr><td><strong>Oprava v depe</strong></td><td><strong style="color:#dc2626">+300 b</strong></td><td>Oprava vozidla počas prejazdu v depe</td></tr>
@@ -324,9 +321,9 @@ body { flex-direction: column; }
 </table>
 </div>
 <div class="card">
-<h2> Export Výsledkov (Pre Admina)</h2>
+<h2>Export Výsledkov (Pre Admina)</h2>
 <p style="margin-bottom:10px;">Stiahnutie kompletných výsledkov vo formáte CSV pre prehliadanie v Exceli:</p>
-<button class="btn btn-success" onclick="adminExportCSV()"> Stiahnuť výsledky pretekov (CSV / Excel)</button>
+<button class="btn btn-success" onclick="adminExportCSV()">Stiahnuť výsledky pretekov (CSV / Excel)</button>
 </div>
 <div class="card">
 <h2>Schvaľovanie a správa traťových komisárov</h2>
@@ -354,15 +351,8 @@ body { flex-direction: column; }
 </div>
 </div>
 <script>
-// FIREBASE INICIALIZÁCIA (Vymeňte URL za vašu databázu!)
-const firebaseConfig = {
-databaseURL: "TUTO_VLOZTE_URL_FIREBASE_DATABAZE"
-};
-let db = null;
-try {
-firebase.initializeApp(firebaseConfig);
-db = firebase.database();
-} catch(e) { console.log("Firebase nekonfigurovaný, používam fallback localstorage."); }
+// SEM VLOŽTE URL ZO SKRIPTU GOOGLE SHEETS
+const GOOGLE_SCRIPT_URL = "TUTO_VLOZTE_URL_GOOGLE_APPS_SCRIPTU";
 let events = JSON.parse(localStorage.getItem('rct_events')) || [
 { id: 1, name: "RC Trial Zubrohlava - 1. Kolo", location: "Zubrohlava - Areál", date: "2026-04-25", sectionsCount: 4, categories: ["Profi", "Hobby"] },
 { id: 2, name: "Oravský RC Trial Cup", location: "Námestovo", date: "2026-05-16", sectionsCount: 5, categories: ["Profi", "Hobby", "Special"] }
@@ -372,11 +362,13 @@ let marshalsList = JSON.parse(localStorage.getItem('rct_marshals')) || [];
 let raceRegistrations = JSON.parse(localStorage.getItem('rct_race_regs')) || [];
 let raceResults = JSON.parse(localStorage.getItem('rct_results')) || [];
 let sectionOccupancy = JSON.parse(localStorage.getItem('rct_section_occupancy')) || {};
-// ONLINE SYNCHRONIZÁCIA CEZ FIREBASE
-if(db) {
-db.ref('rct_data').on('value', (snapshot) => {
-const data = snapshot.val();
-if(data) {
+// ONLINE NAČÍTANIE Z GOOGLE SHEETS
+async function loadFromCloud() {
+if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("TUTO_VLOZTE")) return;
+try {
+const res = await fetch(GOOGLE_SCRIPT_URL);
+const data = await res.json();
+if(data && Object.keys(data).length > 0) {
 if(data.events) events = data.events;
 if(data.users) registeredUsers = data.users;
 if(data.marshals) marshalsList = data.marshals;
@@ -385,20 +377,25 @@ if(data.results) raceResults = data.results;
 if(data.occupancy) sectionOccupancy = data.occupancy;
 renderCurrentActiveTab();
 }
-});
+} catch(e) { console.log("Chyba načítania z cloudu:", e); }
 }
-function syncToCloud() {
+// ONLINE ULOŽENIE DO GOOGLE SHEETS
+async function syncToCloud() {
 localStorage.setItem('rct_events', JSON.stringify(events));
 localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
 localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
 localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
 localStorage.setItem('rct_results', JSON.stringify(raceResults));
 localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
-if(db) {
-db.ref('rct_data').set({
-events, users: registeredUsers, marshals: marshalsList, regs: raceRegistrations, results: raceResults, occupancy: sectionOccupancy
+if(!GOOGLE_SCRIPT_URL || GOOGLE_SCRIPT_URL.includes("TUTO_VLOZTE")) return;
+try {
+await fetch(GOOGLE_SCRIPT_URL, {
+method: 'POST',
+mode: 'no-cors',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ events, users: registeredUsers, marshals: marshalsList, regs: raceRegistrations, results: raceResults, occupancy: sectionOccupancy })
 });
-}
+} catch(e) { console.log("Chyba zápisu do cloudu:", e); }
 }
 let loggedUser = JSON.parse(localStorage.getItem('rct_logged_user')) || null;
 let loggedMarshal = JSON.parse(localStorage.getItem('rct_logged_marshal')) || null;
@@ -417,9 +414,6 @@ const targetPane = document.getElementById('pane-' + tabId);
 if (targetPane) {
 targetPane.style.display = 'block';
 targetPane.classList.add('active');
-}
-if (event && event.currentTarget) {
-event.currentTarget.classList.add('active');
 }
 renderCurrentActiveTab();
 }
@@ -746,12 +740,10 @@ document.getElementById('overall-results-body').innerHTML = list.map((r, i) => `
 <tr><td>#${i+1}</td><td>${r.name}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>
 `).join('') || '<tr><td colspan="4">Žiadne výsledky.</td></tr>';
 }
-// NOVO PRIDANÉ: ŠTATISTIKY
 function renderStats() {
 document.getElementById('stat-total-drivers').innerText = registeredUsers.length;
 document.getElementById('stat-total-events').innerText = events.length;
 document.getElementById('stat-total-sections').innerText = raceResults.length;
-// Najaktívnejší jazdci
 const driverSecCounts = {};
 raceResults.forEach(r => {
 driverSecCounts[r.driverName] = (driverSecCounts[r.driverName] || 0) + 1;
@@ -760,7 +752,6 @@ const sortedDrivers = Object.keys(driverSecCounts).map(name => ({ name, count: d
 document.getElementById('stats-active-drivers').innerHTML = sortedDrivers.map((d, i) => `
 <tr><td>#${i+1}</td><td><strong>${d.name}</strong></td><td>${d.count} sekcií</td></tr>
 `).join('') || '<tr><td colspan="3">Zatiaľ žiadne odjazdené sekcie.</td></tr>';
-// Štatistika komisárov
 const marshalStats = {};
 raceResults.forEach(r => {
 if(!marshalStats[r.marshal]) marshalStats[r.marshal] = { count: 0, penalties: 0 };
@@ -861,7 +852,6 @@ syncToCloud();
 alert('Všetky sekcie boli odblokované.');
 }
 }
-// NOVO PRIDANÉ: EXPORT VÝSLEDKOV DO CSV (EXCEL) IBA PRE ADMINA
 function adminExportCSV() {
 if(raceResults.length === 0) { alert('Zatiaľ nie sú k dispozícii žiadne výsledky na stiahnutie.'); return; }
 let csvContent = "data:text/csv;charset=utf-8,Udalost,Sekcia,Jazdec,Model,Kategoria,TrestneBody,CasSeconds,Komisar
@@ -905,6 +895,7 @@ document.getElementById('admin-users-list').innerHTML = registeredUsers.map(u =>
 `).join('');
 }
 document.addEventListener("DOMContentLoaded", () => {
+loadFromCloud();
 switchTab('calendar');
 });
 </script>
