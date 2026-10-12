@@ -16,7 +16,7 @@ body { background: #f1f5f9; color: #0f172a; display: flex; min-height: 100vh; }
 .nav-btn.admin-btn:hover { background: #3730a3; color: white; }
 /* HLAVNÁ PLOCHA /
 .main-content { flex: 1; padding: 25px; }
-/* SKRÝVANIE STRÁNOK - JEDNOZNAČNÉ /
+/* SKRÝVANIE STRÁNOK /
 .page-pane { display: none; }
 .page-pane.active { display: block; }
 .card { background: #ffffff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; }
@@ -107,23 +107,27 @@ body { flex-direction: column; }
 </div>
 <!-- 3. ČASOMIERA (KOMISÁR) -->
 <div id="pane-marshal" class="page-pane">
-<div class="card" id="marshal-login-card">
-<h1>Časomiera pre traťového komisára</h1>
-<div class="form-group"><label>Vyberte preteky:</label><select id="marshal-event-select" onchange="renderSectionsStatus()"></select></div>
-<h2>Prehľad stavu sekcií pre vybrané preteky:</h2>
+<!-- PREHĽAD SEKCII STÁLE NAVRCHU -->
+<div class="card">
+<h1>Prehľad stavu sekcií</h1>
+<div class="form-group"><label>Vyberte preteky pre kontrolu sekcií:</label><select id="marshal-event-select" onchange="renderSectionsStatus()"></select></div>
 <table>
 <thead>
 <tr><th>Sekcia</th><th>Stav sekcie</th><th>Obsadil komisár</th></tr>
 </thead>
 <tbody id="sections-status-body"></tbody>
 </table>
-<h2 style="margin-top: 20px;">Obsadiť sekciu a spustiť meranie:</h2>
+</div>
+<!-- PRIHLÁSENIE KOMISÁRA -->
+<div class="card" id="marshal-login-card">
+<h2>Obsadiť sekciu a spustiť meranie</h2>
 <div class="form-group"><label>Meno komisára:</label><input type="text" id="marshal-name" placeholder="napr. Ján Komisár"></div>
 <div class="form-group"><label>Vyberte voľnú sekciu:</label><select id="marshal-section-select"></select></div>
 <button class="btn" onclick="startMarshal()">Obsadiť sekciu a spustiť meranie</button>
 </div>
+<!-- ČASOMIERA A BODOVANIE -->
 <div class="card" id="marshal-timer-card" style="display:none;">
-<h2 id="active-marshal-info">Sekcia merania</h2>
+<h2 id="active-marshal-info" style="color:var(--success);">Meranie prebieha</h2>
 <div class="form-group"><label>Vyberte jazdca na štarte:</label><select id="active-driver-select"></select></div>
 <div class="timer-display" id="stopwatch">00:00.00</div>
 <div style="display:flex; gap:10px; margin-bottom:10px;">
@@ -141,7 +145,7 @@ body { flex-direction: column; }
 </div>
 <p style="font-size:18px; margin-bottom:10px;">Trestné body: <strong id="penalty-count" style="color:#dc2626">0</strong></p>
 <button class="btn btn-success" onclick="saveRaceResult()">Uložiť výsledok jazdy</button>
-<button class="btn" onclick="stopMarshal()" style="background:#64748b;">Uvoľniť sekciu a ukončiť</button>
+<button class="btn" onclick="stopMarshal()" style="background:#64748b; margin-top:10px;">Uvoľniť sekciu a ukončiť</button>
 </div>
 </div>
 <!-- 4. VÝSLEDKY PRETEKOV -->
@@ -214,7 +218,6 @@ body { flex-direction: column; }
 </div>
 </div>
 <script>
-// DÁTOVÉ ÚLOŽISKO
 let events = JSON.parse(localStorage.getItem('rct_events')) || [
 { id: 1, name: "RC Trial Zubrohlava - 1. Kolo", location: "Zubrohlava - Areál", date: "2026-04-25", sectionsCount: 4 },
 { id: 2, name: "Oravský RC Trial Cup", location: "Námestovo", date: "2026-05-16", sectionsCount: 5 }
@@ -227,26 +230,20 @@ let sectionOccupancy = JSON.parse(localStorage.getItem('rct_section_occupancy'))
 let currentMarshal = "", currentEvent = "", currentSection = "";
 let penalties = 0;
 let timerInterval = null, startTime = 0, elapsedTime = 0, isRunning = false;
-// JEDNOZNAČNÉ PREPÍNANIE ZÁLOŽIEK
 function switchTab(tabId) {
-// Skryť úplne všetky panely
 document.querySelectorAll('.page-pane').forEach(pane => {
 pane.style.display = 'none';
 pane.classList.remove('active');
 });
-// Odstrániť aktívnu triedu zo všetkých tlačidiel menu
 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-// Zobraziť iba vybraný panel
 const targetPane = document.getElementById('pane-' + tabId);
 if (targetPane) {
 targetPane.style.display = 'block';
 targetPane.classList.add('active');
 }
-// Označiť kliknuté tlačidlo ako aktívne
 if (event && event.currentTarget) {
 event.currentTarget.classList.add('active');
 }
-// Načítanie špecifických dát podľa záložky
 if(tabId === 'calendar') renderCalendar();
 if(tabId === 'driver-portal') checkDriverAuth();
 if(tabId === 'marshal') loadMarshalEvents();
@@ -305,7 +302,6 @@ raceRegistrations.push({ userId: loggedUser.id, username: loggedUser.username, c
 localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
 alert('Boli ste úspešne prihlásený na preteky!');
 }
-// ČASOMIERA A SPRÁVA SEKCIÍ
 function loadMarshalEvents() {
 document.getElementById('marshal-event-select').innerHTML = events.map(e => `<option value="${e.name}">${e.name}</option>`).join('');
 renderSectionsStatus();
@@ -346,10 +342,10 @@ currentEvent = selectedEv;
 currentSection = selectedSec;
 sectionOccupancy[key] = currentMarshal;
 localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
+// Skryť výber, zobraziť časomieru, ale prehľad sekcií zanechať viditeľný
 document.getElementById('marshal-login-card').style.display = 'none';
 document.getElementById('marshal-timer-card').style.display = 'block';
-document.getElementById('active-marshal-info').innerText = `${currentSection} | Komisár: ${currentMarshal} | Preteky: ${currentEvent}`;
-// OPRAVA: Načítanie pretekárov prihlásených na danú udalosť pre komisára
+document.getElementById('active-marshal-info').innerText = `Meranie prebieha: ${currentSection} | Komisár: ${currentMarshal} | Preteky: ${currentEvent}`;
 const filtered = raceRegistrations.filter(r => r.eventName === currentEvent);
 const driverSelect = document.getElementById('active-driver-select');
 if(filtered.length > 0) {
@@ -357,6 +353,7 @@ driverSelect.innerHTML = filtered.map(r => `<option value="${r.username}|${r.car
 } else {
 driverSelect.innerHTML = '<option value="">Žiadni prihlásení pretekári na túto udalosť</option>';
 }
+renderSectionsStatus();
 }
 function toggleTimer() {
 const btn = document.getElementById('timer-btn');
@@ -436,7 +433,6 @@ document.getElementById('overall-results-body').innerHTML = list.map((r, i) => `
 <tr><td>#${i+1}</td><td>${r.name}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>
 `).join('') || '<tr><td colspan="4">Žiadne výsledky.</td></tr>';
 }
-// ADMIN FUNKCIE
 function loginAdmin() {
 if(document.getElementById('admin-user').value === 'admin' && document.getElementById('admin-pass').value === 'admin123') {
 document.getElementById('admin-login-card').style.display = 'none';
@@ -487,6 +483,7 @@ if(confirm('Chcete uvoľniť všetky sekcie pre ďalších komisárov?')) {
 sectionOccupancy = {};
 localStorage.removeItem('rct_section_occupancy');
 alert('Všetky sekcie boli odblokované.');
+renderSectionsStatus();
 }
 }
 function renderAdminLists() {
@@ -497,7 +494,6 @@ document.getElementById('admin-users-list').innerHTML = registeredUsers.map(u =>
 <tr><td>${u.username}</td><td>${u.car}</td><td><button onclick="adminDeleteUser(${u.id})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>
 `).join('');
 }
-// ŠTART - ZOBRAZIŤ IBA KALENDÁR PRI NAČÍTANÍ
 document.addEventListener("DOMContentLoaded", () => {
 switchTab('calendar');
 });
