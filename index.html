@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RC Trial - Časomiera a Bodovanie</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --bg: #f8fafc;
+            --card-bg: #ffffff;
+            --text: #1e293b;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            margin: 0;
+            padding: 10px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        h1 {
+            color: var(--primary);
+            margin-bottom: 5px;
+        }
+        .card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+        button {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: bold;
+            width: 100%;
+            transition: background 0.2s;
+        }
+        button:hover {
+            background-color: var(--primary-dark);
+        }
+        .btn-danger { background-color: var(--danger); }
+        .btn-danger:hover { background-color: #b91c1c; }
+        .btn-success { background-color: var(--success); }
+        .btn-success:hover { background-color: #15803d; }
+        
+        .timer-display {
+            font-size: 48px;
+            text-align: center;
+            font-weight: bold;
+            font-family: monospace;
+            margin: 15px 0;
+            color: #0f172a;
+        }
+        .grid-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+        .penalty-btn {
+            background-color: #475569;
+            font-size: 14px;
+            padding: 10px;
+        }
+        .penalty-btn:hover { background-color: #334155; }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f1f5f9;
+        }
+        .hidden { display: none; }
+        .badge {
+            background: #e0f2fe;
+            color: #0369a1;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>RC Trial Časomiera</h1>
+        <p>Registrácia, stopky a bodovanie pretekov</p>
+    </header>
+
+    <!-- SEKCIA 1: REGISTRÁCIA / PRIHLÁSENIE -->
+    <div id="register-section" class="card">
+        <h2>Prihlásenie pretekára</h2>
+        <div class="form-group">
+            <label for="driver-name">Meno / Prezývka:</label>
+            <input type="text" id="driver-name" placeholder="napr. Ján Mrkvovička">
+        </div>
+        <div class="form-group">
+            <label for="car-model">Model auta / Trieda:</label>
+            <input type="text" id="car-model" placeholder="napr. Axial SCX10">
+        </div>
+        <button onclick="startRace()">Začať jazdu</button>
+    </div>
+
+    <!-- SEKCIA 2: ČASOMIERA A BODOVANIE -->
+    <div id="race-section" class="card hidden">
+        <h2 id="current-driver-title">Pretekár: </h2>
+        <span class="badge" id="current-car-title">Model: </span>
+        
+        <div class="timer-display" id="stopwatch">00:00.00</div>
+        
+        <div class="grid-buttons">
+            <button class="btn-success" onclick="toggleTimer()" id="timer-toggle-btn">Štart</button>
+            <button class="btn-danger" onclick="resetTimer()">Reset času</button>
+        </div>
+
+        <h3>Trestné body (RC Trial pravidlá):</h3>
+        <div class="grid-buttons">
+            <button class="penalty-btn" onclick="addPenalty(5)">Dotyk bránky (+5 b)</button>
+            <button class="penalty-btn" onclick="addPenalty(1)">Cúvanie / Zmena smeru (+1 b)</button>
+            <button class="penalty-btn" onclick="addPenalty(2)">Zhasnutie motora (+2 b)</button>
+            <button class="penalty-btn" onclick="addPenalty(10)">Pomoc rukou / Asistencia (+10 b)</button>
+            <button class="penalty-btn" onclick="addPenalty(15)">Prevrátenie modelu (+15 b)</button>
+            <button class="penalty-btn" onclick="addPenalty(20)">Vynechanie bránky (+20 b)</button>
+        </div>
+
+        <div style="margin-bottom: 15px;">
+            <label>Aktuálne trestné body: <strong id="penalty-count" style="font-size: 20px; color: var(--danger);">0</strong></label>
+        </div>
+
+        <button class="btn-success" onclick="finishDriver()" style="margin-bottom: 10px;">Ukončiť jazdu a uložiť výsledok</button>
+        <button onclick="cancelDriver()" style="background-color: #64748b;">Zrušiť jazdu</button>
+    </div>
+
+    <!-- SEKCIA 3: VÝSLEDKY -->
+    <div class="card">
+        <h2>Výsledková tabuľka</h2>
+        <div style="overflow-x: auto;">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Poradie</th>
+                        <th>Meno</th>
+                        <th>Model</th>
+                        <th>Body</th>
+                        <th>Čas</th>
+                    </tr>
+                </thead>
+                <tbody id="results-table-body">
+                    <tr><td colspan="5" style="text-align: center; color: #64748b;">Zatiaľ žiadne výsledky.</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <button class="btn-danger" onclick="clearResults()" style="margin-top: 15px; font-size: 14px; padding: 8px;">Vymazať všetky výsledky</button>
+    </div>
+</div>
+
+<script>
+    let results = JSON.parse(localStorage.getItem('rc_trial_results')) || [];
+    let currentDriver = { name: '', car: '', time: 0, penalties: 0 };
+    
+    let timerInterval = null;
+    let startTime = 0;
+    let elapsedTime = 0;
+    let isRunning = false;
+
+    function startRace() {
+        const name = document.getElementById('driver-name').value.trim();
+        const car = document.getElementById('car-model').value.trim();
+
+        if (!name) {
+            alert('Prosím, zadajte meno pretekára.');
+            return;
+        }
+
+        currentDriver.name = name;
+        currentDriver.car = car || 'Neznámy model';
+        currentDriver.penalties = 0;
+        elapsedTime = 0;
+        
+        document.getElementById('current-driver-title').innerText = 'Pretekár: ' + currentDriver.name;
+        document.getElementById('current-car-title').innerText = 'Model: ' + currentDriver.car;
+        document.getElementById('penalty-count').innerText = '0';
+        document.getElementById('stopwatch').innerText = '00:00.00';
+
+        document.getElementById('register-section').classList.add('hidden');
+        document.getElementById('race-section').classList.remove('hidden');
+        resetTimer();
+    }
+
+    function toggleTimer() {
+        if (!isRunning) {
+            // Štart
+            startTime = Date.now() - elapsedTime;
+            timerInterval = setInterval(updateTimer, 10);
+            isRunning = true;
+            document.getElementById('timer-toggle-btn').innerText = 'Stop';
+            document.getElementById('timer-toggle-btn').classList.remove('btn-success');
+            document.getElementById('timer-toggle-btn').classList.add('btn-danger');
+        } else {
+            // Stop
+            clearInterval(timerInterval);
+            isRunning = false;
+            document.getElementById('timer-toggle-btn').innerText = 'Štart';
+            document.getElementById('timer-toggle-btn').classList.remove('btn-danger');
+            document.getElementById('timer-toggle-btn').classList.add('btn-success');
+        }
+    }
+
+    function updateTimer() {
+        elapsedTime = Date.now() - startTime;
+        document.getElementById('stopwatch').innerText = formatTime(elapsedTime);
+    }
+
+    function resetTimer() {
+        clearInterval(timerInterval);
+        isRunning = false;
+        elapsedTime = 0;
+        document.getElementById('stopwatch').innerText = '00:00.00';
+        document.getElementById('timer-toggle-btn').innerText = 'Štart';
+        document.getElementById('timer-toggle-btn').classList.remove('btn-danger');
+        document.getElementById('timer-toggle-btn').classList.add('btn-success');
+    }
+
+    function formatTime(ms) {
+        let totalSeconds = Math.floor(ms / 1000);
+        let minutes = Math.floor(totalSeconds / 60);
+        let seconds = totalSeconds % 60;
+        let centiseconds = Math.floor((ms % 1000) / 10);
+
+        return (minutes < 10 ? '0' : '') + minutes + ':' +
+               (seconds < 10 ? '0' : '') + seconds + '.' +
+               (centiseconds < 10 ? '0' : '') + centiseconds;
+    }
+
+    function addPenalty(points) {
+        currentDriver.penalties += points;
+        document.getElementById('penalty-count').innerText = currentDriver.penalties;
+    }
+
+    function finishDriver() {
+        if (isRunning) {
+            toggleTimer(); // Zastaví čas ak beží
+        }
+
+        currentDriver.time = elapsedTime;
+        results.push({ ...currentDriver });
+        
+        // Zoradiť výsledky: primárne podľa menej trestných bodov, sekundárne podľa kratšieho času
+        results.sort((a, b) => {
+            if (a.penalties !== b.penalties) {
+                return a.penalties - b.penalties;
+            }
+            return a.time - b.time;
+        });
+
+        localStorage.setItem('rc_trial_results', JSON.stringify(results));
+        renderResults();
+
+        // Návrat na registráciu
+        cancelDriver();
+    }
+
+    function cancelDriver() {
+        resetTimer();
+        document.getElementById('driver-name').value = '';
+        document.getElementById('car-model').value = '';
+        document.getElementById('race-section').classList.add('hidden');
+        document.getElementById('register-section').classList.remove('hidden');
+    }
+
+    function renderResults() {
+        const tbody = document.getElementById('results-table-body');
+        if (results.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #64748b;">Zatiaľ žiadne výsledky.</td></tr>';
+            return;
+        }
+
+        tbody.innerHTML = '';
+        results.forEach((res, index) => {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>#${index + 1}</strong></td>
+                <td>${escapeHtml(res.name)}</td>
+                <td>${escapeHtml(res.car)}</td>
+                <td><strong style="color: var(--danger);">${res.penalties} b</strong></td>
+                <td>${formatTime(res.time)}</td>
+            `;
+            tbody.innerHTML += ''; // oprava pre čisto DOM
+            tbody.appendChild(tr);
+        });
+    }
+
+    function clearResults() {
+        if (confirm('Naozaj chcete vymazať všetky uložené výsledky?')) {
+            results = [];
+            localStorage.removeItem('rc_trial_results');
+            renderResults();
+        }
+    }
+
+    function escapeHtml(text) {
+        return text.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+    }
+
+    // Inicializácia pri načítaní
+    renderResults();
+</script>
+
+</body>
+</html>
