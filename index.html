@@ -90,7 +90,7 @@ body { flex-direction: column; }
 </thead>
 <tbody>
 <tr><td><strong>Navijak / lano</strong></td><td><strong style="color:#dc2626">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr>
-<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#dc2626">+25 b</strong></td><td>Akovýkoľvek dotyk tyčky bránky vozidlom</td></tr>
+<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#dc2626">+25 b</strong></td><td>Akýkoľvek dotyk tyčky bránky vozidlom</td></tr>
 <tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:#dc2626">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr>
 <tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:#dc2626">+250 b</strong></td><td>Vynechanie bránky alebo neprejazd v správnom smere</td></tr>
 <tr><td><strong>Oprava v depe</strong></td><td><strong style="color:#dc2626">+300 b</strong></td><td>Oprava vozidla počas prejazdu v depe</td></tr>
@@ -281,6 +281,13 @@ body { flex-direction: column; }
 </thead>
 <tbody id="admin-events-list"></tbody>
 </table>
+</div>
+<!-- KARTA PRE VYMAZANIE VÝSLEDKOV -->
+<div class="card">
+<h2>Správa dát a výsledkov</h2>
+<p style="margin-bottom:10px; color:#475569; font-size:13px;">Tlačidlá na vyčistenie uložených výsledkov a databázy:</p>
+<button class="btn btn-warning" onclick="adminClearResults()">🗑️ Vymazať VŠETKY výsledky pretekov</button>
+<button class="btn btn-danger" onclick="adminFullReset()" style="margin-top:8px;">⚠️ Kompletný RESET (Výsledky, pretekári, prihlášky)</button>
 </div>
 <div class="card">
 <h2>Schvaľovanie a správa traťových komisárov</h2>
@@ -698,7 +705,28 @@ localStorage.setItem('rct_events', JSON.stringify(events));
 renderAdminLists();
 }
 }
-// NOVO PRIDANÉ: ZMENA HESLA PRETEKÁRA ADMINOM
+// MAZANIE VÝSLEDKOV A ŠTATISTÍK
+function adminClearResults() {
+if(confirm('Naozaj chcete vymazať všetkých výsledky pretekov? Pokračovať?')) {
+raceResults = [];
+localStorage.removeItem('rct_results');
+alert('Všetky výsledky boli vymazané!');
+renderRaceResults();
+}
+}
+// KOMPLETNÝ RESET
+function adminFullReset() {
+if(confirm('POZOR: Kompletný reset vymaže všetkých pretekárov, výsledky aj prihlášky! Chcete pokračovať?')) {
+raceResults = [];
+registeredUsers = [];
+raceRegistrations = [];
+localStorage.removeItem('rct_results');
+localStorage.removeItem('rct_users');
+localStorage.removeItem('rct_race_regs');
+alert('Kompletný reset bol vykonaný.');
+renderAdminLists();
+}
+}
 function adminChangeUserPassword(id) {
 const user = registeredUsers.find(u => u.id === id);
 if(user) {
@@ -725,7 +753,6 @@ localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
 renderAdminLists();
 }
 }
-// NOVO PRIDANÉ: ZMENA HESLA KOMISÁRA ADMINOM
 function adminChangeMarshalPassword(id) {
 const m = marshalsList.find(x => x.id === id);
 if(m) {
