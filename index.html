@@ -315,7 +315,8 @@ body { flex-direction: column; }
 </div>
 </div>
 <script>
-  const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBvUWL-wa1eyjJJ9cF5jP2wnkuQlmTSQxDfVBTACgwEUo0VsdGkgjr8L5xmENfT_vzew/exec";
+// URL PRE CLOUDOVÚ SYNCHRONIZÁCIU
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBvUWL-wa1eyjJJ9cF5jP2wnkuQlmTSQxDfVBTACgwEUo0VsdGkgjr8L5xmENfT_vzew/exec";
 let events = JSON.parse(localStorage.getItem('rct_events')) || [
 { id: 1, name: "RC Trial Zubrohlava - 1. Kolo", location: "Zubrohlava - Areál", date: "2026-04-25", sectionsCount: 4, categories: ["Profi", "Hobby"] },
 { id: 2, name: "Oravský RC Trial Cup", location: "Námestovo", date: "2026-05-16", sectionsCount: 5, categories: ["Profi", "Hobby", "Special"] }
@@ -324,12 +325,47 @@ let registeredUsers = JSON.parse(localStorage.getItem('rct_users')) || [];
 let marshalsList = JSON.parse(localStorage.getItem('rct_marshals')) || [];
 let raceRegistrations = JSON.parse(localStorage.getItem('rct_race_regs')) || [];
 let raceResults = JSON.parse(localStorage.getItem('rct_results')) || [];
+let sectionOccupancy = JSON.parse(localStorage.getItem('rct_section_occupancy')) || {};
 let loggedUser = JSON.parse(localStorage.getItem('rct_logged_user')) || null;
 let loggedMarshal = JSON.parse(localStorage.getItem('rct_logged_marshal')) || null;
-let sectionOccupancy = JSON.parse(localStorage.getItem('rct_section_occupancy')) || {};
 let currentEvent = "", currentSection = "";
 let manualPenalties = 0, timePenalties = 0;
 let timerInterval = null, startTime = 0, elapsedTime = 0, isRunning = false;
+// NAČÍTANIE Z CLOUDU
+async function loadFromCloud() {
+if(!GOOGLE_SCRIPT_URL) return;
+try {
+const res = await fetch(GOOGLE_SCRIPT_URL);
+const data = await res.json();
+if(data && Object.keys(data).length > 0) {
+if(data.events) events = data.events;
+if(data.users) registeredUsers = data.users;
+if(data.marshals) marshalsList = data.marshals;
+if(data.regs) raceRegistrations = data.regs;
+if(data.results) raceResults = data.results;
+if(data.occupancy) sectionOccupancy = data.occupancy;
+renderCalendar();
+}
+} catch(e) {}
+}
+// ULOHENIE DO CLOUDU A LOKÁLNEJ PAMÄTE
+async function syncToCloud() {
+localStorage.setItem('rct_events', JSON.stringify(events));
+localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
+localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
+localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
+localStorage.setItem('rct_results', JSON.stringify(raceResults));
+localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
+if(!GOOGLE_SCRIPT_URL) return;
+try {
+await fetch(GOOGLE_SCRIPT_URL, {
+method: 'POST',
+mode: 'no-cors',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ events, users: registeredUsers, marshals: marshalsList, regs: raceRegistrations, results: raceResults, occupancy: sectionOccupancy })
+});
+} catch(e) {}
+}
 function switchTab(tabId) {
 document.querySelectorAll('.page-pane').forEach(pane => {
 pane.style.display = 'none';
@@ -388,7 +424,7 @@ const c = document.getElementById('reg-car').value.trim();
 if(!u || !p) { alert('Zadajte meno a heslo!'); return; }
 if(registeredUsers.find(x => x.username === u)) { alert('Meno už existuje!'); return; }
 registeredUsers.push({ id: Date.now(), username: u, password: p, car: c || 'Neznámy' });
-localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
+syncToCloud();
 alert('Účet bol úspešne vytvorený!');
 document.getElementById('reg-username').value = '';
 document.getElementById('reg-password').value = '';
@@ -432,7 +468,7 @@ const category = document.getElementById('category-select-register').value;
 const exists = raceRegistrations.find(r => r.userId === loggedUser.id && r.eventName === evName);
 if(exists) { alert('Na túto udalosť ste sa už prihlásili!'); return; }
 raceRegistrations.push({ userId: loggedUser.id, username: loggedUser.username, car: loggedUser.car, eventName: evName, category });
-localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
+syncToCloud();
 alert('Boli ste úspešne prihlásený na preteky v kategórii ' + category + '!');
 }
 function registerMarshal() {
@@ -441,7 +477,7 @@ const pass = document.getElementById('marshal-reg-pass').value.trim();
 if(!name || !pass) { alert('Zadajte meno a heslo komisára!'); return; }
 if(marshalsList.find(m => m.name === name)) { alert('Tento komisár už existuje!'); return; }
 marshalsList.push({ id: Date.now(), name, pass, approved: false });
-localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
+syncToCloud();
 alert('Účet komisára bol vytvorený! Počkajte, kým ho schváli administrátor.');
 document.getElementById('marshal-reg-name').value = '';
 document.getElementById('marshal-reg-pass').value = '';
@@ -508,7 +544,7 @@ if(sectionOccupancy[key]) { alert('Túto sekciu už medzitým obsadil iný komis
 currentEvent = selectedEv;
 currentSection = selectedSec;
 sectionOccupancy[key] = loggedMarshal.name;
-localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
+syncToCloud();
 document.getElementById('marshal-login-section').style.display = 'none';
 document.getElementById('marshal-timer-card').style.display = 'block';
 document.getElementById('active-marshal-info').innerText = `Meranie prebieha: ${currentSection} | Komisár: ${loggedMarshal.name} | Preteky: ${currentEvent}`;
@@ -593,7 +629,7 @@ penalties: totalPts,
 time: elapsedTime,
 marshal: loggedMarshal.name
 });
-localStorage.setItem('rct_results', JSON.stringify(raceResults));
+syncToCloud();
 alert(`Výsledok jazdy v sekcii bol uložený! Celkové body: ${totalPts}`);
 resetTimer();
 }
@@ -601,7 +637,7 @@ function stopMarshal() {
 resetTimer();
 const key = `${currentEvent}_${currentSection}`;
 delete sectionOccupancy[key];
-localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
+syncToCloud();
 document.getElementById('marshal-timer-card').style.display = 'none';
 document.getElementById('marshal-login-section').style.display = 'block';
 renderSectionsStatus();
@@ -686,7 +722,7 @@ const categoriesRaw = document.getElementById('admin-event-categories').value.tr
 const categories = categoriesRaw ? categoriesRaw.split(',').map(c => c.trim()) : ["Profi", "Hobby"];
 if(!name || !location || !date) { alert('Vyplňte políčka!'); return; }
 events.push({ id: Date.now(), name, location, date, sectionsCount, categories });
-localStorage.setItem('rct_events', JSON.stringify(events));
+syncToCloud();
 alert('Udalosť bola pridaná!');
 document.getElementById('admin-event-name').value = '';
 document.getElementById('admin-event-location').value = '';
@@ -698,11 +734,9 @@ const ev = events.find(e => e.id === id);
 if(ev) {
 raceRegistrations = raceRegistrations.filter(r => r.eventName !== ev.name);
 raceResults = raceResults.filter(r => r.eventName !== ev.name);
-localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
-localStorage.setItem('rct_results', JSON.stringify(raceResults));
 }
 events = events.filter(e => e.id !== id);
-localStorage.setItem('rct_events', JSON.stringify(events));
+syncToCloud();
 renderAdminLists();
 }
 }
@@ -710,7 +744,7 @@ renderAdminLists();
 function adminClearResults() {
 if(confirm('Naozaj chcete vymazať všetkých výsledky pretekov? Pokračovať?')) {
 raceResults = [];
-localStorage.removeItem('rct_results');
+syncToCloud();
 alert('Všetky výsledky boli vymazané!');
 renderRaceResults();
 }
@@ -721,9 +755,7 @@ if(confirm('POZOR: Kompletný reset vymaže všetkých pretekárov, výsledky aj
 raceResults = [];
 registeredUsers = [];
 raceRegistrations = [];
-localStorage.removeItem('rct_results');
-localStorage.removeItem('rct_users');
-localStorage.removeItem('rct_race_regs');
+syncToCloud();
 alert('Kompletný reset bol vykonaný.');
 renderAdminLists();
 }
@@ -734,7 +766,7 @@ if(user) {
 const newPass = prompt(`Zadajte nové heslo pre pretekára "${user.username}":`);
 if(newPass && newPass.trim() !== '') {
 user.password = newPass.trim();
-localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
+syncToCloud();
 alert(`Heslo pre ${user.username} bolo zmenené!`);
 }
 }
@@ -742,7 +774,7 @@ alert(`Heslo pre ${user.username} bolo zmenené!`);
 function adminDeleteUser(id) {
 if(confirm('Vymazať tohto pretekára?')) {
 registeredUsers = registeredUsers.filter(u => u.id !== id);
-localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
+syncToCloud();
 renderAdminLists();
 }
 }
@@ -750,7 +782,7 @@ function adminToggleApproveMarshal(id) {
 const m = marshalsList.find(x => x.id === id);
 if(m) {
 m.approved = !m.approved;
-localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
+syncToCloud();
 renderAdminLists();
 }
 }
@@ -760,7 +792,7 @@ if(m) {
 const newPass = prompt(`Zadajte nové heslo pre komisára "${m.name}":`);
 if(newPass && newPass.trim() !== '') {
 m.pass = newPass.trim();
-localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
+syncToCloud();
 alert(`Heslo pre komisára ${m.name} bolo zmenené!`);
 }
 }
@@ -768,14 +800,14 @@ alert(`Heslo pre komisára ${m.name} bolo zmenené!`);
 function adminDeleteMarshal(id) {
 if(confirm('Vymazať tohto komisára?')) {
 marshalsList = marshalsList.filter(m => m.id !== id);
-localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
+syncToCloud();
 renderAdminLists();
 }
 }
 function adminResetSections() {
 if(confirm('Chcete uvoľniť všetky sekcie pre ďalších komisárov?')) {
 sectionOccupancy = {};
-localStorage.removeItem('rct_section_occupancy');
+syncToCloud();
 alert('Všetky sekcie boli odblokované.');
 }
 }
@@ -806,6 +838,7 @@ document.getElementById('admin-users-list').innerHTML = registeredUsers.map(u =>
 `).join('');
 }
 document.addEventListener("DOMContentLoaded", () => {
+loadFromCloud();
 switchTab('calendar');
 });
 </script>
