@@ -296,7 +296,7 @@ body { flex-direction: column; }
 <button class="btn btn-warning" onclick="adminResetSections()">Uvoľniť VŠETKY obsadené sekcie</button>
 </div>
 <div class="card">
-<h2>Zaregistrovaní pretekári (Mazanie)</h2>
+<h2>Zaregistrovaní pretekári (Zmena hesla / Mazanie)</h2>
 <table>
 <thead>
 <tr><th>Meno</th><th>Model</th><th>Akcia</th></tr>
@@ -554,7 +554,7 @@ document.getElementById('timer-btn').className = 'btn btn-success';
 }
 function calculateTimePenalty() {
 let totalSeconds = Math.floor(elapsedTime / 1000);
-let limitSeconds = 11 * 60; // 11 minút
+let limitSeconds = 11 * 60;
 if (totalSeconds > limitSeconds) {
 let overSeconds = totalSeconds - limitSeconds;
 let overMinutes = Math.ceil(overSeconds / 60);
@@ -657,6 +657,7 @@ document.getElementById('overall-results-body').innerHTML = list.map((r, i) => `
 <tr><td>#${i+1}</td><td>${r.name}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>
 `).join('') || '<tr><td colspan="4">Žiadne výsledky.</td></tr>';
 }
+// ADMIN FUNKCIE
 function loginAdmin() {
 if(document.getElementById('admin-user').value === 'admin' && document.getElementById('admin-pass').value === 'admin123') {
 document.getElementById('admin-login-card').style.display = 'none';
@@ -697,6 +698,18 @@ localStorage.setItem('rct_events', JSON.stringify(events));
 renderAdminLists();
 }
 }
+// NOVO PRIDANÉ: ZMENA HESLA PRETEKÁRA ADMINOM
+function adminChangeUserPassword(id) {
+const user = registeredUsers.find(u => u.id === id);
+if(user) {
+const newPass = prompt(`Zadajte nové heslo pre pretekára "${user.username}":`);
+if(newPass && newPass.trim() !== '') {
+user.password = newPass.trim();
+localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
+alert(`Heslo pre ${user.username} bolo zmenené!`);
+}
+}
+}
 function adminDeleteUser(id) {
 if(confirm('Vymazať tohto pretekára?')) {
 registeredUsers = registeredUsers.filter(u => u.id !== id);
@@ -710,6 +723,18 @@ if(m) {
 m.approved = !m.approved;
 localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
 renderAdminLists();
+}
+}
+// NOVO PRIDANÉ: ZMENA HESLA KOMISÁRA ADMINOM
+function adminChangeMarshalPassword(id) {
+const m = marshalsList.find(x => x.id === id);
+if(m) {
+const newPass = prompt(`Zadajte nové heslo pre komisára "${m.name}":`);
+if(newPass && newPass.trim() !== '') {
+m.pass = newPass.trim();
+localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
+alert(`Heslo pre komisára ${m.name} bolo zmenené!`);
+}
 }
 }
 function adminDeleteMarshal(id) {
@@ -736,12 +761,20 @@ document.getElementById('admin-marshals-list').innerHTML = marshalsList.map(m =>
 <td>${m.approved ? '<span style="color:green; font-weight:bold;">Schválený</span>' : '<span style="color:orange; font-weight:bold;">Čaká na schválenie</span>'}</td>
 <td>
 <button onclick="adminToggleApproveMarshal(${m.id})" class="btn ${m.approved ? 'btn-warning' : 'btn-success'} btn-sm">${m.approved ? 'Zrušiť schválenie' : 'Schváliť'}</button>
+<button onclick="adminChangeMarshalPassword(${m.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Zmeniť heslo</button>
 <button onclick="adminDeleteMarshal(${m.id})" class="btn btn-danger btn-sm">Vymazať</button>
 </td>
 </tr>
 `).join('') || '<tr><td colspan="3">Žiadni registrovaní komisári.</td></tr>';
 document.getElementById('admin-users-list').innerHTML = registeredUsers.map(u => `
-<tr><td>${u.username}</td><td>${u.car}</td><td><button onclick="adminDeleteUser(${u.id})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>
+<tr>
+<td>${u.username}</td>
+<td>${u.car}</td>
+<td>
+<button onclick="adminChangeUserPassword(${u.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Zmeniť heslo</button>
+<button onclick="adminDeleteUser(${u.id})" class="btn btn-danger btn-sm">Vymazať</button>
+</td>
+</tr>
 `).join('');
 }
 document.addEventListener("DOMContentLoaded", () => {
