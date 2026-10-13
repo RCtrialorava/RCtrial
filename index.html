@@ -5,158 +5,93 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>RCTRIAL ORAVA</title>
 <style>
-/* PREMENNÉ PRE PREPÍNANIE REŽIMOV /
 :root {
---bg-main: #0f172a;
---bg-card: #1e293b;
---bg-card-light: #334155;
---accent-blue: #38bdf8;
---accent-indigo: #6366f1;
---text-main: #f8fafc;
---text-muted: #94a3b8;
---border-color: #334155;
---input-bg: #0f172a;
---sidebar-bg: #090d16;
---table-header-bg: #0f172a;
-}
-/* TÉMA PRE SVETLÝ REŽIM /
-body.light-theme {
 --bg-main: #f1f5f9;
 --bg-card: #ffffff;
---bg-card-light: #e2e8f0;
---accent-blue: #0284c7;
---accent-indigo: #4f46e5;
 --text-main: #0f172a;
---text-muted: #64748b;
---border-color: #cbd5e1;
---input-bg: #f8fafc;
+--text-muted: #475569;
 --sidebar-bg: #1e293b;
---table-header-bg: #f1f5f9;
+--border-color: #cbd5e1;
+--table-header: #f8fafc;
 }
-{ box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-body { background: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; flex-direction: row; transition: background 0.3s, color 0.3s; }
-/* BOČNÉ / HORNÉ MENU /
-.sidebar { width: 260px; background: var(--sidebar-bg); color: #fff; padding: 20px 12px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; border-right: 1px solid var(--border-color); }
-.sidebar h2 { text-align: center; color: var(--accent-blue); font-size: 20px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid var(--border-color); letter-spacing: 1.5px; font-weight: 800; }
-.nav-btn { background: transparent; color: var(--text-muted); border: none; padding: 12px 14px; border-radius: 10px; font-size: 14px; cursor: pointer; text-align: left; font-weight: 600; width: 100%; display: flex; align-items: center; gap: 10px; transition: all 0.2s ease; }
-body.light-theme .nav-btn { color: #cbd5e1; }
-.nav-btn:hover, .nav-btn.active { background: var(--bg-card-light); color: #ffffff; transform: translateX(3px); }
+body.dark-mode {
+--bg-main: #0f172a;
+--bg-card: #1e293b;
+--text-main: #f8fafc;
+--text-muted: #94a3b8;
+--sidebar-bg: #090d16;
+--border-color: #334155;
+--table-header: #1e293b;
+}
+{ box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
+body { background: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; transition: background 0.2s, color 0.2s; }
+/* BOČNÉ MENU /
+.sidebar { width: 250px; background: var(--sidebar-bg); color: #fff; padding: 20px 10px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
+.sidebar h2 { text-align: center; color: #38bdf8; font-size: 20px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #334155; }
+.nav-btn { background: transparent; color: #94a3b8; border: none; padding: 12px; border-radius: 6px; font-size: 14px; cursor: pointer; text-align: left; font-weight: bold; width: 100%; }
+.nav-btn:hover, .nav-btn.active { background: #334155; color: #ffffff; }
 .nav-btn.admin-btn { margin-top: auto; background: #312e81; color: #a5b4fc; }
 .nav-btn.admin-btn:hover { background: #3730a3; color: white; }
-/* TLAČIDLO PREPÍNANIA TÉMY /
-.theme-toggle-btn { background: var(--bg-card-light); color: var(--text-main); border: 1px solid var(--border-color); padding: 10px 14px; border-radius: 10px; cursor: pointer; font-weight: 600; font-size: 13px; display: flex; align-items: center; gap: 8px; margin-bottom: 10px; transition: all 0.2s; }
-.theme-toggle-btn:hover { background: var(--accent-blue); color: white; }
+/* TLAČIDLO TÉMY /
+.theme-btn { background: #334155; color: #38bdf8; border: none; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 10px; text-align: center; }
+.theme-btn:hover { background: #475569; }
 /* HLAVNÁ PLOCHA /
-.main-content { flex: 1; padding: 25px; width: 100%; overflow-x: hidden; }
+.main-content { flex: 1; padding: 25px; }
 /* SKRÝVANIE STRÁNOK /
 .page-pane { display: none; }
-.page-pane.active { display: block; animation: fadeIn 0.25s ease-in-out; }
-@keyframes fadeIn {
-from { opacity: 0; transform: translateY(4px); }
-to { opacity: 1; transform: translateY(0); }
-}
-.card { background: var(--bg-card); padding: 22px; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.2); margin-bottom: 20px; border: 1px solid var(--border-color); transition: background 0.3s, border-color 0.3s; }
-h1 { color: var(--accent-blue); margin-bottom: 15px; font-size: 22px; font-weight: 700; letter-spacing: 0.5px; }
-h2 { color: var(--text-main); margin-bottom: 12px; font-size: 17px; font-weight: 600; }
+.page-pane.active { display: block; }
+.card { background: var(--bg-card); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid var(--border-color); }
+h1 { color: #2563eb; margin-bottom: 15px; font-size: 22px; }
+h2 { color: var(--text-main); margin-bottom: 12px; font-size: 18px; }
 /* FORMULÁRE A TLAČIDLÁ /
-.form-group { margin-bottom: 14px; }
-label { display: block; margin-bottom: 6px; font-weight: 600; font-size: 13px; color: var(--text-muted); }
-input, select { width: 100%; padding: 11px 14px; border: 1px solid var(--border-color); border-radius: 10px; font-size: 14px; background: var(--input-bg); color: var(--text-main); transition: all 0.2s; }
-input:focus, select:focus { outline: none; border-color: var(--accent-blue); box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); }
-.btn { background: #2563eb; color: white; border: none; padding: 12px 16px; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 8px; transition: all 0.2s ease; box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3); }
-.btn:hover { background: #1d4ed8; transform: translateY(-1px); }
-.btn-success { background: #16a34a; box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3); }
-.btn-success:hover { background: #15803d; }
-.btn-danger { background: #dc2626; box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3); }
-.btn-danger:hover { background: #b91c1c; }
-.btn-warning { background: #d97706; color: white; box-shadow: 0 4px 12px rgba(217, 119, 6, 0.3); }
-.btn-warning:hover { background: #b45309; }
-.btn-sm { width: auto; padding: 6px 12px; font-size: 12px; display: inline-block; }
-/* TABUĽKY RESPONSIVE /
-.table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin-top: 10px; border-radius: 10px; border: 1px solid var(--border-color); }
-table { width: 100%; border-collapse: collapse; background: var(--bg-card); text-align: left; }
-th, td { padding: 12px 14px; border-bottom: 1px solid var(--border-color); font-size: 14px; white-space: nowrap; color: var(--text-main); }
-th { background: var(--table-header-bg); color: var(--accent-blue); font-weight: 600; }
+.form-group { margin-bottom: 12px; }
+label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 13px; color: var(--text-muted); }
+input, select { width: 100%; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; background: var(--bg-card); color: var(--text-main); }
+.btn { background: #2563eb; color: white; border: none; padding: 10px 15px; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; }
+.btn:hover { background: #1d4ed8; }
+.btn-success { background: #16a34a; }
+.btn-danger { background: #dc2626; }
+.btn-warning { background: #d97706; color: white; }
+.btn-sm { width: auto; padding: 5px 10px; font-size: 12px; display: inline-block; }
+/* TABUĽKY /
+table { width: 100%; border-collapse: collapse; margin-top: 10px; background: var(--bg-card); }
+th, td { padding: 10px; border: 1px solid var(--border-color); text-align: left; font-size: 14px; color: var(--text-main); }
+th { background: var(--table-header); color: var(--text-muted); }
 /* BADGES /
-.badge-free { background: rgba(34, 197, 94, 0.15); color: #22c55e; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 12px; border: 1px solid rgba(34, 197, 94, 0.3); }
-.badge-busy { background: rgba(239, 68, 68, 0.15); color: #ef4444; padding: 4px 10px; border-radius: 6px; font-weight: bold; font-size: 12px; border: 1px solid rgba(239, 68, 68, 0.3); }
-/* VIZUÁLNY KALENDÁR /
-.calendar-card { background: #475569; color: #ffffff; border-radius: 20px; padding: 22px; max-width: 440px; margin: 0 auto 20px auto; box-shadow: 0 15px 35px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); }
-.calendar-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-.calendar-header button { background: rgba(255,255,255,0.15); border: none; color: white; font-size: 18px; cursor: pointer; width: 36px; height: 36px; border-radius: 10px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
-.calendar-header button:hover { background: rgba(255,255,255,0.3); }
-.calendar-title { font-size: 18px; font-weight: 600; display: flex; align-items: center; gap: 8px; }
-.calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; text-align: center; }
-.day-name { font-size: 11px; font-weight: 700; color: #cbd5e1; padding-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
-.day-cell { background: #64748b; border-radius: 8px; aspect-ratio: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; position: relative; color: #ffffff; }
-.day-cell.empty { background: transparent; }
-.day-cell.has-event { background: #0f172a; border: 2px solid #38bdf8; font-weight: bold; color: #38bdf8; }
-.event-dot { width: 6px; height: 6px; background: #38bdf8; border-radius: 50%; margin-top: 2px; }
+.badge-free { background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
+.badge-busy { background: #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
 /* ČASOMIERA & BODOVANIE /
-.timer-display { font-size: 42px; font-family: monospace; text-align: center; background: #090d16; color: #22c55e; padding: 14px; border-radius: 12px; margin: 14px 0; font-weight: bold; border: 1px solid var(--border-color); }
-.grid-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; margin-bottom: 12px; }
-.score-btn { background: var(--bg-card-light); color: var(--text-main); border: 1px solid var(--border-color); padding: 10px; border-radius: 10px; font-weight: bold; cursor: pointer; text-align: center; display: flex; flex-direction: column; gap: 4px; font-size: 12px; transition: background 0.2s; }
-.score-btn:hover { background: var(--accent-blue); color: white; }
-.score-btn span { color: #f87171; font-size: 12px; }
-/* MOBILNÝ RESPONSIVE DESIGN /
+.timer-display { font-size: 44px; font-family: monospace; text-align: center; background: #0f172a; color: #22c55e; padding: 10px; border-radius: 8px; margin: 10px 0; font-weight: bold; }
+.grid-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; margin-bottom: 10px; }
+.score-btn { background: #334155; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; text-align: center; display: flex; flex-direction: column; gap: 4px; }
+.score-btn:hover { background: #1e293b; }
+.score-btn span { color: #f87171; font-size: 13px; }
 @media (max-width: 768px) {
 body { flex-direction: column; }
-.sidebar { width: 100%; padding: 10px; flex-direction: row; overflow-x: auto; white-space: nowrap; gap: 6px; border-right: none; border-bottom: 1px solid var(--border-color); }
-.sidebar h2 { display: none; }
-.nav-btn { width: auto; padding: 8px 12px; font-size: 13px; flex-shrink: 0; }
-.nav-btn:hover, .nav-btn.active { transform: none; }
-.nav-btn.admin-btn { margin-top: 0; }
-.theme-toggle-btn { margin-bottom: 0; flex-shrink: 0; font-size: 12px; padding: 8px 12px; }
-.main-content { padding: 12px; }
-.card { padding: 16px; border-radius: 12px; }
-h1 { font-size: 19px; }
-h2 { font-size: 15px; }
-th, td { padding: 10px 12px; font-size: 13px; }
-.calendar-card { padding: 16px; border-radius: 16px; }
-.day-cell { font-size: 12px; }
+.sidebar { width: 100%; }
 }
 </style>
 </head>
 <body>
-<!-- BOČNÉ / HORNÉ MENU -->
+<!-- BOČNÉ MENU -->
 <div class="sidebar">
 <h2>RCTRIAL ORAVA</h2>
-<!-- TLAČIDLO PREPÍNANIA TÉMY -->
-<button class="theme-toggle-btn" onclick="toggleTheme()" id="theme-btn">☀️ Svetlý režim</button>
-<button class="nav-btn active" onclick="switchTab('calendar')">📅 Kalendár</button>
-<button class="nav-btn" onclick="switchTab('rules')">📜 Pravidlá</button>
-<button class="nav-btn" onclick="switchTab('startlist')">📋 Prihlásení</button>
-<button class="nav-btn" onclick="switchTab('driver-portal')">🚗 Pretekár</button>
-<button class="nav-btn" onclick="switchTab('marshal')">⏱️ Časomiera</button>
-<button class="nav-btn" onclick="switchTab('results')">🏆 Výsledky</button>
-<button class="nav-btn" onclick="switchTab('overall')">📊 Celkovo</button>
-<button class="nav-btn admin-btn" onclick="switchTab('admin')">🔑 Admin</button>
+<button class="theme-btn" onclick="toggleTheme()" id="theme-btn-text">🌙 Tmavý režim</button>
+<button class="nav-btn active" onclick="switchTab('calendar')">📅 Kalendár udalostí</button>
+<button class="nav-btn" onclick="switchTab('rules')">📜 Pravidlá pretekov</button>
+<button class="nav-btn" onclick="switchTab('startlist')">📋 Listina prihlásených</button>
+<button class="nav-btn" onclick="switchTab('driver-portal')">🚗 Účet pretekára</button>
+<button class="nav-btn" onclick="switchTab('marshal')">⏱️ Časomiera (Komisár)</button>
+<button class="nav-btn" onclick="switchTab('results')">🏆 Výsledky pretekov</button>
+<button class="nav-btn" onclick="switchTab('overall')">📊 Celkové výsledky</button>
+<button class="nav-btn admin-btn" onclick="switchTab('admin')">🔑 Admin Správa</button>
 </div>
 <!-- HLAVNÝ OBSAH -->
 <div class="main-content">
 <!-- 1. KALENDÁR -->
 <div id="pane-calendar" class="page-pane active">
-<!-- VIZUÁLNY MESAČNÝ KALENDÁR -->
-<div class="calendar-card">
-<div class="calendar-header">
-<button onclick="changeMonth(-1)">←</button>
-<div class="calendar-title">📅 <span id="calendar-month-year">Október 2026</span></div>
-<button onclick="changeMonth(1)">→</button>
-</div>
-<div class="calendar-grid">
-<div class="day-name">NE</div>
-<div class="day-name">PO</div>
-<div class="day-name">UT</div>
-<div class="day-name">ST</div>
-<div class="day-name">ŠT</div>
-<div class="day-name">PI</div>
-<div class="day-name">SO</div>
-</div>
-<div class="calendar-grid" id="calendar-days-container" style="margin-top:6px;"></div>
-</div>
 <div class="card">
-<h1>Zoznam nadchádzajúcich pretekov</h1>
-<div class="table-responsive">
+<h1>Kalendár udalostí RCTRIAL ORAVA</h1>
 <table>
 <thead>
 <tr><th>Názov pretekov</th><th>Miesto</th><th>Dátum</th><th>Sekcií</th><th>Kategórie</th></tr>
@@ -165,40 +100,35 @@ th, td { padding: 10px 12px; font-size: 13px; }
 </table>
 </div>
 </div>
-</div>
 <!-- 2. PRAVIDLÁ PRETEKOV -->
 <div id="pane-rules" class="page-pane">
 <div class="card">
 <h1>Oficiálne pravidlá a bodovanie RCTRIAL ORAVA</h1>
-<p style="margin-bottom:15px; color:var(--text-muted); font-size:13px;">Pravidlá trestných bodov a časových limitov pre všetky preteky:</p>
+<p style="margin-bottom:15px; color:var(--text-muted);">Pravidlá trestných bodov a časových limitov pre všetky preteky:</p>
 <h2>Tabuľka trestných bodov za priestupky</h2>
-<div class="table-responsive">
 <table>
 <thead>
 <tr><th>Priestupok / Úkon</th><th>Trestné body</th><th>Popis</th></tr>
 </thead>
 <tbody>
-<tr><td><strong>Navijak / lano</strong></td><td><strong style="color:#ef4444">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr>
-<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#ef4444">+25 b</strong></td><td>Akýkoľvek dotyk tyčky bránky vozidlom</td></tr>
-<tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:#ef4444">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr>
-<tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:#ef4444">+250 b</strong></td><td>Vynechanie bránky alebo neprejazd v správnom smere</td></tr>
-<tr><td><strong>Oprava v depe</strong></td><td><strong style="color:#ef4444">+300 b</strong></td><td>Oprava vozidla počas prejazdu v depe</td></tr>
-<tr><td><strong>Pomoc rukou</strong></td><td><strong style="color:#ef4444">+500 b</strong></td><td>Fyzické dotknutie sa vozidla rukou v sekcii</td></tr>
+<tr><td><strong>Navijak / lano</strong></td><td><strong style="color:#dc2626">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr>
+<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#dc2626">+25 b</strong></td><td>Akýkoľvek dotyk tyčky bránky vozidlom</td></tr>
+<tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:#dc2626">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr>
+<tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:#dc2626">+250 b</strong></td><td>Vynechanie bránky alebo neprejazd v správnom smere</td></tr>
+<tr><td><strong>Oprava v depe</strong></td><td><strong style="color:#dc2626">+300 b</strong></td><td>Oprava vozidla počas prejazdu v depe</td></tr>
+<tr><td><strong>Pomoc rukou</strong></td><td><strong style="color:#dc2626">+500 b</strong></td><td>Fyzické dotknutie sa vozidla rukou v sekcii</td></tr>
 </tbody>
 </table>
-</div>
-<h2 style="margin-top:20px;">Časové limity a penalizácie za čas</h2>
-<div class="table-responsive">
+<h2 style="margin-top:25px;">Časové limity a penalizácie za čas</h2>
 <table>
 <thead>
 <tr><th>Časový interval</th><th>Penalizácia</th></tr>
 </thead>
 <tbody>
 <tr><td>Do 11:00 minút</td><td><strong>0 b</strong> (bez penalizácie)</td></tr>
-<tr><td>Nad 11:00 minút</td><td><strong style="color:#f59e0b">+0,5 b za každú započatú minútu</strong></td></tr>
+<tr><td>Nad 11:00 minút</td><td><strong style="color:#d97706">+0,5 b za každú započatú minútu</strong></td></tr>
 </tbody>
 </table>
-</div>
 </div>
 </div>
 <!-- 3. LISTINA PRIHLÁSENÝCH -->
@@ -231,7 +161,7 @@ th, td { padding: 10px 12px; font-size: 13px; }
 </div>
 <div id="driver-dashboard-section" style="display:none;">
 <div class="card">
-<span id="logged-driver-name" style="font-weight:bold; color:var(--accent-blue);"></span>
+<span id="logged-driver-name" style="font-weight:bold; color:#0369a1;"></span>
 <button onclick="logoutDriver()" class="btn btn-danger btn-sm" style="float:right;">Odhlásiť sa</button>
 <h1 style="margin-top:15px;">Prihlásenie na preteky</h1>
 <div class="form-group">
@@ -242,7 +172,7 @@ th, td { padding: 10px 12px; font-size: 13px; }
 <label>Vyberte kategóriu:</label>
 <select id="category-select-register"></select>
 </div>
-<button class="btn btn-success" onclick="registerToRace()">Prihlásiť sa na udalosť</button>
+<button class="btn btn-success" onclick="registerToRace()">Prihlásiť sa na vybranú udalosť</button>
 </div>
 </div>
 </div>
@@ -260,11 +190,10 @@ th, td { padding: 10px 12px; font-size: 13px; }
 </div>
 <div id="marshal-dashboard" style="display:none;">
 <div class="card">
-<span id="logged-marshal-name" style="font-weight:bold; color:var(--accent-blue);"></span>
+<span id="logged-marshal-name" style="font-weight:bold; color:#0369a1;"></span>
 <button onclick="logoutMarshal()" class="btn btn-danger btn-sm" style="float:right;">Odhlásiť komisára</button>
 <h1 style="margin-top:15px;">Prehľad sekcií</h1>
 <div class="form-group"><label>Vyberte preteky:</label><select id="marshal-event-select" onchange="renderSectionsStatus()"></select></div>
-<div class="table-responsive">
 <table>
 <thead>
 <tr><th>Sekcia</th><th>Stav sekcie</th><th>Obsadil komisár</th></tr>
@@ -272,14 +201,13 @@ th, td { padding: 10px 12px; font-size: 13px; }
 <tbody id="sections-status-body"></tbody>
 </table>
 </div>
-</div>
 <div class="card" id="marshal-login-section">
 <h2>Obsadiť sekciu a spustiť meranie</h2>
 <div class="form-group"><label>Vyberte voľnú sekciu:</label><select id="marshal-section-select"></select></div>
 <button class="btn" onclick="startMarshal()">Obsadiť sekciu a spustiť meranie</button>
 </div>
 <div class="card" id="marshal-timer-card" style="display:none;">
-<h2 id="active-marshal-info" style="color:#22c55e;">Meranie prebieha</h2>
+<h2 id="active-marshal-info" style="color:#16a34a;">Meranie prebieha</h2>
 <div class="form-group">
 <label>Filtrovať jazdcov podľa kategórie:</label>
 <select id="marshal-category-filter" onchange="filterMarshalDrivers()"></select>
@@ -302,11 +230,11 @@ th, td { padding: 10px 12px; font-size: 13px; }
 <button class="score-btn" onclick="addPts(500)">Pomoc rukou <span>+500 b</span></button>
 <button class="score-btn" onclick="addPts(300)">Oprava v depe <span>+300 b</span></button>
 </div>
-<p style="font-size:14px; margin-top:8px;">Manuálne trestné body: <strong id="penalty-count" style="color:#ef4444">0</strong></p>
-<p style="font-size:14px; margin-bottom:8px;">Časové trestné body (>11 min): <strong id="time-penalty-count" style="color:#f59e0b">0 b</strong></p>
-<p style="font-size:16px; margin-bottom:12px; font-weight:bold;">Celkové body v sekcii: <strong id="total-section-pts" style="color:var(--accent-blue)">0 b</strong></p>
+<p style="font-size:16px; margin-top:10px;">Manuálne trestné body: <strong id="penalty-count" style="color:#dc2626">0</strong></p>
+<p style="font-size:16px; margin-bottom:10px;">Časové trestné body (>11 min): <strong id="time-penalty-count" style="color:#d97706">0 b</strong></p>
+<p style="font-size:18px; margin-bottom:15px; font-weight:bold;">Celkové body v sekcii: <strong id="total-section-pts" style="color:#2563eb">0 b</strong></p>
 <button class="btn btn-success" onclick="saveRaceResult()">Uložiť výsledok jazdy</button>
-<button class="btn" onclick="stopMarshal()" style="background:#64748b; margin-top:8px;">Uvoľniť sekciu</button>
+<button class="btn" onclick="stopMarshal()" style="background:#64748b; margin-top:10px;">Uvoľniť sekciu a ukončiť</button>
 </div>
 </div>
 </div>
@@ -322,17 +250,14 @@ th, td { padding: 10px 12px; font-size: 13px; }
 <label>Vyberte kategóriu:</label>
 <select id="results-category-select" onchange="renderRaceResults()"></select>
 </div>
-<h2>Celkové poradie na pretekoch</h2>
-<div class="table-responsive">
+<h2>Celkové poradie na pretekoch (Súčet zo všetkých sekcií)</h2>
 <table>
 <thead>
-<tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Sekcie</th><th>Body</th><th>Čas</th></tr>
+<tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Odjazdené sekcie</th><th>Celkové body</th><th>Celkový čas</th></tr>
 </thead>
 <tbody id="race-total-results-body"></tbody>
 </table>
-</div>
-<h2 style="margin-top:25px;">Detailné výsledky sekcií</h2>
-<div class="table-responsive">
+<h2 style="margin-top:30px;">Detailné výsledky jednotlivých sekcií</h2>
 <table>
 <thead>
 <tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Sekcia</th><th>Body</th><th>Čas</th><th>Komisár</th></tr>
@@ -341,19 +266,16 @@ th, td { padding: 10px 12px; font-size: 13px; }
 </table>
 </div>
 </div>
-</div>
 <!-- 7. CELKOVÉ VÝSLEDKY ŠAMPIONÁTU -->
 <div id="pane-overall" class="page-pane">
 <div class="card">
 <h1>Celkové výsledky - Šampionát RCTRIAL ORAVA</h1>
-<div class="table-responsive">
 <table>
 <thead>
 <tr><th>#</th><th>Jazdec</th><th>Celkové body</th><th>Celkový čas</th></tr>
 </thead>
 <tbody id="overall-results-body"></tbody>
 </table>
-</div>
 </div>
 </div>
 <!-- 8. ADMIN SPRÁVA -->
@@ -375,7 +297,6 @@ th, td { padding: 10px 12px; font-size: 13px; }
 <div class="form-group"><label>Kategórie (oddelené čiarkou):</label><input type="text" id="admin-event-categories" value="Profi, Hobby, Special" placeholder="napr. Profi, Hobby"></div>
 <button class="btn btn-success" onclick="adminAddEvent()">Pridať novú udalosť</button>
 <h2 style="margin-top:20px;">Zoznam udalostí (Mazanie)</h2>
-<div class="table-responsive">
 <table>
 <thead>
 <tr><th>Udalosť</th><th>Sekcií</th><th>Kategórie</th><th>Akcia</th></tr>
@@ -383,7 +304,7 @@ th, td { padding: 10px 12px; font-size: 13px; }
 <tbody id="admin-events-list"></tbody>
 </table>
 </div>
-</div>
+<!-- KARTA PRE VYMAZANIE VÝSLEDKOV -->
 <div class="card">
 <h2>Správa dát a výsledkov</h2>
 <p style="margin-bottom:10px; color:var(--text-muted); font-size:13px;">Tlačidlá na vyčistenie uložených výsledkov a databázy:</p>
@@ -392,7 +313,6 @@ th, td { padding: 10px 12px; font-size: 13px; }
 </div>
 <div class="card">
 <h2>Schvaľovanie a správa traťových komisárov</h2>
-<div class="table-responsive">
 <table>
 <thead>
 <tr><th>Meno komisára</th><th>Stav</th><th>Akcia</th></tr>
@@ -400,14 +320,12 @@ th, td { padding: 10px 12px; font-size: 13px; }
 <tbody id="admin-marshals-list"></tbody>
 </table>
 </div>
-</div>
 <div class="card">
-<h2>Správa obsadenia sekcií</h2>
+<h2>Správa obsadenia sekcií (Odblokovanie)</h2>
 <button class="btn btn-warning" onclick="adminResetSections()">Uvoľniť VŠETKY obsadené sekcie</button>
 </div>
 <div class="card">
-<h2>Zaregistrovaní pretekári</h2>
-<div class="table-responsive">
+<h2>Zaregistrovaní pretekári (Zmena hesla / Mazanie)</h2>
 <table>
 <thead>
 <tr><th>Meno</th><th>Model</th><th>Akcia</th></tr>
@@ -418,11 +336,11 @@ th, td { padding: 10px 12px; font-size: 13px; }
 </div>
 </div>
 </div>
-</div>
 <script>
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBvUWL-wa1eyjJJ9cF5jP2wnkuQlmTSQxDfVBTACgwEUo0VsdGkgjr8L5xmENfT_vzew/exec";
 let events = JSON.parse(localStorage.getItem('rct_events')) || [
-{ id: 1, name: "RC Trial Zubrohlava - 1. Kolo", location: "Zubrohlava - Areál", date: "2026-10-17", sectionsCount: 4, categories: ["Profi", "Hobby"] }
+{ id: 1, name: "RC Trial Zubrohlava - 1. Kolo", location: "Zubrohlava - Areál", date: "2026-04-25", sectionsCount: 4, categories: ["Profi", "Hobby"] },
+{ id: 2, name: "Oravský RC Trial Cup", location: "Námestovo", date: "2026-05-16", sectionsCount: 5, categories: ["Profi", "Hobby", "Special"] }
 ];
 let registeredUsers = JSON.parse(localStorage.getItem('rct_users')) || [];
 let marshalsList = JSON.parse(localStorage.getItem('rct_marshals')) || [];
@@ -434,23 +352,25 @@ let loggedMarshal = JSON.parse(localStorage.getItem('rct_logged_marshal')) || nu
 let currentEvent = "", currentSection = "";
 let manualPenalties = 0, timePenalties = 0;
 let timerInterval = null, startTime = 0, elapsedTime = 0, isRunning = false;
-let currentDate = new Date(2026, 9, 1);
-/* PREPÍNANIE SVETLÉHO A TMAVÉHO REŽIMU /
+// PREPÍNANIE TÉMY (SVETLÝ / TMAVÝ REŽIM)
 function toggleTheme() {
-document.body.classList.toggle('light-theme');
-const isLight = document.body.classList.contains('light-theme');
-localStorage.setItem('rct_theme', isLight ? 'light' : 'dark');
-document.getElementById('theme-btn').innerText = isLight ? '🌙 Tmavý režim' : '☀️ Svetlý režim';
+const body = document.body;
+body.classList.toggle('dark-mode');
+const isDark = body.classList.contains('dark-mode');
+localStorage.setItem('rct_theme', isDark ? 'dark' : 'light');
+document.getElementById('theme-btn-text').innerText = isDark ? '☀️ Svetlý režim' : '🌙 Tmavý režim';
 }
 function loadTheme() {
 const savedTheme = localStorage.getItem('rct_theme');
-if (savedTheme === 'light') {
-document.body.classList.add('light-theme');
-document.getElementById('theme-btn').innerText = '🌙 Tmavý režim';
+if (savedTheme === 'dark') {
+document.body.classList.add('dark-mode');
+document.getElementById('theme-btn-text').innerText = '☀️ Svetlý režim';
 } else {
-document.getElementById('theme-btn').innerText = '☀️ Svetlý režim';
+document.body.classList.remove('dark-mode');
+document.getElementById('theme-btn-text').innerText = '🌙 Tmavý režim';
 }
 }
+// NAČÍTANIE Z CLOUDU
 async function loadFromCloud() {
 if(!GOOGLE_SCRIPT_URL) return;
 try {
@@ -467,6 +387,7 @@ renderCalendar();
 }
 } catch(e) {}
 }
+// ULOHENIE DO CLOUDU A LOKÁLNEJ PAMÄTE
 async function syncToCloud() {
 localStorage.setItem('rct_events', JSON.stringify(events));
 localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
@@ -485,11 +406,19 @@ body: JSON.stringify({ events, users: registeredUsers, marshals: marshalsList, r
 } catch(e) {}
 }
 function switchTab(tabId) {
-document.querySelectorAll('.page-pane').forEach(pane => pane.classList.remove('active'));
+document.querySelectorAll('.page-pane').forEach(pane => {
+pane.style.display = 'none';
+pane.classList.remove('active');
+});
 document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 const targetPane = document.getElementById('pane-' + tabId);
-if (targetPane) targetPane.classList.add('active');
-if (event && event.currentTarget) event.currentTarget.classList.add('active');
+if (targetPane) {
+targetPane.style.display = 'block';
+targetPane.classList.add('active');
+}
+if (event && event.currentTarget) {
+event.currentTarget.classList.add('active');
+}
 if(tabId === 'calendar') renderCalendar();
 if(tabId === 'startlist') loadStartListEvents();
 if(tabId === 'driver-portal') checkDriverAuth();
@@ -498,39 +427,7 @@ if(tabId === 'results') loadResultsEvents();
 if(tabId === 'overall') renderOverallResults();
 if(tabId === 'admin') renderAdminLists();
 }
-/* KALENDÁR LOGIKA /
-const monthNames = ["Január", "Február", "Marec", "Apríl", "Máj", "Jún", "Júl", "August", "September", "Október", "November", "December"];
-function changeMonth(delta) {
-currentDate.setMonth(currentDate.getMonth() + delta);
-renderVisualCalendar();
-}
-function renderVisualCalendar() {
-const year = currentDate.getFullYear();
-const month = currentDate.getMonth();
-document.getElementById('calendar-month-year').innerText = `${monthNames[month]} ${year}`;
-const firstDayIndex = new Date(year, month, 1).getDay();
-const lastDay = new Date(year, month + 1, 0).getDate();
-const daysContainer = document.getElementById('calendar-days-container');
-daysContainer.innerHTML = '';
-for (let i = 0; i < firstDayIndex; i++) {
-daysContainer.innerHTML += `<div class="day-cell empty"></div>`;
-}
-for (let day = 1; day <= lastDay; day++) {
-const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
-const hasEvent = events.some(e => e.date === dateStr);
-if (hasEvent) {
-daysContainer.innerHTML += `
-<div class="day-cell has-event" title="Preteky v tento deň">
-${day}
-<div class="event-dot"></div>
-</div>`;
-} else {
-daysContainer.innerHTML += `<div class="day-cell">${day}</div>`;
-}
-}
-}
 function renderCalendar() {
-renderVisualCalendar();
 document.getElementById('calendar-body').innerHTML = events.map(e => `
 <tr><td><strong>${e.name}</strong></td><td>${e.location}</td><td>${e.date}</td><td><strong>${e.sectionsCount || 4} ks</strong></td><td>${(e.categories || []).join(', ')}</td></tr>
 `).join('') || '<tr><td colspan="5">Žiadne udalosti.</td></tr>';
@@ -548,13 +445,13 @@ const filteredRegs = raceRegistrations.filter(r => r.eventName === evName);
 let html = '';
 cats.forEach(cat => {
 const driversInCat = filteredRegs.filter(r => r.category === cat);
-html += `<h3 style="margin-top:10px;">Kategória: ${cat}</h3>`;
+html += `<h3>Kategória: ${cat}</h3>`;
 if(driversInCat.length > 0) {
-html += `<div class="table-responsive"><table><thead><tr><th>#</th><th>Jazdec</th><th>Model auta</th></tr></thead><tbody>`;
+html += `<table><thead><tr><th>#</th><th>Jazdec</th><th>Model auta</th></tr></thead><tbody>`;
 html += driversInCat.map((d, i) => `<tr><td>${i+1}</td><td>${d.username}</td><td>${d.car}</td></tr>`).join('');
-html += `</tbody></table></div><br>`;
+html += `</tbody></table><br>`;
 } else {
-html += `<p style="margin-bottom:15px; color:var(--text-muted); font-size:13px;">Žiadni pretekári.</p>`;
+html += `<p style="margin-bottom:15px; color:var(--text-muted);">Žiadni pretekári v tejto kategórii.</p>`;
 }
 });
 container.innerHTML = html || '<p>Zatiaľ žiadne prihlášky.</p>';
@@ -689,7 +586,7 @@ sectionOccupancy[key] = loggedMarshal.name;
 syncToCloud();
 document.getElementById('marshal-login-section').style.display = 'none';
 document.getElementById('marshal-timer-card').style.display = 'block';
-document.getElementById('active-marshal-info').innerText = `Meranie prebieha: ${currentSection} | Komisár: ${loggedMarshal.name}`;
+document.getElementById('active-marshal-info').innerText = `Meranie prebieha: ${currentSection} | Komisár: ${loggedMarshal.name} | Preteky: ${currentEvent}`;
 const ev = events.find(e => e.name === currentEvent);
 const cats = ev && ev.categories ? ev.categories : ["Profi", "Hobby"];
 document.getElementById('marshal-category-filter').innerHTML = `<option value="ALL">Všetky kategórie</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
@@ -703,7 +600,7 @@ const driverSelect = document.getElementById('active-driver-select');
 if(filtered.length > 0) {
 driverSelect.innerHTML = filtered.map(r => `<option value="${r.username}|${r.car}|${r.category}">${r.username} (${r.car}) - [${r.category}]</option>`).join('');
 } else {
-driverSelect.innerHTML = '<option value="">Žiadni pretekári</option>';
+driverSelect.innerHTML = '<option value="">Žiadni prihlásení pretekári v tejto kategórii</option>';
 }
 }
 function toggleTimer() {
@@ -772,7 +669,7 @@ time: elapsedTime,
 marshal: loggedMarshal.name
 });
 syncToCloud();
-alert(`Výsledok jazdy uložený! Body: ${totalPts}`);
+alert(`Výsledok jazdy v sekcii bol uložený! Celkové body: ${totalPts}`);
 resetTimer();
 }
 function stopMarshal() {
@@ -808,7 +705,7 @@ const cat = document.getElementById('results-category-select').value;
 const filtered = raceResults.filter(r => r.eventName === ev && (cat === 'ALL' || r.category === cat));
 filtered.sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
 document.getElementById('race-results-body').innerHTML = filtered.map((r, i) => `
-<tr><td>#${i+1}</td><td>${r.driverName}</td><td>${r.car}</td><td>${r.category || '-'}</td><td>${r.section || '-'}</td><td><strong style="color:#ef4444">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td><td>${r.marshal}</td></tr>
+<tr><td>#${i+1}</td><td>${r.driverName}</td><td>${r.car}</td><td>${r.category || '-'}</td><td>${r.section || '-'}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td><td>${r.marshal}</td></tr>
 `).join('') || '<tr><td colspan="8">Zatiaľ žiadne výsledky sekcií.</td></tr>';
 const driverSummary = {};
 filtered.forEach(r => {
@@ -828,8 +725,8 @@ penalties: driverSummary[name].penalties,
 time: driverSummary[name].time
 })).sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
 document.getElementById('race-total-results-body').innerHTML = totalList.map((r, i) => `
-<tr><td><strong>#${i+1}</strong></td><td><strong>${r.name}</strong></td><td>${r.car}</td><td>${r.category}</td><td>${r.sectionsCount} sekcií</td><td><strong style="color:#ef4444; font-size:15px;">${r.penalties} b</strong></td><td><strong>${formatTime(r.time)}</strong></td></tr>
-`).join('') || '<tr><td colspan="7">Žiadne výsledky.</td></tr>';
+<tr><td><strong>#${i+1}</strong></td><td><strong>${r.name}</strong></td><td>${r.car}</td><td>${r.category}</td><td>${r.sectionsCount} sekcií</td><td><strong style="color:red; font-size:16px;">${r.penalties} b</strong></td><td><strong>${formatTime(r.time)}</strong></td></tr>
+`).join('') || '<tr><td colspan="7">Žiadne celkové výsledky pretekov.</td></tr>';
 }
 function renderOverallResults() {
 const summary = {};
@@ -840,7 +737,7 @@ summary[r.driverName].time += r.time;
 });
 const list = Object.keys(summary).map(name => ({ name, penalties: summary[name].penalties, time: summary[name].time })).sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
 document.getElementById('overall-results-body').innerHTML = list.map((r, i) => `
-<tr><td>#${i+1}</td><td>${r.name}</td><td><strong style="color:#ef4444">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>
+<tr><td>#${i+1}</td><td>${r.name}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>
 `).join('') || '<tr><td colspan="4">Žiadne výsledky.</td></tr>';
 }
 // ADMIN FUNKCIE
@@ -958,20 +855,20 @@ document.getElementById('admin-events-list').innerHTML = events.map(e => `
 document.getElementById('admin-marshals-list').innerHTML = marshalsList.map(m => `
 <tr>
 <td>${m.name}</td>
-<td>${m.approved ? '<span style="color:#22c55e; font-weight:bold;">Schválený</span>' : '<span style="color:#f59e0b; font-weight:bold;">Čaká</span>'}</td>
+<td>${m.approved ? '<span style="color:green; font-weight:bold;">Schválený</span>' : '<span style="color:orange; font-weight:bold;">Čaká na schválenie</span>'}</td>
 <td>
-<button onclick="adminToggleApproveMarshal(${m.id})" class="btn ${m.approved ? 'btn-warning' : 'btn-success'} btn-sm">${m.approved ? 'Zrušiť' : 'Schváliť'}</button>
-<button onclick="adminChangeMarshalPassword(${m.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Heslo</button>
+<button onclick="adminToggleApproveMarshal(${m.id})" class="btn ${m.approved ? 'btn-warning' : 'btn-success'} btn-sm">${m.approved ? 'Zrušiť schválenie' : 'Schváliť'}</button>
+<button onclick="adminChangeMarshalPassword(${m.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Zmeniť heslo</button>
 <button onclick="adminDeleteMarshal(${m.id})" class="btn btn-danger btn-sm">Vymazať</button>
 </td>
 </tr>
-`).join('') || '<tr><td colspan="3">Žiadni komisári.</td></tr>';
+`).join('') || '<tr><td colspan="3">Žiadni registrovaní komisári.</td></tr>';
 document.getElementById('admin-users-list').innerHTML = registeredUsers.map(u => `
 <tr>
 <td>${u.username}</td>
 <td>${u.car}</td>
 <td>
-<button onclick="adminChangeUserPassword(${u.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Heslo</button>
+<button onclick="adminChangeUserPassword(${u.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Zmeniť heslo</button>
 <button onclick="adminDeleteUser(${u.id})" class="btn btn-danger btn-sm">Vymazať</button>
 </td>
 </tr>
