@@ -3,882 +3,167 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RCTRIAL ORAVA</title>
+<meta name="theme-color" content="#0b1220">
+<title>RCTRIAL ORAVA | RC Trial Championship</title>
 <style>
-:root {
---bg-main: #f1f5f9;
---bg-card: #ffffff;
---text-main: #0f172a;
---text-muted: #475569;
---sidebar-bg: #1e293b;
---border-color: #cbd5e1;
---table-header: #f8fafc;
-}
-body.dark-mode {
---bg-main: #0f172a;
---bg-card: #1e293b;
---text-main: #f8fafc;
---text-muted: #94a3b8;
---sidebar-bg: #090d16;
---border-color: #334155;
---table-header: #1e293b;
-}
-{ box-sizing: border-box; margin: 0; padding: 0; font-family: Arial, sans-serif; }
-body { background: var(--bg-main); color: var(--text-main); display: flex; min-height: 100vh; transition: background 0.2s, color 0.2s; }
-/* BOČNÉ MENU /
-.sidebar { width: 250px; background: var(--sidebar-bg); color: #fff; padding: 20px 10px; display: flex; flex-direction: column; gap: 8px; flex-shrink: 0; }
-.sidebar h2 { text-align: center; color: #38bdf8; font-size: 20px; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #334155; }
-.nav-btn { background: transparent; color: #94a3b8; border: none; padding: 12px; border-radius: 6px; font-size: 14px; cursor: pointer; text-align: left; font-weight: bold; width: 100%; }
-.nav-btn:hover, .nav-btn.active { background: #334155; color: #ffffff; }
-.nav-btn.admin-btn { margin-top: auto; background: #312e81; color: #a5b4fc; }
-.nav-btn.admin-btn:hover { background: #3730a3; color: white; }
-/* TLAČIDLO TÉMY /
-.theme-btn { background: #334155; color: #38bdf8; border: none; padding: 10px; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; margin-bottom: 10px; text-align: center; }
-.theme-btn:hover { background: #475569; }
-/* HLAVNÁ PLOCHA /
-.main-content { flex: 1; padding: 25px; }
-/* SKRÝVANIE STRÁNOK /
-.page-pane { display: none; }
-.page-pane.active { display: block; }
-.card { background: var(--bg-card); padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-bottom: 20px; border: 1px solid var(--border-color); }
-h1 { color: #2563eb; margin-bottom: 15px; font-size: 22px; }
-h2 { color: var(--text-main); margin-bottom: 12px; font-size: 18px; }
-/* FORMULÁRE A TLAČIDLÁ /
-.form-group { margin-bottom: 12px; }
-label { display: block; margin-bottom: 4px; font-weight: bold; font-size: 13px; color: var(--text-muted); }
-input, select { width: 100%; padding: 8px 10px; border: 1px solid var(--border-color); border-radius: 4px; font-size: 14px; background: var(--bg-card); color: var(--text-main); }
-.btn { background: #2563eb; color: white; border: none; padding: 10px 15px; border-radius: 4px; font-size: 14px; font-weight: bold; cursor: pointer; width: 100%; margin-top: 8px; }
-.btn:hover { background: #1d4ed8; }
-.btn-success { background: #16a34a; }
-.btn-danger { background: #dc2626; }
-.btn-warning { background: #d97706; color: white; }
-.btn-sm { width: auto; padding: 5px 10px; font-size: 12px; display: inline-block; }
-/* TABUĽKY /
-table { width: 100%; border-collapse: collapse; margin-top: 10px; background: var(--bg-card); }
-th, td { padding: 10px; border: 1px solid var(--border-color); text-align: left; font-size: 14px; color: var(--text-main); }
-th { background: var(--table-header); color: var(--text-muted); }
-/* BADGES /
-.badge-free { background: #dcfce7; color: #166534; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
-.badge-busy { background: #fee2e2; color: #991b1b; padding: 4px 8px; border-radius: 4px; font-weight: bold; font-size: 12px; }
-/* ČASOMIERA & BODOVANIE /
-.timer-display { font-size: 44px; font-family: monospace; text-align: center; background: #0f172a; color: #22c55e; padding: 10px; border-radius: 8px; margin: 10px 0; font-weight: bold; }
-.grid-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 8px; margin-bottom: 10px; }
-.score-btn { background: #334155; color: white; border: none; padding: 10px; border-radius: 6px; font-weight: bold; cursor: pointer; text-align: center; display: flex; flex-direction: column; gap: 4px; }
-.score-btn:hover { background: #1e293b; }
-.score-btn span { color: #f87171; font-size: 13px; }
-@media (max-width: 768px) {
-body { flex-direction: column; }
-.sidebar { width: 100%; }
-}
+:root{color-scheme:light;--bg:#f3f6fb;--surface:#fff;--surface2:#f8fafc;--text:#172033;--muted:#718096;--line:#e2e8f0;--nav:#0b1220;--nav2:#172338;--blue:#3478f6;--blue2:#1d5ed6;--green:#16a34a;--red:#dc2626;--amber:#d97706;--shadow:0 8px 28px #1018280a;--radius:18px}
+body.dark-mode{color-scheme:dark;--bg:#0b1120;--surface:#131d2e;--surface2:#19253a;--text:#e8eef9;--muted:#9aa9c0;--line:#2a3850;--nav:#070c16;--nav2:#1b2940;--blue:#60a5fa;--blue2:#3b82f6;--shadow:0 8px 28px #0003}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif}
+body{min-height:100vh;background:var(--bg);color:var(--text);display:flex;line-height:1.55;font-size:14px;transition:background .2s,color .2s}
+button,input,select{font:inherit}button{cursor:pointer}
+.sidebar{position:fixed;inset:0 auto 0 0;width:268px;padding:24px 16px;background:var(--nav);color:#fff;display:flex;flex-direction:column;z-index:20;overflow:auto;transition:transform .25s}
+.brand{display:flex;align-items:center;gap:12px;padding:4px 10px 24px;border-bottom:1px solid #ffffff18;margin-bottom:20px}
+.brand-mark{width:43px;height:43px;display:grid;place-items:center;background:linear-gradient(135deg,#60a5fa,#2563eb);border-radius:14px;font-size:23px;box-shadow:0 7px 20px #2563eb55}
+.brand strong{display:block;font-size:15px;letter-spacing:.8px}.brand small{display:block;color:#8ea0ba;font-size:11px;letter-spacing:1.4px;margin-top:2px}
+.nav-label{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#71829c;font-weight:800;padding:8px 12px}
+.nav-btn{display:flex;align-items:center;gap:12px;width:100%;border:1px solid transparent;background:transparent;color:#aab7ca;padding:12px;border-radius:11px;text-align:left;font-size:13px;font-weight:650;margin:2px 0;transition:.18s}
+.nav-btn .ico{width:22px;text-align:center;font-size:16px}.nav-btn:hover{background:#ffffff0c;color:#fff}.nav-btn.active{color:#fff;background:linear-gradient(100deg,#2563eb,#367df4);box-shadow:0 7px 20px #2563eb30}
+.nav-spacer{flex:1;min-height:20px}.sidebar-footer{border-top:1px solid #ffffff18;padding-top:14px}.theme-btn{width:100%;padding:11px;border-radius:10px;border:1px solid #ffffff20;background:#ffffff0c;color:#dbeafe;font-weight:650}
+.main{margin-left:268px;flex:1;min-width:0;padding:26px clamp(16px,3vw,42px) 40px;max-width:1900px}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-bottom:27px}
+.crumb{font-size:12px;color:var(--muted);margin-bottom:3px}.topbar h1{font-size:23px;letter-spacing:-.6px;line-height:1.25}.top-actions{display:flex;align-items:center;gap:10px}.status-pill{display:flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);padding:9px 12px;border-radius:999px;color:var(--muted);font-size:12px}.dot{width:7px;height:7px;background:#22c55e;border-radius:50%}.menu-toggle{display:none;border:1px solid var(--line);background:var(--surface);color:var(--text);border-radius:10px;padding:9px 12px}
+.page-pane{display:none;animation:appear .22s ease}.page-pane.active{display:block}@keyframes appear{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.hero{position:relative;overflow:hidden;padding:30px;background:linear-gradient(120deg,#10203a,#173d76 68%,#2563eb);border-radius:22px;color:#fff;margin-bottom:22px;box-shadow:0 14px 35px #1d4ed822}
+.hero:after{content:"";position:absolute;width:280px;height:280px;border:45px solid #ffffff0c;border-radius:50%;right:-70px;top:-100px}
+.hero-kicker{font-size:11px;text-transform:uppercase;letter-spacing:2px;color:#bfdbfe;font-weight:800}.hero h2{font-size:clamp(25px,3vw,36px);line-height:1.16;letter-spacing:-1px;margin:10px 0}.hero p{max-width:570px;color:#d8e7ff;font-size:14px}.hero .btn{position:relative;z-index:1;width:auto;margin-top:20px;background:#fff;color:#1747a5}
+.stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:15px;margin-bottom:22px}.stat{background:var(--surface);border:1px solid var(--line);border-radius:15px;padding:18px;box-shadow:var(--shadow)}.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:12px;font-weight:650}.stat-icon{width:35px;height:35px;display:grid;place-items:center;border-radius:11px;background:#dbeafe;color:#1d4ed8;font-size:17px}.stat-value{font-size:27px;font-weight:800;letter-spacing:-.8px;margin-top:9px}.stat-note{font-size:11px;color:var(--muted);margin-top:2px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:23px;box-shadow:var(--shadow);margin-bottom:20px;min-width:0}.card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;margin-bottom:17px}.card h2{font-size:17px;letter-spacing:-.25px;margin-bottom:5px}.subtext{font-size:12px;color:var(--muted)}h1{font-size:24px;letter-spacing:-.7px;margin-bottom:20px}h1:after{content:"";display:block;width:42px;height:4px;background:var(--blue);border-radius:4px;margin-top:11px}h3{font-size:14px;margin:20px 0 10px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:20px}.form-group{margin-bottom:16px}label{display:block;margin-bottom:7px;font-size:12px;font-weight:750;color:var(--muted)}input,select{width:100%;min-height:43px;padding:10px 12px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:10px;outline:none;transition:border .2s,box-shadow .2s}input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px #3b82f61c}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:11px 15px;border:0;border-radius:10px;background:var(--blue);color:white;font-weight:750;font-size:13px;transition:transform .15s,filter .15s}.btn:hover{filter:brightness(1.07);transform:translateY(-1px)}.btn-success{background:var(--green)}.btn-danger{background:var(--red)}.btn-warning{background:var(--amber)}.btn-secondary{background:#64748b}.btn-sm{width:auto;padding:7px 10px;font-size:11px;margin:2px}.btn-inline{width:auto}
+table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;margin:12px 0 18px}th,td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--line);font-size:12px;vertical-align:middle;color:var(--text)}th{background:var(--surface2);color:var(--muted);font-size:10px;text-transform:uppercase;letter-spacing:.7px;font-weight:850;white-space:nowrap}tbody tr:last-child td{border-bottom:0}tbody tr:hover{background:color-mix(in srgb,var(--blue) 5%,transparent)}.table-wrap{width:100%;overflow-x:auto;border-radius:12px}
+.badge-free,.badge-busy,.badge-neutral{display:inline-flex;padding:5px 9px;border-radius:7px;font-size:10px;font-weight:850;letter-spacing:.4px}.badge-free{background:#dcfce7;color:#166534}.badge-busy{background:#fee2e2;color:#991b1b}.badge-neutral{background:var(--surface2);color:var(--muted)}body.dark-mode .badge-free{background:#153c2a;color:#86efac}body.dark-mode .badge-busy{background:#451f2a;color:#fca5a5}
+.timer-display{font:800 clamp(44px,7vw,68px)/1.2 "SFMono-Regular",Consolas,monospace;text-align:center;background:#070d18;color:#4ade80;padding:24px 12px;border-radius:15px;margin:18px 0;border:1px solid #25354d;letter-spacing:2px;font-variant-numeric:tabular-nums;box-shadow:inset 0 2px 15px #0004}.grid-buttons{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:12px 0 20px}.score-btn{background:var(--surface2);color:var(--text);border:1px solid var(--line);padding:15px 10px;border-radius:11px;font-weight:750;font-size:12px;display:flex;flex-direction:column;gap:6px;align-items:center;justify-content:center;text-align:center;min-height:75px;transition:.15s}.score-btn:hover{border-color:var(--blue);transform:translateY(-2px)}.score-btn span{color:#ef4444;font-size:13px;font-weight:850}.score-summary{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:16px 0}.score-box{background:var(--surface2);border:1px solid var(--line);padding:14px;border-radius:12px}.score-box span{display:block;color:var(--muted);font-size:11px}.score-box strong{display:block;font-size:21px;margin-top:4px}.total-box{border-color:#93c5fd;background:color-mix(in srgb,var(--blue) 8%,var(--surface))}
+.empty-state{padding:24px;text-align:center;color:var(--muted);font-size:13px}.driver-tag{display:inline-block;background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue);padding:8px 12px;border-radius:9px;font-weight:750;margin-bottom:12px}
+.mobile-overlay{display:none}
+@media(max-width:1150px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.grid-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.main{padding:22px}}
+@media(max-width:800px){.sidebar{transform:translateX(-100%);width:280px}.sidebar.open{transform:translateX(0);box-shadow:15px 0 45px #0004}.mobile-overlay.show{display:block;position:fixed;inset:0;background:#02061788;z-index:19}.main{margin-left:0;padding:18px 14px 30px}.menu-toggle{display:block}.topbar{margin-bottom:19px}.topbar h1{font-size:20px}.status-pill{display:none}.hero{padding:23px}.card{padding:18px 14px}.grid-2{grid-template-columns:1fr}.table-wrap table{min-width:620px}.stats{gap:10px}.stat{padding:14px}.stat-value{font-size:24px}}
+@media(max-width:420px){.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.stat-top{font-size:10px}.stat-icon{width:30px;height:30px}.grid-buttons{grid-template-columns:repeat(2,minmax(0,1fr))}.score-summary{grid-template-columns:1fr}.hero h2{font-size:25px}}
 </style>
 </head>
 <body>
-<!-- BOČNÉ MENU -->
-<div class="sidebar">
-<h2>RCTRIAL ORAVA</h2>
-<button class="theme-btn" onclick="toggleTheme()" id="theme-btn-text">🌙 Tmavý režim</button>
-<button class="nav-btn active" onclick="switchTab('calendar')">📅 Kalendár udalostí</button>
-<button class="nav-btn" onclick="switchTab('rules')">📜 Pravidlá pretekov</button>
-<button class="nav-btn" onclick="switchTab('startlist')">📋 Listina prihlásených</button>
-<button class="nav-btn" onclick="switchTab('driver-portal')">🚗 Účet pretekára</button>
-<button class="nav-btn" onclick="switchTab('marshal')">⏱️ Časomiera (Komisár)</button>
-<button class="nav-btn" onclick="switchTab('results')">🏆 Výsledky pretekov</button>
-<button class="nav-btn" onclick="switchTab('overall')">📊 Celkové výsledky</button>
-<button class="nav-btn admin-btn" onclick="switchTab('admin')">🔑 Admin Správa</button>
-</div>
-<!-- HLAVNÝ OBSAH -->
-<div class="main-content">
-<!-- 1. KALENDÁR -->
-<div id="pane-calendar" class="page-pane active">
-<div class="card">
-<h1>Kalendár udalostí RCTRIAL ORAVA</h1>
-<table>
-<thead>
-<tr><th>Názov pretekov</th><th>Miesto</th><th>Dátum</th><th>Sekcií</th><th>Kategórie</th></tr>
-</thead>
-<tbody id="calendar-body"></tbody>
-</table>
-</div>
-</div>
-<!-- 2. PRAVIDLÁ PRETEKOV -->
-<div id="pane-rules" class="page-pane">
-<div class="card">
-<h1>Oficiálne pravidlá a bodovanie RCTRIAL ORAVA</h1>
-<p style="margin-bottom:15px; color:var(--text-muted);">Pravidlá trestných bodov a časových limitov pre všetky preteky:</p>
-<h2>Tabuľka trestných bodov za priestupky</h2>
-<table>
-<thead>
-<tr><th>Priestupok / Úkon</th><th>Trestné body</th><th>Popis</th></tr>
-</thead>
-<tbody>
-<tr><td><strong>Navijak / lano</strong></td><td><strong style="color:#dc2626">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr>
-<tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:#dc2626">+25 b</strong></td><td>Akýkoľvek dotyk tyčky bránky vozidlom</td></tr>
-<tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:#dc2626">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr>
-<tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:#dc2626">+250 b</strong></td><td>Vynechanie bránky alebo neprejazd v správnom smere</td></tr>
-<tr><td><strong>Oprava v depe</strong></td><td><strong style="color:#dc2626">+300 b</strong></td><td>Oprava vozidla počas prejazdu v depe</td></tr>
-<tr><td><strong>Pomoc rukou</strong></td><td><strong style="color:#dc2626">+500 b</strong></td><td>Fyzické dotknutie sa vozidla rukou v sekcii</td></tr>
-</tbody>
-</table>
-<h2 style="margin-top:25px;">Časové limity a penalizácie za čas</h2>
-<table>
-<thead>
-<tr><th>Časový interval</th><th>Penalizácia</th></tr>
-</thead>
-<tbody>
-<tr><td>Do 11:00 minút</td><td><strong>0 b</strong> (bez penalizácie)</td></tr>
-<tr><td>Nad 11:00 minút</td><td><strong style="color:#d97706">+0,5 b za každú započatú minútu</strong></td></tr>
-</tbody>
-</table>
-</div>
-</div>
-<!-- 3. LISTINA PRIHLÁSENÝCH -->
-<div id="pane-startlist" class="page-pane">
-<div class="card">
-<h1>Listina prihlásených pretekárov</h1>
-<div class="form-group">
-<label>Vyberte preteky:</label>
-<select id="startlist-event-select" onchange="renderStartList()"></select>
-</div>
-<div id="startlist-container"></div>
-</div>
-</div>
-<!-- 4. ÚČET PRETEKÁRA -->
-<div id="pane-driver-portal" class="page-pane">
-<div id="driver-auth-section">
-<div class="card">
-<h1>Prihlásenie pretekára</h1>
-<div class="form-group"><label>Meno / Nick:</label><input type="text" id="login-username"></div>
-<div class="form-group"><label>Heslo:</label><input type="password" id="login-password"></div>
-<button class="btn" onclick="loginDriver()">Prihlásiť sa</button>
-</div>
-<div class="card">
-<h2>Registrácia nového pretekára</h2>
-<div class="form-group"><label>Meno a Priezvisko / Nick:</label><input type="text" id="reg-username"></div>
-<div class="form-group"><label>Heslo:</label><input type="password" id="reg-password"></div>
-<div class="form-group"><label>Model auta:</label><input type="text" id="reg-car" placeholder="napr. Axial SCX10"></div>
-<button class="btn btn-success" onclick="registerDriver()">Vytvoriť účet pretekára</button>
-</div>
-</div>
-<div id="driver-dashboard-section" style="display:none;">
-<div class="card">
-<span id="logged-driver-name" style="font-weight:bold; color:#0369a1;"></span>
-<button onclick="logoutDriver()" class="btn btn-danger btn-sm" style="float:right;">Odhlásiť sa</button>
-<h1 style="margin-top:15px;">Prihlásenie na preteky</h1>
-<div class="form-group">
-<label>Vyberte preteky z kalendára:</label>
-<select id="event-select-register" onchange="updateDriverCategories()"></select>
-</div>
-<div class="form-group">
-<label>Vyberte kategóriu:</label>
-<select id="category-select-register"></select>
-</div>
-<button class="btn btn-success" onclick="registerToRace()">Prihlásiť sa na vybranú udalosť</button>
-</div>
-</div>
-</div>
-<!-- 5. ČASOMIERA (KOMISÁR) -->
-<div id="pane-marshal" class="page-pane">
-<div class="card" id="marshal-auth-card">
-<h1>Prihlásenie traťového komisára</h1>
-<div class="form-group"><label>Meno komisára:</label><input type="text" id="marshal-login-name" placeholder="napr. Jozef"></div>
-<div class="form-group"><label>Heslo komisára:</label><input type="password" id="marshal-login-pass"></div>
-<button class="btn" onclick="loginMarshal()">Prihlásiť sa ako komisár</button>
-<h2 style="margin-top:20px;">Registrácia nového komisára</h2>
-<div class="form-group"><label>Meno komisára:</label><input type="text" id="marshal-reg-name" placeholder="napr. Jozef"></div>
-<div class="form-group"><label>Heslo:</label><input type="password" id="marshal-reg-pass"></div>
-<button class="btn btn-success" onclick="registerMarshal()">Registrovať komisára</button>
-</div>
-<div id="marshal-dashboard" style="display:none;">
-<div class="card">
-<span id="logged-marshal-name" style="font-weight:bold; color:#0369a1;"></span>
-<button onclick="logoutMarshal()" class="btn btn-danger btn-sm" style="float:right;">Odhlásiť komisára</button>
-<h1 style="margin-top:15px;">Prehľad sekcií</h1>
-<div class="form-group"><label>Vyberte preteky:</label><select id="marshal-event-select" onchange="renderSectionsStatus()"></select></div>
-<table>
-<thead>
-<tr><th>Sekcia</th><th>Stav sekcie</th><th>Obsadil komisár</th></tr>
-</thead>
-<tbody id="sections-status-body"></tbody>
-</table>
-</div>
-<div class="card" id="marshal-login-section">
-<h2>Obsadiť sekciu a spustiť meranie</h2>
-<div class="form-group"><label>Vyberte voľnú sekciu:</label><select id="marshal-section-select"></select></div>
-<button class="btn" onclick="startMarshal()">Obsadiť sekciu a spustiť meranie</button>
-</div>
-<div class="card" id="marshal-timer-card" style="display:none;">
-<h2 id="active-marshal-info" style="color:#16a34a;">Meranie prebieha</h2>
-<div class="form-group">
-<label>Filtrovať jazdcov podľa kategórie:</label>
-<select id="marshal-category-filter" onchange="filterMarshalDrivers()"></select>
-</div>
-<div class="form-group">
-<label>Vyberte jazdca na štarte:</label>
-<select id="active-driver-select"></select>
-</div>
-<div class="timer-display" id="stopwatch">00:00.00</div>
-<div style="display:flex; gap:10px; margin-bottom:10px;">
-<button class="btn btn-success" id="timer-btn" onclick="toggleTimer()">Štart</button>
-<button class="btn btn-danger" onclick="resetTimer()">Reset</button>
-</div>
-<h3>Oficiálne bodovanie:</h3>
-<div class="grid-buttons">
-<button class="score-btn" onclick="addPts(10)">Navijak / lano <span>+10 b</span></button>
-<button class="score-btn" onclick="addPts(25)">Dotyk bránky <span>+25 b</span></button>
-<button class="score-btn" onclick="addPts(125)">Zlomenie tyčky <span>+125 b</span></button>
-<button class="score-btn" onclick="addPts(250)">Neprejazdená branka <span>+250 b</span></button>
-<button class="score-btn" onclick="addPts(500)">Pomoc rukou <span>+500 b</span></button>
-<button class="score-btn" onclick="addPts(300)">Oprava v depe <span>+300 b</span></button>
-</div>
-<p style="font-size:16px; margin-top:10px;">Manuálne trestné body: <strong id="penalty-count" style="color:#dc2626">0</strong></p>
-<p style="font-size:16px; margin-bottom:10px;">Časové trestné body (>11 min): <strong id="time-penalty-count" style="color:#d97706">0 b</strong></p>
-<p style="font-size:18px; margin-bottom:15px; font-weight:bold;">Celkové body v sekcii: <strong id="total-section-pts" style="color:#2563eb">0 b</strong></p>
-<button class="btn btn-success" onclick="saveRaceResult()">Uložiť výsledok jazdy</button>
-<button class="btn" onclick="stopMarshal()" style="background:#64748b; margin-top:10px;">Uvoľniť sekciu a ukončiť</button>
-</div>
-</div>
-</div>
-<!-- 6. VÝSLEDKY PRETEKOV -->
-<div id="pane-results" class="page-pane">
-<div class="card">
-<h1>Výsledky pretekov</h1>
-<div class="form-group">
-<label>Vyberte preteky:</label>
-<select id="results-event-select" onchange="loadResultsCategories()"></select>
-</div>
-<div class="form-group">
-<label>Vyberte kategóriu:</label>
-<select id="results-category-select" onchange="renderRaceResults()"></select>
-</div>
-<h2>Celkové poradie na pretekoch (Súčet zo všetkých sekcií)</h2>
-<table>
-<thead>
-<tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Odjazdené sekcie</th><th>Celkové body</th><th>Celkový čas</th></tr>
-</thead>
-<tbody id="race-total-results-body"></tbody>
-</table>
-<h2 style="margin-top:30px;">Detailné výsledky jednotlivých sekcií</h2>
-<table>
-<thead>
-<tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Sekcia</th><th>Body</th><th>Čas</th><th>Komisár</th></tr>
-</thead>
-<tbody id="race-results-body"></tbody>
-</table>
-</div>
-</div>
-<!-- 7. CELKOVÉ VÝSLEDKY ŠAMPIONÁTU -->
-<div id="pane-overall" class="page-pane">
-<div class="card">
-<h1>Celkové výsledky - Šampionát RCTRIAL ORAVA</h1>
-<table>
-<thead>
-<tr><th>#</th><th>Jazdec</th><th>Celkové body</th><th>Celkový čas</th></tr>
-</thead>
-<tbody id="overall-results-body"></tbody>
-</table>
-</div>
-</div>
-<!-- 8. ADMIN SPRÁVA -->
-<div id="pane-admin" class="page-pane">
-<div id="admin-login-card" class="card">
-<h1>Prihlásenie Administrátora</h1>
-<div class="form-group"><label>Meno admina:</label><input type="text" id="admin-user"></div>
-<div class="form-group"><label>Heslo:</label><input type="password" id="admin-pass"></div>
-<button class="btn btn-danger" onclick="loginAdmin()">Prihlásiť sa ako Admin</button>
-</div>
-<div id="admin-panel" style="display:none;">
-<div class="card">
-<button onclick="logoutAdmin()" class="btn btn-danger btn-sm" style="float:right;">Odhlásiť Admina</button>
-<h1>Správa Kalendára Udalostí & Kategórií</h1>
-<div class="form-group"><label>Názov pretekov:</label><input type="text" id="admin-event-name"></div>
-<div class="form-group"><label>Miesto:</label><input type="text" id="admin-event-location"></div>
-<div class="form-group"><label>Dátum:</label><input type="date" id="admin-event-date"></div>
-<div class="form-group"><label>Počet sekcií:</label><input type="number" id="admin-event-sections" value="4" min="1" max="15"></div>
-<div class="form-group"><label>Kategórie (oddelené čiarkou):</label><input type="text" id="admin-event-categories" value="Profi, Hobby, Special" placeholder="napr. Profi, Hobby"></div>
-<button class="btn btn-success" onclick="adminAddEvent()">Pridať novú udalosť</button>
-<h2 style="margin-top:20px;">Zoznam udalostí (Mazanie)</h2>
-<table>
-<thead>
-<tr><th>Udalosť</th><th>Sekcií</th><th>Kategórie</th><th>Akcia</th></tr>
-</thead>
-<tbody id="admin-events-list"></tbody>
-</table>
-</div>
-<!-- KARTA PRE VYMAZANIE VÝSLEDKOV -->
-<div class="card">
-<h2>Správa dát a výsledkov</h2>
-<p style="margin-bottom:10px; color:var(--text-muted); font-size:13px;">Tlačidlá na vyčistenie uložených výsledkov a databázy:</p>
-<button class="btn btn-warning" onclick="adminClearResults()">🗑️ Vymazať VŠETKY výsledky pretekov</button>
-<button class="btn btn-danger" onclick="adminFullReset()" style="margin-top:8px;">⚠️ Kompletný RESET (Výsledky, pretekári, prihlášky)</button>
-</div>
-<div class="card">
-<h2>Schvaľovanie a správa traťových komisárov</h2>
-<table>
-<thead>
-<tr><th>Meno komisára</th><th>Stav</th><th>Akcia</th></tr>
-</thead>
-<tbody id="admin-marshals-list"></tbody>
-</table>
-</div>
-<div class="card">
-<h2>Správa obsadenia sekcií (Odblokovanie)</h2>
-<button class="btn btn-warning" onclick="adminResetSections()">Uvoľniť VŠETKY obsadené sekcie</button>
-</div>
-<div class="card">
-<h2>Zaregistrovaní pretekári (Zmena hesla / Mazanie)</h2>
-<table>
-<thead>
-<tr><th>Meno</th><th>Model</th><th>Akcia</th></tr>
-</thead>
-<tbody id="admin-users-list"></tbody>
-</table>
-</div>
-</div>
-</div>
-</div>
+<div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="brand"><div class="brand-mark">🏁</div><div><strong>RCTRIAL ORAVA</strong><small>RC TRIAL CHAMPIONSHIP</small></div></div>
+  <div class="nav-label">Prehľad</div>
+  <button class="nav-btn active" onclick="switchTab('calendar',this)"><span class="ico">▦</span> Dashboard & kalendár</button>
+  <button class="nav-btn" onclick="switchTab('rules',this)"><span class="ico">▤</span> Pravidlá pretekov</button>
+  <button class="nav-btn" onclick="switchTab('startlist',this)"><span class="ico">☷</span> Listina prihlásených</button>
+  <div class="nav-label">Pretekári a trať</div>
+  <button class="nav-btn" onclick="switchTab('driver-portal',this)"><span class="ico">🚙</span> Účet pretekára</button>
+  <button class="nav-btn" onclick="switchTab('marshal',this)"><span class="ico">⏱</span> Časomiera komisára</button>
+  <button class="nav-btn" onclick="switchTab('results',this)"><span class="ico">🏆</span> Výsledky pretekov</button>
+  <button class="nav-btn" onclick="switchTab('overall',this)"><span class="ico">▥</span> Celkové poradie</button>
+  <div class="nav-spacer"></div>
+  <button class="nav-btn" onclick="switchTab('admin',this)"><span class="ico">⚙</span> Administrácia</button>
+  <div class="sidebar-footer"><button class="theme-btn" onclick="toggleTheme()" id="theme-btn-text">☾ Tmavý režim</button></div>
+</aside>
+
+<main class="main">
+<header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="menu-toggle" onclick="toggleMenu()" aria-label="Otvoriť menu">☰</button><div><div class="crumb">RCTRIAL ORAVA / <span id="crumb-label">Prehľad</span></div><h1 id="top-title">Dashboard & kalendár</h1></div></div><div class="top-actions"><div class="status-pill"><span class="dot"></span> Systém pripravený</div></div></header>
+
+<section id="pane-calendar" class="page-pane active">
+  <div class="hero"><div class="hero-kicker">RC Trial Championship · Orava</div><h2>Každá sekcia rozhoduje.</h2><p>Vitaj v oficiálnom prehľade RCTRIAL ORAVA. Sleduj kalendár, registruj sa na preteky a maj výsledky vždy pod kontrolou.</p><button class="btn" onclick="switchTab('results')">Pozrieť výsledky →</button></div>
+  <div class="stats">
+    <div class="stat"><div class="stat-top">Naplánované preteky <span class="stat-icon">📅</span></div><div class="stat-value" id="stat-events">0</div><div class="stat-note">V kalendári šampionátu</div></div>
+    <div class="stat"><div class="stat-top">Registrovaní jazdci <span class="stat-icon">🚙</span></div><div class="stat-value" id="stat-drivers">0</div><div class="stat-note">Vytvorené jazdecké účty</div></div>
+    <div class="stat"><div class="stat-top">Zaznamenané jazdy <span class="stat-icon">⏱</span></div><div class="stat-value" id="stat-results">0</div><div class="stat-note">Uložené výsledky sekcií</div></div>
+    <div class="stat"><div class="stat-top">Traťoví komisári <span class="stat-icon">🧭</span></div><div class="stat-value" id="stat-marshals">0</div><div class="stat-note">Registrované účty</div></div>
+  </div>
+  <div class="card"><div class="card-head"><div><h2>Kalendár udalostí</h2><div class="subtext">Prehľad naplánovaných RC trial pretekov</div></div><span class="badge-neutral">KALENDÁR</span></div><div class="table-wrap"><table><thead><tr><th>Názov pretekov</th><th>Miesto</th><th>Dátum</th><th>Sekcií</th><th>Kategórie</th></tr></thead><tbody id="calendar-body"></tbody></table></div></div>
+</section>
+
+<section id="pane-rules" class="page-pane"><div class="card"><h1>Pravidlá pretekov</h1><p class="subtext">Oficiálne pravidlá a bodovanie RCTRIAL ORAVA.</p><h3>Trestné body za priestupky</h3><div class="table-wrap"><table><thead><tr><th>Priestupok / úkon</th><th>Trestné body</th><th>Popis</th></tr></thead><tbody>
+<tr><td><strong>Navijak / lano</strong></td><td><strong style="color:var(--red)">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr><tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:var(--red)">+25 b</strong></td><td>Akýkoľvek dotyk tyčky bránky vozidlom</td></tr><tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:var(--red)">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr><tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:var(--red)">+250 b</strong></td><td>Vynechanie bránky alebo nesprávny smer</td></tr><tr><td><strong>Oprava v depe</strong></td><td><strong style="color:var(--red)">+300 b</strong></td><td>Oprava vozidla počas prejazdu</td></tr><tr><td><strong>Pomoc rukou</strong></td><td><strong style="color:var(--red)">+500 b</strong></td><td>Fyzické dotknutie sa vozidla v sekcii</td></tr>
+</tbody></table></div><h3>Časové limity</h3><div class="table-wrap"><table><thead><tr><th>Časový interval</th><th>Penalizácia</th></tr></thead><tbody><tr><td>Do 11:00 minút</td><td><strong>0 b</strong> – bez penalizácie</td></tr><tr><td>Nad 11:00 minút</td><td><strong style="color:var(--amber)">+0,5 b za každú započatú minútu</strong></td></tr></tbody></table></div></div></section>
+
+<section id="pane-startlist" class="page-pane"><div class="card"><h1>Listina prihlásených</h1><div class="form-group"><label>Vyberte preteky</label><select id="startlist-event-select" onchange="renderStartList()"></select></div><div id="startlist-container"></div></div></section>
+
+<section id="pane-driver-portal" class="page-pane"><div id="driver-auth-section" class="grid-2"><div class="card"><h1>Prihlásenie pretekára</h1><p class="subtext" style="margin-bottom:20px">Prihlás sa do svojho jazdeckého účtu.</p><div class="form-group"><label>Meno / Nick</label><input type="text" id="login-username" autocomplete="username"></div><div class="form-group"><label>Heslo</label><input type="password" id="login-password" autocomplete="current-password"></div><button class="btn" onclick="loginDriver()">Prihlásiť sa</button></div><div class="card"><h2>Vytvoriť účet</h2><p class="subtext" style="margin-bottom:20px">Zaregistruj sa a prihlás sa na najbližšie preteky.</p><div class="form-group"><label>Meno a priezvisko / Nick</label><input id="reg-username" type="text"></div><div class="form-group"><label>Heslo</label><input id="reg-password" type="password" autocomplete="new-password"></div><div class="form-group"><label>Model auta</label><input id="reg-car" type="text" placeholder="napr. Axial SCX10"></div><button class="btn btn-success" onclick="registerDriver()">Vytvoriť účet pretekára</button></div></div>
+<div id="driver-dashboard-section" style="display:none"><div class="card"><div class="driver-tag" id="logged-driver-name"></div><button onclick="logoutDriver()" class="btn btn-danger btn-sm" style="float:right">Odhlásiť sa</button><h1>Prihlásenie na preteky</h1><div class="form-group"><label>Vyberte preteky</label><select id="event-select-register" onchange="updateDriverCategories()"></select></div><div class="form-group"><label>Kategória</label><select id="category-select-register"></select></div><button class="btn btn-success" onclick="registerToRace()">Potvrdiť prihlášku</button></div></div></section>
+
+<section id="pane-marshal" class="page-pane"><div id="marshal-auth-card" class="grid-2"><div class="card"><h1>Komisár – prihlásenie</h1><div class="form-group"><label>Meno komisára</label><input id="marshal-login-name" placeholder="napr. Jozef"></div><div class="form-group"><label>Heslo</label><input type="password" id="marshal-login-pass"></div><button class="btn" onclick="loginMarshal()">Prihlásiť sa</button></div><div class="card"><h2>Registrácia komisára</h2><p class="subtext" style="margin-bottom:18px">Nový účet musí schváliť administrátor.</p><div class="form-group"><label>Meno komisára</label><input id="marshal-reg-name" placeholder="napr. Jozef"></div><div class="form-group"><label>Heslo</label><input type="password" id="marshal-reg-pass"></div><button class="btn btn-success" onclick="registerMarshal()">Registrovať komisára</button></div></div>
+<div id="marshal-dashboard" style="display:none"><div class="card"><div class="driver-tag" id="logged-marshal-name"></div><button onclick="logoutMarshal()" class="btn btn-danger btn-sm" style="float:right">Odhlásiť</button><h1>Prehľad sekcií</h1><div class="form-group"><label>Vyberte preteky</label><select id="marshal-event-select" onchange="renderSectionsStatus()"></select></div><div class="table-wrap"><table><thead><tr><th>Sekcia</th><th>Stav</th><th>Obsadil komisár</th></tr></thead><tbody id="sections-status-body"></tbody></table></div></div>
+<div class="card" id="marshal-login-section"><h2>Obsadiť sekciu</h2><div class="form-group"><label>Voľná sekcia</label><select id="marshal-section-select"></select></div><button class="btn" onclick="startMarshal()">Obsadiť sekciu a spustiť meranie</button></div>
+<div class="card" id="marshal-timer-card" style="display:none"><div class="card-head"><div><h2 id="active-marshal-info">Meranie prebieha</h2><div class="subtext">Vyber jazdca, spusti čas a zaznamenaj trestné body.</div></div><span class="badge-free">AKTÍVNA SEKCIA</span></div><div class="form-group"><label>Filtrovať podľa kategórie</label><select id="marshal-category-filter" onchange="filterMarshalDrivers()"></select></div><div class="form-group"><label>Jazdec na štarte</label><select id="active-driver-select"></select></div><div class="timer-display" id="stopwatch">00:00.00</div><div class="grid-2"><button class="btn btn-success" id="timer-btn" onclick="toggleTimer()">▶ Štart</button><button class="btn btn-danger" onclick="resetTimer()">↺ Reset</button></div><h3>Oficiálne bodovanie</h3><div class="grid-buttons"><button class="score-btn" onclick="addPts(10)">Navijak / lano <span>+10 b</span></button><button class="score-btn" onclick="addPts(25)">Dotyk bránky <span>+25 b</span></button><button class="score-btn" onclick="addPts(125)">Zlomenie tyčky <span>+125 b</span></button><button class="score-btn" onclick="addPts(250)">Neprejazdená bránka <span>+250 b</span></button><button class="score-btn" onclick="addPts(500)">Pomoc rukou <span>+500 b</span></button><button class="score-btn" onclick="addPts(300)">Oprava v depe <span>+300 b</span></button></div><div class="score-summary"><div class="score-box"><span>Manuálne trestné body</span><strong id="penalty-count">0</strong></div><div class="score-box"><span>Časové trestné body</span><strong id="time-penalty-count">0 b</strong></div><div class="score-box total-box"><span>Celkové body v sekcii</span><strong id="total-section-pts">0 b</strong></div></div><button class="btn btn-success" onclick="saveRaceResult()">Uložiť výsledok jazdy</button><button class="btn btn-secondary" onclick="stopMarshal()" style="margin-top:9px">Uvoľniť sekciu a ukončiť</button></div></div></section>
+
+<section id="pane-results" class="page-pane"><div class="card"><h1>Výsledky pretekov</h1><div class="grid-2"><div class="form-group"><label>Preteky</label><select id="results-event-select" onchange="loadResultsCategories()"></select></div><div class="form-group"><label>Kategória</label><select id="results-category-select" onchange="renderRaceResults()"></select></div></div><h2>Celkové poradie</h2><p class="subtext">Súčet bodov a času zo všetkých odjazdených sekcií.</p><div class="table-wrap"><table><thead><tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Sekcie</th><th>Body</th><th>Čas</th></tr></thead><tbody id="race-total-results-body"></tbody></table></div><h2 style="margin-top:25px">Detail jednotlivých sekcií</h2><div class="table-wrap"><table><thead><tr><th>#</th><th>Jazdec</th><th>Model</th><th>Kategória</th><th>Sekcia</th><th>Body</th><th>Čas</th><th>Komisár</th></tr></thead><tbody id="race-results-body"></tbody></table></div></div></section>
+
+<section id="pane-overall" class="page-pane"><div class="card"><h1>Celkové poradie šampionátu</h1><p class="subtext">Priebežné poradie podľa súčtu trestných bodov a času.</p><div class="table-wrap"><table><thead><tr><th>#</th><th>Jazdec</th><th>Celkové body</th><th>Celkový čas</th></tr></thead><tbody id="overall-results-body"></tbody></table></div></div></section>
+
+<section id="pane-admin" class="page-pane"><div id="admin-login-card" class="card" style="max-width:560px"><h1>Administrácia</h1><p class="subtext" style="margin-bottom:20px">Prihlás sa na správu kalendára, jazdcov a výsledkov.</p><div class="form-group"><label>Meno admina</label><input id="admin-user" autocomplete="username"></div><div class="form-group"><label>Heslo</label><input id="admin-pass" type="password" autocomplete="current-password"></div><button class="btn btn-danger" onclick="loginAdmin()">Prihlásiť sa ako admin</button></div>
+<div id="admin-panel" style="display:none"><div class="card"><button onclick="logoutAdmin()" class="btn btn-danger btn-sm" style="float:right">Odhlásiť</button><h1>Správa kalendára</h1><div class="grid-2"><div class="form-group"><label>Názov pretekov</label><input id="admin-event-name"></div><div class="form-group"><label>Miesto</label><input id="admin-event-location"></div><div class="form-group"><label>Dátum</label><input type="date" id="admin-event-date"></div><div class="form-group"><label>Počet sekcií</label><input type="number" id="admin-event-sections" value="4" min="1" max="15"></div></div><div class="form-group"><label>Kategórie (oddelené čiarkou)</label><input id="admin-event-categories" value="Profi, Hobby, Special"></div><button class="btn btn-success" onclick="adminAddEvent()">＋ Pridať udalosť</button><h3>Zoznam udalostí</h3><div class="table-wrap"><table><thead><tr><th>Udalosť</th><th>Sekcií</th><th>Kategórie</th><th>Akcia</th></tr></thead><tbody id="admin-events-list"></tbody></table></div></div>
+<div class="card"><h2>Správa dát a výsledkov</h2><p class="subtext">Tieto akcie môžu natrvalo odstrániť uložené dáta.</p><button class="btn btn-warning" onclick="adminClearResults()">🗑 Vymazať všetky výsledky</button><button class="btn btn-danger" onclick="adminFullReset()" style="margin-top:9px">⚠ Kompletný reset výsledkov, jazdcov a prihlášok</button></div>
+<div class="card"><h2>Traťoví komisári</h2><div class="table-wrap"><table><thead><tr><th>Meno</th><th>Stav</th><th>Akcia</th></tr></thead><tbody id="admin-marshals-list"></tbody></table></div></div>
+<div class="card"><h2>Obsadenie sekcií</h2><button class="btn btn-warning" onclick="adminResetSections()">Uvoľniť všetky obsadené sekcie</button></div>
+<div class="card"><h2>Zaregistrovaní pretekári</h2><div class="table-wrap"><table><thead><tr><th>Meno</th><th>Model</th><th>Akcia</th></tr></thead><tbody id="admin-users-list"></tbody></table></div></div></div></section>
+</main>
+
 <script>
 const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxBvUWL-wa1eyjJJ9cF5jP2wnkuQlmTSQxDfVBTACgwEUo0VsdGkgjr8L5xmENfT_vzew/exec";
-let events = JSON.parse(localStorage.getItem('rct_events')) || [
-{ id: 1, name: "RC Trial Zubrohlava - 1. Kolo", location: "Zubrohlava - Areál", date: "2026-04-25", sectionsCount: 4, categories: ["Profi", "Hobby"] },
-{ id: 2, name: "Oravský RC Trial Cup", location: "Námestovo", date: "2026-05-16", sectionsCount: 5, categories: ["Profi", "Hobby", "Special"] }
-];
-let registeredUsers = JSON.parse(localStorage.getItem('rct_users')) || [];
-let marshalsList = JSON.parse(localStorage.getItem('rct_marshals')) || [];
-let raceRegistrations = JSON.parse(localStorage.getItem('rct_race_regs')) || [];
-let raceResults = JSON.parse(localStorage.getItem('rct_results')) || [];
-let sectionOccupancy = JSON.parse(localStorage.getItem('rct_section_occupancy')) || {};
-let loggedUser = JSON.parse(localStorage.getItem('rct_logged_user')) || null;
-let loggedMarshal = JSON.parse(localStorage.getItem('rct_logged_marshal')) || null;
-let currentEvent = "", currentSection = "";
-let manualPenalties = 0, timePenalties = 0;
-let timerInterval = null, startTime = 0, elapsedTime = 0, isRunning = false;
-// PREPÍNANIE TÉMY (SVETLÝ / TMAVÝ REŽIM)
-function toggleTheme() {
-const body = document.body;
-body.classList.toggle('dark-mode');
-const isDark = body.classList.contains('dark-mode');
-localStorage.setItem('rct_theme', isDark ? 'dark' : 'light');
-document.getElementById('theme-btn-text').innerText = isDark ? '☀️ Svetlý režim' : '🌙 Tmavý režim';
-}
-function loadTheme() {
-const savedTheme = localStorage.getItem('rct_theme');
-if (savedTheme === 'dark') {
-document.body.classList.add('dark-mode');
-document.getElementById('theme-btn-text').innerText = '☀️ Svetlý režim';
-} else {
-document.body.classList.remove('dark-mode');
-document.getElementById('theme-btn-text').innerText = '🌙 Tmavý režim';
-}
-}
-// NAČÍTANIE Z CLOUDU
-async function loadFromCloud() {
-if(!GOOGLE_SCRIPT_URL) return;
-try {
-const res = await fetch(GOOGLE_SCRIPT_URL);
-const data = await res.json();
-if(data && Object.keys(data).length > 0) {
-if(data.events) events = data.events;
-if(data.users) registeredUsers = data.users;
-if(data.marshals) marshalsList = data.marshals;
-if(data.regs) raceRegistrations = data.regs;
-if(data.results) raceResults = data.results;
-if(data.occupancy) sectionOccupancy = data.occupancy;
-renderCalendar();
-}
-} catch(e) {}
-}
-// ULOHENIE DO CLOUDU A LOKÁLNEJ PAMÄTE
-async function syncToCloud() {
-localStorage.setItem('rct_events', JSON.stringify(events));
-localStorage.setItem('rct_users', JSON.stringify(registeredUsers));
-localStorage.setItem('rct_marshals', JSON.stringify(marshalsList));
-localStorage.setItem('rct_race_regs', JSON.stringify(raceRegistrations));
-localStorage.setItem('rct_results', JSON.stringify(raceResults));
-localStorage.setItem('rct_section_occupancy', JSON.stringify(sectionOccupancy));
-if(!GOOGLE_SCRIPT_URL) return;
-try {
-await fetch(GOOGLE_SCRIPT_URL, {
-method: 'POST',
-mode: 'no-cors',
-headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ events, users: registeredUsers, marshals: marshalsList, regs: raceRegistrations, results: raceResults, occupancy: sectionOccupancy })
-});
-} catch(e) {}
-}
-function switchTab(tabId) {
-document.querySelectorAll('.page-pane').forEach(pane => {
-pane.style.display = 'none';
-pane.classList.remove('active');
-});
-document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
-const targetPane = document.getElementById('pane-' + tabId);
-if (targetPane) {
-targetPane.style.display = 'block';
-targetPane.classList.add('active');
-}
-if (event && event.currentTarget) {
-event.currentTarget.classList.add('active');
-}
-if(tabId === 'calendar') renderCalendar();
-if(tabId === 'startlist') loadStartListEvents();
-if(tabId === 'driver-portal') checkDriverAuth();
-if(tabId === 'marshal') checkMarshalAuth();
-if(tabId === 'results') loadResultsEvents();
-if(tabId === 'overall') renderOverallResults();
-if(tabId === 'admin') renderAdminLists();
-}
-function renderCalendar() {
-document.getElementById('calendar-body').innerHTML = events.map(e => `
-<tr><td><strong>${e.name}</strong></td><td>${e.location}</td><td>${e.date}</td><td><strong>${e.sectionsCount || 4} ks</strong></td><td>${(e.categories || []).join(', ')}</td></tr>
-`).join('') || '<tr><td colspan="5">Žiadne udalosti.</td></tr>';
-}
-function loadStartListEvents() {
-document.getElementById('startlist-event-select').innerHTML = events.map(e => `<option value="${e.name}">${e.name}</option>`).join('');
-renderStartList();
-}
-function renderStartList() {
-const evName = document.getElementById('startlist-event-select').value;
-const ev = events.find(e => e.name === evName);
-const cats = ev && ev.categories ? ev.categories : ["Profi", "Hobby"];
-const container = document.getElementById('startlist-container');
-const filteredRegs = raceRegistrations.filter(r => r.eventName === evName);
-let html = '';
-cats.forEach(cat => {
-const driversInCat = filteredRegs.filter(r => r.category === cat);
-html += `<h3>Kategória: ${cat}</h3>`;
-if(driversInCat.length > 0) {
-html += `<table><thead><tr><th>#</th><th>Jazdec</th><th>Model auta</th></tr></thead><tbody>`;
-html += driversInCat.map((d, i) => `<tr><td>${i+1}</td><td>${d.username}</td><td>${d.car}</td></tr>`).join('');
-html += `</tbody></table><br>`;
-} else {
-html += `<p style="margin-bottom:15px; color:var(--text-muted);">Žiadni pretekári v tejto kategórii.</p>`;
-}
-});
-container.innerHTML = html || '<p>Zatiaľ žiadne prihlášky.</p>';
-}
-function registerDriver() {
-const u = document.getElementById('reg-username').value.trim();
-const p = document.getElementById('reg-password').value.trim();
-const c = document.getElementById('reg-car').value.trim();
-if(!u || !p) { alert('Zadajte meno a heslo!'); return; }
-if(registeredUsers.find(x => x.username === u)) { alert('Meno už existuje!'); return; }
-registeredUsers.push({ id: Date.now(), username: u, password: p, car: c || 'Neznámy' });
-syncToCloud();
-alert('Účet bol úspešne vytvorený!');
-document.getElementById('reg-username').value = '';
-document.getElementById('reg-password').value = '';
-document.getElementById('reg-car').value = '';
-}
-function loginDriver() {
-const u = document.getElementById('login-username').value.trim();
-const p = document.getElementById('login-password').value.trim();
-const user = registeredUsers.find(x => x.username === u && x.password === p);
-if(!user) { alert('Nesprávne meno alebo heslo!'); return; }
-loggedUser = user;
-localStorage.setItem('rct_logged_user', JSON.stringify(loggedUser));
-checkDriverAuth();
-}
-function logoutDriver() {
-loggedUser = null;
-localStorage.removeItem('rct_logged_user');
-checkDriverAuth();
-}
-function checkDriverAuth() {
-if(loggedUser) {
-document.getElementById('driver-auth-section').style.display = 'none';
-document.getElementById('driver-dashboard-section').style.display = 'block';
-document.getElementById('logged-driver-name').innerText = `Prihlásený pretekár: ${loggedUser.username} (${loggedUser.car})`;
-document.getElementById('event-select-register').innerHTML = events.map(e => `<option value="${e.name}">${e.name} (${e.date})</option>`).join('');
-updateDriverCategories();
-} else {
-document.getElementById('driver-auth-section').style.display = 'block';
-document.getElementById('driver-dashboard-section').style.display = 'none';
-}
-}
-function updateDriverCategories() {
-const evName = document.getElementById('event-select-register').value;
-const ev = events.find(e => e.name === evName);
-const cats = ev && ev.categories ? ev.categories : ["Profi", "Hobby"];
-document.getElementById('category-select-register').innerHTML = cats.map(c => `<option value="${c}">${c}</option>`).join('');
-}
-function registerToRace() {
-const evName = document.getElementById('event-select-register').value;
-const category = document.getElementById('category-select-register').value;
-const exists = raceRegistrations.find(r => r.userId === loggedUser.id && r.eventName === evName);
-if(exists) { alert('Na túto udalosť ste sa už prihlásili!'); return; }
-raceRegistrations.push({ userId: loggedUser.id, username: loggedUser.username, car: loggedUser.car, eventName: evName, category });
-syncToCloud();
-alert('Boli ste úspešne prihlásený na preteky v kategórii ' + category + '!');
-}
-function registerMarshal() {
-const name = document.getElementById('marshal-reg-name').value.trim();
-const pass = document.getElementById('marshal-reg-pass').value.trim();
-if(!name || !pass) { alert('Zadajte meno a heslo komisára!'); return; }
-if(marshalsList.find(m => m.name === name)) { alert('Tento komisár už existuje!'); return; }
-marshalsList.push({ id: Date.now(), name, pass, approved: false });
-syncToCloud();
-alert('Účet komisára bol vytvorený! Počkajte, kým ho schváli administrátor.');
-document.getElementById('marshal-reg-name').value = '';
-document.getElementById('marshal-reg-pass').value = '';
-}
-function loginMarshal() {
-const name = document.getElementById('marshal-login-name').value.trim();
-const pass = document.getElementById('marshal-login-pass').value.trim();
-const m = marshalsList.find(x => x.name === name && x.pass === pass);
-if(!m) { alert('Nesprávne meno alebo heslo komisára!'); return; }
-if(!m.approved) { alert('Váš účet zatiaľ nebol schválený administrátorom!'); return; }
-loggedMarshal = m;
-localStorage.setItem('rct_logged_marshal', JSON.stringify(loggedMarshal));
-checkMarshalAuth();
-}
-function logoutMarshal() {
-loggedMarshal = null;
-localStorage.removeItem('rct_logged_marshal');
-checkMarshalAuth();
-}
-function checkMarshalAuth() {
-if(loggedMarshal) {
-document.getElementById('marshal-auth-card').style.display = 'none';
-document.getElementById('marshal-dashboard').style.display = 'block';
-document.getElementById('logged-marshal-name').innerText = `Prihlásený komisár: ${loggedMarshal.name}`;
-loadMarshalEvents();
-} else {
-document.getElementById('marshal-auth-card').style.display = 'block';
-document.getElementById('marshal-dashboard').style.display = 'none';
-}
-}
-function loadMarshalEvents() {
-document.getElementById('marshal-event-select').innerHTML = events.map(e => `<option value="${e.name}">${e.name}</option>`).join('');
-renderSectionsStatus();
-}
-function renderSectionsStatus() {
-const selectedEvName = document.getElementById('marshal-event-select').value;
-const ev = events.find(e => e.name === selectedEvName);
-const count = ev ? (ev.sectionsCount || 4) : 4;
-const tbody = document.getElementById('sections-status-body');
-const selectSec = document.getElementById('marshal-section-select');
-tbody.innerHTML = '';
-selectSec.innerHTML = '';
-for(let i = 1; i <= count; i++) {
-const secName = `Sekcia ${i}`;
-const key = `${selectedEvName}_${secName}`;
-const busyBy = sectionOccupancy[key];
-if(busyBy) {
-tbody.innerHTML += `<tr><td><strong>${secName}</strong></td><td><span class="badge-busy">OBSADENÁ</span></td><td>${busyBy}</td></tr>`;
-} else {
-tbody.innerHTML += `<tr><td><strong>${secName}</strong></td><td><span class="badge-free">VOĽNÁ</span></td><td>-</td></tr>`;
-selectSec.innerHTML += `<option value="${secName}">${secName}</option>`;
-}
-}
-if(!selectSec.innerHTML) {
-selectSec.innerHTML = '<option value="">Všetky sekcie sú obsadené!</option>';
-}
-}
-function startMarshal() {
-const selectedEv = document.getElementById('marshal-event-select').value;
-const selectedSec = document.getElementById('marshal-section-select').value;
-if(!selectedSec) { alert('Nie je vybraná žiadna voľná sekcia!'); return; }
-const key = `${selectedEv}_${selectedSec}`;
-if(sectionOccupancy[key]) { alert('Túto sekciu už medzitým obsadil iný komisár!'); renderSectionsStatus(); return; }
-currentEvent = selectedEv;
-currentSection = selectedSec;
-sectionOccupancy[key] = loggedMarshal.name;
-syncToCloud();
-document.getElementById('marshal-login-section').style.display = 'none';
-document.getElementById('marshal-timer-card').style.display = 'block';
-document.getElementById('active-marshal-info').innerText = `Meranie prebieha: ${currentSection} | Komisár: ${loggedMarshal.name} | Preteky: ${currentEvent}`;
-const ev = events.find(e => e.name === currentEvent);
-const cats = ev && ev.categories ? ev.categories : ["Profi", "Hobby"];
-document.getElementById('marshal-category-filter').innerHTML = `<option value="ALL">Všetky kategórie</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
-filterMarshalDrivers();
-renderSectionsStatus();
-}
-function filterMarshalDrivers() {
-const catFilter = document.getElementById('marshal-category-filter').value;
-const filtered = raceRegistrations.filter(r => r.eventName === currentEvent && (catFilter === 'ALL' || r.category === catFilter));
-const driverSelect = document.getElementById('active-driver-select');
-if(filtered.length > 0) {
-driverSelect.innerHTML = filtered.map(r => `<option value="${r.username}|${r.car}|${r.category}">${r.username} (${r.car}) - [${r.category}]</option>`).join('');
-} else {
-driverSelect.innerHTML = '<option value="">Žiadni prihlásení pretekári v tejto kategórii</option>';
-}
-}
-function toggleTimer() {
-const btn = document.getElementById('timer-btn');
-if(!isRunning) {
-startTime = Date.now() - elapsedTime;
-timerInterval = setInterval(() => {
-elapsedTime = Date.now() - startTime;
-document.getElementById('stopwatch').innerText = formatTime(elapsedTime);
-calculateTimePenalty();
-}, 100);
-isRunning = true;
-btn.innerText = 'Stop';
-btn.className = 'btn btn-danger';
-} else {
-clearInterval(timerInterval);
-isRunning = false;
-btn.innerText = 'Štart';
-btn.className = 'btn btn-success';
-}
-}
-function resetTimer() {
-clearInterval(timerInterval);
-isRunning = false;
-elapsedTime = 0;
-manualPenalties = 0;
-timePenalties = 0;
-document.getElementById('stopwatch').innerText = '00:00.00';
-document.getElementById('penalty-count').innerText = '0';
-document.getElementById('time-penalty-count').innerText = '0 b';
-document.getElementById('total-section-pts').innerText = '0 b';
-document.getElementById('timer-btn').innerText = 'Štart';
-document.getElementById('timer-btn').className = 'btn btn-success';
-}
-function calculateTimePenalty() {
-let totalSeconds = Math.floor(elapsedTime / 1000);
-let limitSeconds = 11 * 60;
-if (totalSeconds > limitSeconds) {
-let overSeconds = totalSeconds - limitSeconds;
-let overMinutes = Math.ceil(overSeconds / 60);
-timePenalties = overMinutes * 0.5;
-} else {
-timePenalties = 0;
-}
-document.getElementById('time-penalty-count').innerText = `+${timePenalties} b`;
-document.getElementById('total-section-pts').innerText = `${manualPenalties + timePenalties} b`;
-}
-function addPts(pts) {
-manualPenalties += pts;
-document.getElementById('penalty-count').innerText = manualPenalties;
-document.getElementById('total-section-pts').innerText = `${manualPenalties + timePenalties} b`;
-}
-function saveRaceResult() {
-const val = document.getElementById('active-driver-select').value;
-if(!val) { alert('Vyberte jazdca!'); return; }
-const [driverName, car, category] = val.split('|');
-const totalPts = manualPenalties + timePenalties;
-raceResults.push({
-eventName: currentEvent,
-section: currentSection,
-driverName,
-car,
-category: category || 'Profi',
-penalties: totalPts,
-time: elapsedTime,
-marshal: loggedMarshal.name
-});
-syncToCloud();
-alert(`Výsledok jazdy v sekcii bol uložený! Celkové body: ${totalPts}`);
-resetTimer();
-}
-function stopMarshal() {
-resetTimer();
-const key = `${currentEvent}_${currentSection}`;
-delete sectionOccupancy[key];
-syncToCloud();
-document.getElementById('marshal-timer-card').style.display = 'none';
-document.getElementById('marshal-login-section').style.display = 'block';
-renderSectionsStatus();
-}
-function formatTime(ms) {
-let sec = Math.floor(ms / 1000);
-let min = Math.floor(sec / 60);
-sec = sec % 60;
-let cs = Math.floor((ms % 1000) / 10);
-return `${min < 10 ? '0':''}${min}:${sec < 10 ? '0':''}${sec}.${cs < 10 ? '0':''}${cs}`;
-}
-function loadResultsEvents() {
-document.getElementById('results-event-select').innerHTML = events.map(e => `<option value="${e.name}">${e.name}</option>`).join('');
-loadResultsCategories();
-}
-function loadResultsCategories() {
-const evName = document.getElementById('results-event-select').value;
-const ev = events.find(e => e.name === evName);
-const cats = ev && ev.categories ? ev.categories : ["Profi", "Hobby"];
-document.getElementById('results-category-select').innerHTML = `<option value="ALL">Všetky kategórie</option>` + cats.map(c => `<option value="${c}">${c}</option>`).join('');
-renderRaceResults();
-}
-function renderRaceResults() {
-const ev = document.getElementById('results-event-select').value;
-const cat = document.getElementById('results-category-select').value;
-const filtered = raceResults.filter(r => r.eventName === ev && (cat === 'ALL' || r.category === cat));
-filtered.sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
-document.getElementById('race-results-body').innerHTML = filtered.map((r, i) => `
-<tr><td>#${i+1}</td><td>${r.driverName}</td><td>${r.car}</td><td>${r.category || '-'}</td><td>${r.section || '-'}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td><td>${r.marshal}</td></tr>
-`).join('') || '<tr><td colspan="8">Zatiaľ žiadne výsledky sekcií.</td></tr>';
-const driverSummary = {};
-filtered.forEach(r => {
-if(!driverSummary[r.driverName]) {
-driverSummary[r.driverName] = { car: r.car, category: r.category, penalties: 0, time: 0, sectionsCount: 0 };
-}
-driverSummary[r.driverName].penalties += r.penalties;
-driverSummary[r.driverName].time += r.time;
-driverSummary[r.driverName].sectionsCount += 1;
-});
-const totalList = Object.keys(driverSummary).map(name => ({
-name,
-car: driverSummary[name].car,
-category: driverSummary[name].category,
-sectionsCount: driverSummary[name].sectionsCount,
-penalties: driverSummary[name].penalties,
-time: driverSummary[name].time
-})).sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
-document.getElementById('race-total-results-body').innerHTML = totalList.map((r, i) => `
-<tr><td><strong>#${i+1}</strong></td><td><strong>${r.name}</strong></td><td>${r.car}</td><td>${r.category}</td><td>${r.sectionsCount} sekcií</td><td><strong style="color:red; font-size:16px;">${r.penalties} b</strong></td><td><strong>${formatTime(r.time)}</strong></td></tr>
-`).join('') || '<tr><td colspan="7">Žiadne celkové výsledky pretekov.</td></tr>';
-}
-function renderOverallResults() {
-const summary = {};
-raceResults.forEach(r => {
-if(!summary[r.driverName]) summary[r.driverName] = { penalties: 0, time: 0 };
-summary[r.driverName].penalties += r.penalties;
-summary[r.driverName].time += r.time;
-});
-const list = Object.keys(summary).map(name => ({ name, penalties: summary[name].penalties, time: summary[name].time })).sort((a,b) => a.penalties !== b.penalties ? a.penalties - b.penalties : a.time - b.time);
-document.getElementById('overall-results-body').innerHTML = list.map((r, i) => `
-<tr><td>#${i+1}</td><td>${r.name}</td><td><strong style="color:red">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>
-`).join('') || '<tr><td colspan="4">Žiadne výsledky.</td></tr>';
-}
-// ADMIN FUNKCIE
-function loginAdmin() {
-if(document.getElementById('admin-user').value === 'admin' && document.getElementById('admin-pass').value === 'admin123') {
-document.getElementById('admin-login-card').style.display = 'none';
-document.getElementById('admin-panel').style.display = 'block';
-renderAdminLists();
-} else { alert('Nesprávne heslo admina!'); }
-}
-function logoutAdmin() {
-document.getElementById('admin-login-card').style.display = 'block';
-document.getElementById('admin-panel').style.display = 'none';
-}
-function adminAddEvent() {
-const name = document.getElementById('admin-event-name').value.trim();
-const location = document.getElementById('admin-event-location').value.trim();
-const date = document.getElementById('admin-event-date').value;
-const sectionsCount = parseInt(document.getElementById('admin-event-sections').value) || 4;
-const categoriesRaw = document.getElementById('admin-event-categories').value.trim();
-const categories = categoriesRaw ? categoriesRaw.split(',').map(c => c.trim()) : ["Profi", "Hobby"];
-if(!name || !location || !date) { alert('Vyplňte políčka!'); return; }
-events.push({ id: Date.now(), name, location, date, sectionsCount, categories });
-syncToCloud();
-alert('Udalosť bola pridaná!');
-document.getElementById('admin-event-name').value = '';
-document.getElementById('admin-event-location').value = '';
-renderAdminLists();
-}
-function adminDeleteEvent(id) {
-if(confirm('Chcete vymazať túto udalosť?')) {
-const ev = events.find(e => e.id === id);
-if(ev) {
-raceRegistrations = raceRegistrations.filter(r => r.eventName !== ev.name);
-raceResults = raceResults.filter(r => r.eventName !== ev.name);
-}
-events = events.filter(e => e.id !== id);
-syncToCloud();
-renderAdminLists();
-}
-}
-function adminClearResults() {
-if(confirm('Naozaj chcete vymazať všetkých výsledky pretekov? Pokračovať?')) {
-raceResults = [];
-syncToCloud();
-alert('Všetky výsledky boli vymazané!');
-renderRaceResults();
-}
-}
-function adminFullReset() {
-if(confirm('POZOR: Kompletný reset vymaže všetkých pretekárov, výsledky aj prihlášky! Chcete pokračovať?')) {
-raceResults = [];
-registeredUsers = [];
-raceRegistrations = [];
-syncToCloud();
-alert('Kompletný reset bol vykonaný.');
-renderAdminLists();
-}
-}
-function adminChangeUserPassword(id) {
-const user = registeredUsers.find(u => u.id === id);
-if(user) {
-const newPass = prompt(`Zadajte nové heslo pre pretekára "${user.username}":`);
-if(newPass && newPass.trim() !== '') {
-user.password = newPass.trim();
-syncToCloud();
-alert(`Heslo pre ${user.username} bolo zmenené!`);
-}
-}
-}
-function adminDeleteUser(id) {
-if(confirm('Vymazať tohto pretekára?')) {
-registeredUsers = registeredUsers.filter(u => u.id !== id);
-syncToCloud();
-renderAdminLists();
-}
-}
-function adminToggleApproveMarshal(id) {
-const m = marshalsList.find(x => x.id === id);
-if(m) {
-m.approved = !m.approved;
-syncToCloud();
-renderAdminLists();
-}
-}
-function adminChangeMarshalPassword(id) {
-const m = marshalsList.find(x => x.id === id);
-if(m) {
-const newPass = prompt(`Zadajte nové heslo pre komisára "${m.name}":`);
-if(newPass && newPass.trim() !== '') {
-m.pass = newPass.trim();
-syncToCloud();
-alert(`Heslo pre komisára ${m.name} bolo zmenené!`);
-}
-}
-}
-function adminDeleteMarshal(id) {
-if(confirm('Vymazať tohto komisára?')) {
-marshalsList = marshalsList.filter(m => m.id !== id);
-syncToCloud();
-renderAdminLists();
-}
-}
-function adminResetSections() {
-if(confirm('Chcete uvoľniť všetky sekcie pre ďalších komisárov?')) {
-sectionOccupancy = {};
-syncToCloud();
-alert('Všetky sekcie boli odblokované.');
-}
-}
-function renderAdminLists() {
-document.getElementById('admin-events-list').innerHTML = events.map(e => `
-<tr><td>${e.name} (${e.date})</td><td>${e.sectionsCount || 4} ks</td><td>${(e.categories || []).join(', ')}</td><td><button onclick="adminDeleteEvent(${e.id})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>
-`).join('');
-document.getElementById('admin-marshals-list').innerHTML = marshalsList.map(m => `
-<tr>
-<td>${m.name}</td>
-<td>${m.approved ? '<span style="color:green; font-weight:bold;">Schválený</span>' : '<span style="color:orange; font-weight:bold;">Čaká na schválenie</span>'}</td>
-<td>
-<button onclick="adminToggleApproveMarshal(${m.id})" class="btn ${m.approved ? 'btn-warning' : 'btn-success'} btn-sm">${m.approved ? 'Zrušiť schválenie' : 'Schváliť'}</button>
-<button onclick="adminChangeMarshalPassword(${m.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Zmeniť heslo</button>
-<button onclick="adminDeleteMarshal(${m.id})" class="btn btn-danger btn-sm">Vymazať</button>
-</td>
-</tr>
-`).join('') || '<tr><td colspan="3">Žiadni registrovaní komisári.</td></tr>';
-document.getElementById('admin-users-list').innerHTML = registeredUsers.map(u => `
-<tr>
-<td>${u.username}</td>
-<td>${u.car}</td>
-<td>
-<button onclick="adminChangeUserPassword(${u.id})" class="btn btn-sm" style="background:#0284c7; color:white;">Zmeniť heslo</button>
-<button onclick="adminDeleteUser(${u.id})" class="btn btn-danger btn-sm">Vymazať</button>
-</td>
-</tr>
-`).join('');
-}
-document.addEventListener("DOMContentLoaded", () => {
-loadTheme();
-loadFromCloud();
-switchTab('calendar');
-});
+let events=JSON.parse(localStorage.getItem('rct_events'))||[
+{id:1,name:"RC Trial Zubrohlava - 1. Kolo",location:"Zubrohlava - Areál",date:"2026-04-25",sectionsCount:4,categories:["Profi","Hobby"]},
+{id:2,name:"Oravský RC Trial Cup",location:"Námestovo",date:"2026-05-16",sectionsCount:5,categories:["Profi","Hobby","Special"]}];
+let registeredUsers=JSON.parse(localStorage.getItem('rct_users'))||[];
+let marshalsList=JSON.parse(localStorage.getItem('rct_marshals'))||[];
+let raceRegistrations=JSON.parse(localStorage.getItem('rct_race_regs'))||[];
+let raceResults=JSON.parse(localStorage.getItem('rct_results'))||[];
+let sectionOccupancy=JSON.parse(localStorage.getItem('rct_section_occupancy'))||{};
+let loggedUser=JSON.parse(localStorage.getItem('rct_logged_user'))||null;
+let loggedMarshal=JSON.parse(localStorage.getItem('rct_logged_marshal'))||null;
+let currentEvent="",currentSection="",manualPenalties=0,timePenalties=0,timerInterval=null,startTime=0,elapsedTime=0,isRunning=false;
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function toggleMenu(){$('sidebar').classList.toggle('open');$('mobile-overlay').classList.toggle('show')}
+function closeMenu(){$('sidebar').classList.remove('open');$('mobile-overlay').classList.remove('show')}
+function toggleTheme(){document.body.classList.toggle('dark-mode');const d=document.body.classList.contains('dark-mode');localStorage.setItem('rct_theme',d?'dark':'light');$('theme-btn-text').textContent=d?'☀ Svetlý režim':'☾ Tmavý režim'}
+function loadTheme(){const d=localStorage.getItem('rct_theme')==='dark';document.body.classList.toggle('dark-mode',d);$('theme-btn-text').textContent=d?'☀ Svetlý režim':'☾ Tmavý režim'}
+function switchTab(tabId,btn){document.querySelectorAll('.page-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const pane=$('pane-'+tabId);if(pane)pane.classList.add('active');if(btn)btn.classList.add('active');else{const b=[...document.querySelectorAll('.nav-btn')].find(x=>x.getAttribute('onclick')?.includes("'"+tabId+"'"));if(b)b.classList.add('active')}const labels={calendar:'Dashboard & kalendár',rules:'Pravidlá pretekov',startlist:'Listina prihlásených','driver-portal':'Účet pretekára',marshal:'Časomiera komisára',results:'Výsledky pretekov',overall:'Celkové poradie',admin:'Administrácia'};$('top-title').textContent=labels[tabId]||'RCTRIAL ORAVA';$('crumb-label').textContent=labels[tabId]||'Prehľad';closeMenu();if(tabId==='calendar')renderCalendar();if(tabId==='startlist')loadStartListEvents();if(tabId==='driver-portal')checkDriverAuth();if(tabId==='marshal')checkMarshalAuth();if(tabId==='results')loadResultsEvents();if(tabId==='overall')renderOverallResults();if(tabId==='admin')renderAdminLists()}
+async function loadFromCloud(){if(!GOOGLE_SCRIPT_URL)return;try{const res=await fetch(GOOGLE_SCRIPT_URL);const data=await res.json();if(data&&Object.keys(data).length){if(data.events)events=data.events;if(data.users)registeredUsers=data.users;if(data.marshals)marshalsList=data.marshals;if(data.regs)raceRegistrations=data.regs;if(data.results)raceResults=data.results;if(data.occupancy)sectionOccupancy=data.occupancy;persistLocal();renderCalendar()}}catch(e){console.warn('Cloud sync unavailable; local data remains active.',e)}}
+function persistLocal(){localStorage.setItem('rct_events',JSON.stringify(events));localStorage.setItem('rct_users',JSON.stringify(registeredUsers));localStorage.setItem('rct_marshals',JSON.stringify(marshalsList));localStorage.setItem('rct_race_regs',JSON.stringify(raceRegistrations));localStorage.setItem('rct_results',JSON.stringify(raceResults));localStorage.setItem('rct_section_occupancy',JSON.stringify(sectionOccupancy))}
+async function syncToCloud(){persistLocal();if(!GOOGLE_SCRIPT_URL)return;try{await fetch(GOOGLE_SCRIPT_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify({events,users:registeredUsers,marshals:marshalsList,regs:raceRegistrations,results:raceResults,occupancy:sectionOccupancy})})}catch(e){console.warn('Cloud save failed; data saved locally.',e)}}
+function renderStats(){$('stat-events').textContent=events.length;$('stat-drivers').textContent=registeredUsers.length;$('stat-results').textContent=raceResults.length;$('stat-marshals').textContent=marshalsList.length}
+function renderCalendar(){$('calendar-body').innerHTML=events.map(e=>`<tr><td><strong>${esc(e.name)}</strong></td><td>${esc(e.location)}</td><td>${esc(e.date)}</td><td><strong>${e.sectionsCount||4} ks</strong></td><td>${(e.categories||[]).map(esc).join(', ')}</td></tr>`).join('')||'<tr><td colspan="5" class="empty-state">Zatiaľ nie sú naplánované žiadne udalosti.</td></tr>';renderStats()}
+function loadStartListEvents(){$('startlist-event-select').innerHTML=events.map(e=>`<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');renderStartList()}
+function renderStartList(){const name=$('startlist-event-select').value;const ev=events.find(e=>e.name===name);const cats=ev?.categories||['Profi','Hobby'];const regs=raceRegistrations.filter(r=>r.eventName===name);$('startlist-container').innerHTML=cats.map(cat=>{const rows=regs.filter(r=>r.category===cat);return `<h3>${esc(cat)} <span class="badge-neutral">${rows.length} jazdcov</span></h3>`+(rows.length?`<div class="table-wrap"><table><thead><tr><th>#</th><th>Jazdec</th><th>Model auta</th></tr></thead><tbody>${rows.map((d,i)=>`<tr><td>${i+1}</td><td><strong>${esc(d.username)}</strong></td><td>${esc(d.car)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="empty-state">V tejto kategórii zatiaľ nie sú prihlásení pretekári.</p>')}).join('')||'<p class="empty-state">Zatiaľ žiadne prihlášky.</p>'}
+function registerDriver(){const u=$('reg-username').value.trim(),p=$('reg-password').value.trim(),c=$('reg-car').value.trim();if(!u||!p)return alert('Zadajte meno a heslo!');if(registeredUsers.some(x=>x.username===u))return alert('Meno už existuje!');registeredUsers.push({id:Date.now(),username:u,password:p,car:c||'Neznámy'});syncToCloud();alert('Účet bol úspešne vytvorený!');['reg-username','reg-password','reg-car'].forEach(id=>$(id).value='');renderStats()}
+function loginDriver(){const u=$('login-username').value.trim(),p=$('login-password').value.trim(),user=registeredUsers.find(x=>x.username===u&&x.password===p);if(!user)return alert('Nesprávne meno alebo heslo!');loggedUser=user;localStorage.setItem('rct_logged_user',JSON.stringify(loggedUser));checkDriverAuth()}
+function logoutDriver(){loggedUser=null;localStorage.removeItem('rct_logged_user');checkDriverAuth()}
+function checkDriverAuth(){if(loggedUser){$('driver-auth-section').style.display='none';$('driver-dashboard-section').style.display='block';$('logged-driver-name').textContent=`Prihlásený pretekár: ${loggedUser.username} (${loggedUser.car})`;$('event-select-register').innerHTML=events.map(e=>`<option value="${esc(e.name)}">${esc(e.name)} (${esc(e.date)})</option>`).join('');updateDriverCategories()}else{$('driver-auth-section').style.display='grid';$('driver-dashboard-section').style.display='none'}}
+function updateDriverCategories(){const ev=events.find(e=>e.name===$('event-select-register').value);$('category-select-register').innerHTML=(ev?.categories||['Profi','Hobby']).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('')}
+function registerToRace(){if(!loggedUser)return alert('Najprv sa prihláste.');const ev=$('event-select-register').value,category=$('category-select-register').value;if(!ev)return alert('Nie sú dostupné žiadne preteky.');if(raceRegistrations.some(r=>r.userId===loggedUser.id&&r.eventName===ev))return alert('Na túto udalosť ste sa už prihlásili!');raceRegistrations.push({userId:loggedUser.id,username:loggedUser.username,car:loggedUser.car,eventName:ev,category});syncToCloud();alert('Boli ste úspešne prihlásený na preteky v kategórii '+category+'!')}
+function registerMarshal(){const name=$('marshal-reg-name').value.trim(),pass=$('marshal-reg-pass').value.trim();if(!name||!pass)return alert('Zadajte meno a heslo komisára!');if(marshalsList.some(m=>m.name===name))return alert('Tento komisár už existuje!');marshalsList.push({id:Date.now(),name,pass,approved:false});syncToCloud();alert('Účet komisára bol vytvorený! Počkajte na schválenie administrátorom.');$('marshal-reg-name').value='';$('marshal-reg-pass').value='';renderStats()}
+function loginMarshal(){const name=$('marshal-login-name').value.trim(),pass=$('marshal-login-pass').value.trim(),m=marshalsList.find(x=>x.name===name&&x.pass===pass);if(!m)return alert('Nesprávne meno alebo heslo komisára!');if(!m.approved)return alert('Váš účet zatiaľ nebol schválený administrátorom!');loggedMarshal=m;localStorage.setItem('rct_logged_marshal',JSON.stringify(loggedMarshal));checkMarshalAuth()}
+function logoutMarshal(){loggedMarshal=null;localStorage.removeItem('rct_logged_marshal');if(isRunning)toggleTimer();checkMarshalAuth()}
+function checkMarshalAuth(){if(loggedMarshal){$('marshal-auth-card').style.display='none';$('marshal-dashboard').style.display='block';$('logged-marshal-name').textContent='Prihlásený komisár: '+loggedMarshal.name;loadMarshalEvents()}else{$('marshal-auth-card').style.display='grid';$('marshal-dashboard').style.display='none'}}
+function loadMarshalEvents(){$('marshal-event-select').innerHTML=events.map(e=>`<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');renderSectionsStatus()}
+function renderSectionsStatus(){const name=$('marshal-event-select').value,ev=events.find(e=>e.name===name),count=ev?.sectionsCount||4;$('sections-status-body').innerHTML='';$('marshal-section-select').innerHTML='';for(let i=1;i<=count;i++){const sec=`Sekcia ${i}`,key=`${name}_${sec}`,busy=sectionOccupancy[key];$('sections-status-body').innerHTML+=`<tr><td><strong>${sec}</strong></td><td><span class="${busy?'badge-busy':'badge-free'}">${busy?'OBSADENÁ':'VOĽNÁ'}</span></td><td>${busy?esc(busy):'—'}</td></tr>`;if(!busy)$('marshal-section-select').innerHTML+=`<option value="${sec}">${sec}</option>`}if(!$('marshal-section-select').innerHTML)$('marshal-section-select').innerHTML='<option value="">Všetky sekcie sú obsadené</option>'}
+function startMarshal(){const ev=$('marshal-event-select').value,sec=$('marshal-section-select').value;if(!sec)return alert('Nie je vybraná žiadna voľná sekcia!');const key=`${ev}_${sec}`;if(sectionOccupancy[key]){alert('Túto sekciu už obsadil iný komisár!');renderSectionsStatus();return}currentEvent=ev;currentSection=sec;sectionOccupancy[key]=loggedMarshal.name;syncToCloud();$('marshal-login-section').style.display='none';$('marshal-timer-card').style.display='block';$('active-marshal-info').textContent=`${currentSection} · ${currentEvent} · ${loggedMarshal.name}`;const cats=events.find(e=>e.name===ev)?.categories||['Profi','Hobby'];$('marshal-category-filter').innerHTML='<option value="ALL">Všetky kategórie</option>'+cats.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');resetTimer();filterMarshalDrivers();renderSectionsStatus()}
+function filterMarshalDrivers(){const cat=$('marshal-category-filter').value,filtered=raceRegistrations.filter(r=>r.eventName===currentEvent&&(cat==='ALL'||r.category===cat));$('active-driver-select').innerHTML=filtered.map(r=>`<option value="${esc(r.username)}|${esc(r.car)}|${esc(r.category)}">${esc(r.username)} (${esc(r.car)}) – ${esc(r.category)}</option>`).join('')||'<option value="">Žiadni prihlásení pretekári</option>'}
+function toggleTimer(){const btn=$('timer-btn');if(!isRunning){startTime=Date.now()-elapsedTime;timerInterval=setInterval(()=>{elapsedTime=Date.now()-startTime;$('stopwatch').textContent=formatTime(elapsedTime);calculateTimePenalty()},100);isRunning=true;btn.textContent='Ⅱ Stop';btn.className='btn btn-danger'}else{clearInterval(timerInterval);timerInterval=null;isRunning=false;btn.textContent='▶ Štart';btn.className='btn btn-success'}}
+function resetTimer(){clearInterval(timerInterval);timerInterval=null;isRunning=false;elapsedTime=0;manualPenalties=0;timePenalties=0;$('stopwatch').textContent='00:00.00';$('penalty-count').textContent='0';$('time-penalty-count').textContent='0 b';$('total-section-pts').textContent='0 b';$('timer-btn').textContent='▶ Štart';$('timer-btn').className='btn btn-success'}
+function calculateTimePenalty(){const seconds=Math.floor(elapsedTime/1000);timePenalties=seconds>660?Math.ceil((seconds-660)/60)*.5:0;$('time-penalty-count').textContent=`+${timePenalties} b`;$('total-section-pts').textContent=`${manualPenalties+timePenalties} b`}
+function addPts(pts){manualPenalties+=pts;$('penalty-count').textContent=manualPenalties;$('total-section-pts').textContent=`${manualPenalties+timePenalties} b`}
+function saveRaceResult(){const val=$('active-driver-select').value;if(!val)return alert('Vyberte jazdca!');const [driverName,car,category]=val.split('|');const total=manualPenalties+timePenalties;raceResults.push({eventName:currentEvent,section:currentSection,driverName,car,category:category||'Profi',penalties:total,time:elapsedTime,marshal:loggedMarshal.name});syncToCloud();alert(`Výsledok jazdy bol uložený. Celkové body: ${total}`);resetTimer();renderStats()}
+function stopMarshal(){resetTimer();delete sectionOccupancy[`${currentEvent}_${currentSection}`];syncToCloud();$('marshal-timer-card').style.display='none';$('marshal-login-section').style.display='block';renderSectionsStatus()}
+function formatTime(ms){let sec=Math.floor((ms||0)/1000),min=Math.floor(sec/60);sec%=60;const cs=Math.floor(((ms||0)%1000)/10);return `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}.${String(cs).padStart(2,'0')}`}
+function loadResultsEvents(){$('results-event-select').innerHTML=events.map(e=>`<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');loadResultsCategories()}
+function loadResultsCategories(){const ev=events.find(e=>e.name===$('results-event-select').value);$('results-category-select').innerHTML='<option value="ALL">Všetky kategórie</option>'+(ev?.categories||['Profi','Hobby']).map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join('');renderRaceResults()}
+function renderRaceResults(){const ev=$('results-event-select').value,cat=$('results-category-select').value,filtered=raceResults.filter(r=>r.eventName===ev&&(cat==='ALL'||r.category===cat)).sort((a,b)=>a.penalties-b.penalties||a.time-b.time);$('race-results-body').innerHTML=filtered.map((r,i)=>`<tr><td>${i+1}</td><td><strong>${esc(r.driverName)}</strong></td><td>${esc(r.car)}</td><td>${esc(r.category||'-')}</td><td>${esc(r.section||'-')}</td><td><strong style="color:var(--red)">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td><td>${esc(r.marshal)}</td></tr>`).join('')||'<tr><td colspan="8" class="empty-state">Zatiaľ nie sú uložené výsledky sekcií.</td></tr>';const sums={};filtered.forEach(r=>{if(!sums[r.driverName])sums[r.driverName]={car:r.car,category:r.category,penalties:0,time:0,count:0};const s=sums[r.driverName];s.penalties+=Number(r.penalties)||0;s.time+=Number(r.time)||0;s.count++});const list=Object.entries(sums).map(([name,s])=>({name,...s})).sort((a,b)=>a.penalties-b.penalties||a.time-b.time);$('race-total-results-body').innerHTML=list.map((r,i)=>`<tr><td><strong>#${i+1}</strong></td><td><strong>${esc(r.name)}</strong></td><td>${esc(r.car)}</td><td>${esc(r.category)}</td><td>${r.count}</td><td><strong style="color:var(--red)">${r.penalties} b</strong></td><td><strong>${formatTime(r.time)}</strong></td></tr>`).join('')||'<tr><td colspan="7" class="empty-state">Pre zvolený výber nie sú výsledky.</td></tr>'}
+function renderOverallResults(){const sums={};raceResults.forEach(r=>{if(!sums[r.driverName])sums[r.driverName]={penalties:0,time:0};sums[r.driverName].penalties+=Number(r.penalties)||0;sums[r.driverName].time+=Number(r.time)||0});const list=Object.entries(sums).map(([name,s])=>({name,...s})).sort((a,b)=>a.penalties-b.penalties||a.time-b.time);$('overall-results-body').innerHTML=list.map((r,i)=>`<tr><td><strong>#${i+1}</strong></td><td><strong>${esc(r.name)}</strong></td><td><strong style="color:var(--red)">${r.penalties} b</strong></td><td>${formatTime(r.time)}</td></tr>`).join('')||'<tr><td colspan="4" class="empty-state">Zatiaľ nie sú zaznamenané výsledky.</td></tr>'}
+function loginAdmin(){if($('admin-user').value==='admin'&&$('admin-pass').value==='admin123'){$('admin-login-card').style.display='none';$('admin-panel').style.display='block';renderAdminLists()}else alert('Nesprávne heslo admina!')}
+function logoutAdmin(){$('admin-login-card').style.display='block';$('admin-panel').style.display='none';$('admin-pass').value=''}
+function adminAddEvent(){const name=$('admin-event-name').value.trim(),location=$('admin-event-location').value.trim(),date=$('admin-event-date').value,sectionsCount=parseInt($('admin-event-sections').value)||4,categories=$('admin-event-categories').value.trim().split(',').map(c=>c.trim()).filter(Boolean);if(!name||!location||!date)return alert('Vyplňte názov, miesto a dátum!');events.push({id:Date.now(),name,location,date,sectionsCount,categories:categories.length?categories:['Profi','Hobby']});syncToCloud();alert('Udalosť bola pridaná!');['admin-event-name','admin-event-location','admin-event-date'].forEach(id=>$(id).value='');renderAdminLists();renderCalendar()}
+function adminDeleteEvent(id){if(!confirm('Chcete vymazať túto udalosť a jej prihlášky a výsledky?'))return;const ev=events.find(e=>e.id===id);if(ev){raceRegistrations=raceRegistrations.filter(r=>r.eventName!==ev.name);raceResults=raceResults.filter(r=>r.eventName!==ev.name)}events=events.filter(e=>e.id!==id);syncToCloud();renderAdminLists();renderCalendar()}
+function adminClearResults(){if(!confirm('Naozaj chcete vymazať všetky výsledky pretekov?'))return;raceResults=[];syncToCloud();renderAdminLists();renderStats();renderRaceResults()}
+function adminFullReset(){if(!confirm('Kompletný reset vymaže všetkých pretekárov, výsledky a prihlášky. Pokračovať?'))return;raceResults=[];registeredUsers=[];raceRegistrations=[];loggedUser=null;localStorage.removeItem('rct_logged_user');syncToCloud();renderAdminLists();renderStats()}
+function adminChangeUserPassword(id){const u=registeredUsers.find(x=>x.id===id);if(!u)return;const p=prompt(`Nové heslo pre ${u.username}:`);if(p&&p.trim()){u.password=p.trim();syncToCloud();alert('Heslo bolo zmenené.')}}
+function adminDeleteUser(id){if(!confirm('Vymazať tohto pretekára?'))return;registeredUsers=registeredUsers.filter(u=>u.id!==id);raceRegistrations=raceRegistrations.filter(r=>r.userId!==id);syncToCloud();renderAdminLists();renderStats()}
+function adminToggleApproveMarshal(id){const m=marshalsList.find(x=>x.id===id);if(m){m.approved=!m.approved;syncToCloud();renderAdminLists()}}
+function adminChangeMarshalPassword(id){const m=marshalsList.find(x=>x.id===id);if(!m)return;const p=prompt(`Nové heslo pre komisára ${m.name}:`);if(p&&p.trim()){m.pass=p.trim();syncToCloud();alert('Heslo komisára bolo zmenené.')}}
+function adminDeleteMarshal(id){if(!confirm('Vymazať tohto komisára?'))return;marshalsList=marshalsList.filter(m=>m.id!==id);syncToCloud();renderAdminLists();renderStats()}
+function adminResetSections(){if(!confirm('Uvoľniť všetky obsadené sekcie?'))return;sectionOccupancy={};syncToCloud();if(loggedMarshal)renderSectionsStatus();alert('Všetky sekcie boli uvoľnené.')}
+function renderAdminLists(){$('admin-events-list').innerHTML=events.map(e=>`<tr><td><strong>${esc(e.name)}</strong><br><span class="subtext">${esc(e.date)}</span></td><td>${e.sectionsCount||4}</td><td>${(e.categories||[]).map(esc).join(', ')}</td><td><button onclick="adminDeleteEvent(${Number(e.id)})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty-state">Žiadne udalosti.</td></tr>';$('admin-marshals-list').innerHTML=marshalsList.map(m=>`<tr><td><strong>${esc(m.name)}</strong></td><td><span class="${m.approved?'badge-free':'badge-busy'}">${m.approved?'Schválený':'Čaká na schválenie'}</span></td><td><button onclick="adminToggleApproveMarshal(${Number(m.id)})" class="btn ${m.approved?'btn-warning':'btn-success'} btn-sm">${m.approved?'Zrušiť schválenie':'Schváliť'}</button><button onclick="adminChangeMarshalPassword(${Number(m.id)})" class="btn btn-sm">Zmeniť heslo</button><button onclick="adminDeleteMarshal(${Number(m.id)})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>`).join('')||'<tr><td colspan="3" class="empty-state">Žiadni registrovaní komisári.</td></tr>';$('admin-users-list').innerHTML=registeredUsers.map(u=>`<tr><td><strong>${esc(u.username)}</strong></td><td>${esc(u.car)}</td><td><button onclick="adminChangeUserPassword(${Number(u.id)})" class="btn btn-sm">Zmeniť heslo</button><button onclick="adminDeleteUser(${Number(u.id)})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>`).join('')||'<tr><td colspan="3" class="empty-state">Žiadni registrovaní pretekári.</td></tr>'}
+document.addEventListener('DOMContentLoaded',()=>{loadTheme();renderCalendar();loadFromCloud();switchTab('calendar')});
 </script>
 </body>
 </html>
