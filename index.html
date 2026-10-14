@@ -70,7 +70,7 @@ table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surf
 </aside>
 
 <main class="main">
-<header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="menu-toggle" onclick="toggleMenu()" aria-label="Otvoriť menu">☰</button><div><div class="crumb">RCTRIAL ORAVA / <span id="crumb-label">Prehľad</span></div><h1 id="top-title">Dashboard & kalendár</h1></div></div><div class="top-actions"><div class="status-pill" id="cloud-status-pill"><span class="dot" id="cloud-status-dot"></span><span id="cloud-status-text">Pripravené</span></div></div></header>
+<header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="menu-toggle" onclick="toggleMenu()" aria-label="Otvoriť menu">☰</button><div><div class="crumb">RCTRIAL ORAVA / <span id="crumb-label">Prehľad</span></div><h1 id="top-title">Dashboard & kalendár</h1></div></div><div class="top-actions"><div class="status-pill" id="cloud-status-pill"><span class="dot" id="cloud-status-dot"></span><span id="cloud-status-text">Pripravené</span></div><button class="btn btn-secondary btn-sm" type="button" onclick="loadFromCloud({manual:true})" title="Načítať potvrdené údaje zo spoločného Google úložiska">Načítať z cloudu</button></div></header>
 
 <section id="pane-calendar" class="page-pane active">
   <div class="hero"><div class="hero-kicker">RC Trial Championship · Orava</div><h2>Každá sekcia rozhoduje.</h2><p>Vitaj v oficiálnom prehľade RCTRIAL ORAVA. Sleduj kalendár, registruj sa na preteky a maj výsledky vždy pod kontrolou.</p><button class="btn" onclick="switchTab('results')">Pozrieť výsledky →</button></div>
@@ -226,13 +226,15 @@ function refreshActiveCloudView(){
   if($('pane-admin')?.classList.contains('active'))renderAdminLists();
   if($('pane-marshal')?.classList.contains('active')&&loggedMarshal)renderSectionsStatus();
 }
+let cloudPollInProgress=false;
 function startCloudPolling(){
-  // Každý otvorený prehliadač si pravidelne načíta poslednú potvrdenú verziu.
+  // Každý otvorený prehliadač si každé 2 sekundy načíta poslednú potvrdenú verziu.
   setInterval(()=>{
-    if(document.visibilityState==='visible'&&navigator.onLine&&!cloudSyncPending&&!cloudSyncInProgress){
-      loadFromCloud({silent:true});
+    if(document.visibilityState==='visible'&&navigator.onLine&&!cloudSyncPending&&!cloudSyncInProgress&&!cloudPollInProgress){
+      cloudPollInProgress=true;
+      loadFromCloud({silent:true}).finally(()=>{cloudPollInProgress=false;});
     }
-  },10000);
+  },2000);
   document.addEventListener('visibilitychange',()=>{
     if(document.visibilityState==='visible'&&navigator.onLine&&!cloudSyncPending&&!cloudSyncInProgress){
       loadFromCloud({silent:true});
