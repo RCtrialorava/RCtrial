@@ -337,35 +337,64 @@ async function saveRaceResult(forcedStatus){
   const [driverName,car,category]=val.split('|');
   const total=manualPenalties+timePenalties;
   const driver=registeredUsers.find(u=>u.username===driverName);
-  const record={id:Date.now(),eventName:currentEvent,season:(events.find(e=>e.name===currentEvent)?.date||'').slice(0,4),userId:driver?.id||raceRegistrations.find(r=>r.username===driverName&&r.eventName===currentEvent)?.userId,section:currentSection,driverName,car,category:category||'Profi',penalties:total,time:elapsedTime,status:forcedStatus||$('race-run-status')?.value||'completed',marshal:loggedMarshal.name};
-  raceResults.push(record);
-  // Uložiť lokálne okamžite ešte pred sieťovou požiadavkou.
-  persistLocal();
+  const record={
+    id:(globalThis.crypto&&crypto.randomUUID)?crypto.randomUUID():('rct-'+Date.now()+'-'+Math.random().toString(36).slice(2,10)),
+    eventName:currentEvent,
+    season:(events.find(e=>e.name===currentEvent)?.date||'').slice(0,4),
+    userId:driver?.id||raceRegistrations.find(r=>r.username===driverName&&r.eventName===currentEvent)?.userId,
+    section:currentSection,driverName,car,category:category||'Profi',
+    penalties:total,time:elapsedTime,
+    status:forcedStatus||$('race-run-status')?.value||'completed',
+    marshal:loggedMarshal.name,
+    recordedAt:new Date().toISOString()
+  };
+
+  // Kritická cesta: výsledok sa zapíše do lokálneho úložiska ešte pred sieťou.
+  // Sieť nesmie blokovať komisára ani meranie ďalšej jazdy.
   raceResultSaving=true;
   const buttons=[...document.querySelectorAll('#marshal-timer-card button')];
   buttons.forEach(b=>b.disabled=true);
-  setCloudStatus('Výsledok uložený lokálne · okamžite odosielam do cloudu…','pending');
   try{
-    const cloudPromise=syncToCloud();
-    // Pri potvrdení prejazdu preskočiť bežné 900 ms čakanie a spustiť odoslanie hneď.
-    clearTimeout(autoCloudSyncTimer);
-    const flushPromise=flushAutoCloudSync();
-    await Promise.all([cloudPromise,flushPromise]);
-    if(cloudSyncPending){
-      alert('Výsledok sekcie je uložený v tomto počítači, ale cloud ho zatiaľ nepotvrdil. Nezatváraj stránku; skontroluj internet a stav synchronizácie. Celkové body: '+total);
-    }else{
-      alert((record.status==='dnf'?'Jazda uložená ako DNF.':'Výsledok jazdy bol uložený a zápis do cloudu potvrdený.')+' Celkové body: '+total);
-    }
+    raceResults.push(record);
+    persistLocal();
+    cloudSyncPending=true;
+    localStorage.setItem('rct_cloud_sync_pending','1');
   }catch(err){
-    console.error('Uloženie výsledku sekcie zlyhalo:',err);
-    alert('Výsledok zostal uložený lokálne, ale cloudový zápis sa nepodarilo potvrdiť. Nezatváraj stránku a skontroluj stav synchronizácie.');
+    raceResults=raceResults.filter(r=>r.id!==record.id);
+    raceResultSaving=false;
+    buttons.forEach(b=>b.disabled=false);
+    console.error('Lokálne uloženie výsledku zlyhalo:',err);
+    alert('POZOR: prehliadač nedokázal bezpečne uložiť výsledok do zariadenia (možno je úložisko plné alebo blokované). Výsledok nepovažuj za uložený. Uvoľni miesto alebo exportuj zálohu a skús znova.');
+    return;
+  }
+
+  setCloudStatus(navigator.onLine?'Výsledok bezpečne uložený v zariadení · synchronizácia na pozadí…':'Výsledok uložený v zariadení · OFFLINE, čaká na synchronizáciu','warn');
+  resetTimer();
+  if($('race-run-status'))$('race-run-status').value='completed';
+  renderStats();
+  renderSectionsStatus();
+
+  // Komisár pokračuje okamžite. Cloudová synchronizácia beží na pozadí.
+  try{
+    const pending=syncToCloud();
+    clearTimeout(autoCloudSyncTimer);
+    flushAutoCloudSync();
+    Promise.resolve(pending).then(()=>{
+      if(!cloudSyncPending){
+        setCloudStatus('Cloud potvrdil synchronizáciu · verzia '+cloudRevision,'ok');
+      }else if(!navigator.onLine){
+        setCloudStatus('Lokálne uložené · čaká na internetové pripojenie','warn');
+      }
+    }).catch(err=>console.warn('Synchronizácia výsledku odložená:',err));
+  }catch(err){
+    cloudSyncPending=true;
+    try{localStorage.setItem('rct_cloud_sync_pending','1')}catch(_){}
+    setCloudStatus('Lokálne uložené · cloud zatiaľ nepotvrdený','warn');
   }finally{
     raceResultSaving=false;
     buttons.forEach(b=>b.disabled=false);
-    resetTimer();
-    if($('race-run-status'))$('race-run-status').value='completed';
-    renderStats();
   }
+  alert((record.status==='dnf'?'Jazda uložená ako DNF.':'Výsledok uložený lokálne.')+' Komisár môže pokračovať; cloud sa synchronizuje na pozadí. Celkové body: '+total+(navigator.onLine?'':' (offline – synchronizácia čaká)'));
 }
 function stopMarshal(){resetTimer();delete sectionOccupancy[`${currentEvent}_${currentSection}`];syncToCloud();$('marshal-timer-card').style.display='none';$('marshal-login-section').style.display='block';renderSectionsStatus()}
 function formatTime(ms){let sec=Math.floor((ms||0)/1000),min=Math.floor(sec/60);sec%=60;const cs=Math.floor(((ms||0)%1000)/10);return `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}.${String(cs).padStart(2,'0')}`}
