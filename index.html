@@ -170,7 +170,7 @@ function resizePreparingImage(file){return new Promise((resolve,reject)=>{const 
 function deletePreparingItem(id){if(!adminAuthenticated)return alert('Len administrátor môže mazať príspevky.');if(!confirm('Vymazať tento príspevok?'))return;preparingItems=preparingItems.filter(x=>String(x.id)!==String(id));syncToCloud();renderPreparing()}
 function switchTab(tabId,btn){document.querySelectorAll('.page-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const pane=$('pane-'+tabId);if(pane)pane.classList.add('active');if(btn)btn.classList.add('active');else{const b=[...document.querySelectorAll('.nav-btn')].find(x=>x.getAttribute('onclick')?.includes("'"+tabId+"'"));if(b)b.classList.add('active')}const labels={calendar:'Dashboard & kalendár',rules:'Pravidlá pretekov',startlist:'Listina prihlásených','driver-portal':'Účet pretekára',marshal:'Časomiera komisára',results:'Výsledky pretekov',overall:'Celkové poradie',live:'Živé výsledky',history:'História jazdcov',preparing:'Pripravujeme',admin:'Administrácia'};$('top-title').textContent=labels[tabId]||'RCTRIAL ORAVA';$('crumb-label').textContent=labels[tabId]||'Prehľad';closeMenu();if(tabId==='calendar')renderCalendar();if(tabId==='startlist')loadStartListEvents();if(tabId==='driver-portal')checkDriverAuth();if(tabId==='marshal')checkMarshalAuth();if(tabId==='results')loadResultsEvents();if(tabId==='overall')renderOverallResults();if(tabId==='live')loadLiveResults();if(tabId==='history')loadDriverHistory();if(tabId==='preparing')renderPreparing();if(tabId==='admin')renderAdminLists()}
 async function loadFromCloud(options={}){
-  let discardPendingAfterFetch=false;
+  let discardPendingAfterFetch=options.discardPending===true;
   if(cloudSyncPending&&!options.force){
     if(options.manual){
       if(!confirm('V tomto zariadení sú lokálne zmeny, ktoré ešte nie sú potvrdené v Google tabuľkách. Najprv stiahni JSON zálohu, ak ich chceš zachovať. Pokračovaním sa načítajú cloudové dáta a lokálne neodoslané zmeny v tejto aplikácii sa zahodia. Pokračovať?'))return false;
@@ -227,19 +227,26 @@ function refreshActiveCloudView(){
   if($('pane-marshal')?.classList.contains('active')&&loggedMarshal)renderSectionsStatus();
 }
 let cloudPollInProgress=false;
+let cloudAutoPullConsentAsked=false;
+let cloudAutoPullAllowed=false;
 function startCloudPolling(){
   // Každý otvorený prehliadač si každé 2 sekundy načíta poslednú potvrdenú verziu.
-  setInterval(()=>{
-    if(document.visibilityState==='visible'&&navigator.onLine&&!cloudSyncPending&&!cloudSyncInProgress&&!cloudPollInProgress){
-      cloudPollInProgress=true;
-      loadFromCloud({silent:true}).finally(()=>{cloudPollInProgress=false;});
+  // Ak sú na tomto PC neodoslané lokálne zmeny, najprv si vyžiada súhlas s ich nahradením cloudovými dátami.
+  const pollCloud=()=>{
+    if(document.visibilityState!=='visible'||!navigator.onLine||cloudSyncInProgress||cloudPollInProgress)return;
+    if(cloudSyncPending&&!cloudAutoPullAllowed){
+      if(!cloudAutoPullConsentAsked){
+        cloudAutoPullConsentAsked=true;
+        cloudAutoPullAllowed=confirm('Na tomto počítači sú lokálne zmeny označené ako čakajúce na synchronizáciu. Automatické načítanie každé 2 sekundy ich môže nahradiť údajmi z cloudu. Ak chceš, aby sa tento počítač riadil cloudom a zobrazoval údaje z druhého PC, pokračuj iba po zálohovaní dôležitých lokálnych zmien. Povoliť automatické načítavanie z cloudu?');
+      }
+      if(!cloudAutoPullAllowed)return;
     }
-  },2000);
-  document.addEventListener('visibilitychange',()=>{
-    if(document.visibilityState==='visible'&&navigator.onLine&&!cloudSyncPending&&!cloudSyncInProgress){
-      loadFromCloud({silent:true});
-    }
-  });
+    cloudPollInProgress=true;
+    const options=cloudSyncPending?{silent:true,force:true,discardPending:true}:{silent:true};
+    loadFromCloud(options).finally(()=>{cloudPollInProgress=false;});
+  };
+  setInterval(pollCloud,2000);
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible')pollCloud()});
 }
 function setCloudStatus(message,state='pending'){const t=document.getElementById('cloud-status-text'),d=document.getElementById('cloud-status-dot');if(t)t.textContent=message;if(d)d.style.background=state==='ok'?'#22c55e':state==='error'?'#ef4444':state==='warn'?'#f59e0b':'#60a5fa'}
 function persistLocal(){localStorage.setItem('rct_events',JSON.stringify(events));localStorage.setItem('rct_users',JSON.stringify(registeredUsers));localStorage.setItem('rct_marshals',JSON.stringify(marshalsList));localStorage.setItem('rct_race_regs',JSON.stringify(raceRegistrations));localStorage.setItem('rct_results',JSON.stringify(raceResults));localStorage.setItem('rct_correction_requests',JSON.stringify(correctionRequests));localStorage.setItem('rct_tpm_records',JSON.stringify(tpmRecords));localStorage.setItem('rct_preparing_items',JSON.stringify(preparingItems));localStorage.setItem('rct_section_occupancy',JSON.stringify(sectionOccupancy))}
