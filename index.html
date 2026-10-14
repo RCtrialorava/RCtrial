@@ -267,8 +267,9 @@ function syncToCloud(){
   return promise;
 }
 async function flushAutoCloudSync(){
+  clearTimeout(autoCloudSyncTimer);
   if(cloudSyncInProgress){
-    autoCloudSyncTimer=setTimeout(flushAutoCloudSync,500);
+    autoCloudSyncTimer=setTimeout(flushAutoCloudSync,250);
     return;
   }
   const waiters=autoCloudSyncWaiters.splice(0);
@@ -328,7 +329,44 @@ function toggleTimer(){const btn=$('timer-btn');if(!isRunning){startTime=Date.no
 function resetTimer(){clearInterval(timerInterval);timerInterval=null;isRunning=false;elapsedTime=0;manualPenalties=0;timePenalties=0;$('stopwatch').textContent='00:00.00';$('penalty-count').textContent='0';$('time-penalty-count').textContent='0 b';$('total-section-pts').textContent='0 b';$('timer-btn').textContent='▶ Štart';$('timer-btn').className='btn btn-success'}
 function calculateTimePenalty(){timePenalties=elapsedTime>660000?Math.ceil((elapsedTime-660000)/60000)*.5:0;$('time-penalty-count').textContent=`+${timePenalties} b`;$('total-section-pts').textContent=`${manualPenalties+timePenalties} b`}
 function addPts(pts){manualPenalties+=pts;$('penalty-count').textContent=manualPenalties;$('total-section-pts').textContent=`${manualPenalties+timePenalties} b`}
-function saveRaceResult(forcedStatus){const val=$('active-driver-select').value;if(!val)return alert('Vyberte jazdca!');const [driverName,car,category]=val.split('|');const total=manualPenalties+timePenalties;const driver=registeredUsers.find(u=>u.username===driverName);raceResults.push({id:Date.now(),eventName:currentEvent,season:(events.find(e=>e.name===currentEvent)?.date||'').slice(0,4),userId:driver?.id||raceRegistrations.find(r=>r.username===driverName&&r.eventName===currentEvent)?.userId,section:currentSection,driverName,car,category:category||'Profi',penalties:total,time:elapsedTime,status:forcedStatus||$('race-run-status')?.value||'completed',marshal:loggedMarshal.name});syncToCloud();alert((forcedStatus==='dnf'?'Jazda uložená ako DNF.':'Výsledok jazdy bol uložený.')+` Celkové body: ${total}`);resetTimer();if($('race-run-status'))$('race-run-status').value='completed';renderStats()}
+let raceResultSaving=false;
+async function saveRaceResult(forcedStatus){
+  if(raceResultSaving)return;
+  const val=$('active-driver-select').value;
+  if(!val)return alert('Vyberte jazdca!');
+  const [driverName,car,category]=val.split('|');
+  const total=manualPenalties+timePenalties;
+  const driver=registeredUsers.find(u=>u.username===driverName);
+  const record={id:Date.now(),eventName:currentEvent,season:(events.find(e=>e.name===currentEvent)?.date||'').slice(0,4),userId:driver?.id||raceRegistrations.find(r=>r.username===driverName&&r.eventName===currentEvent)?.userId,section:currentSection,driverName,car,category:category||'Profi',penalties:total,time:elapsedTime,status:forcedStatus||$('race-run-status')?.value||'completed',marshal:loggedMarshal.name};
+  raceResults.push(record);
+  // Uložiť lokálne okamžite ešte pred sieťovou požiadavkou.
+  persistLocal();
+  raceResultSaving=true;
+  const buttons=[...document.querySelectorAll('#marshal-timer-card button')];
+  buttons.forEach(b=>b.disabled=true);
+  setCloudStatus('Výsledok uložený lokálne · okamžite odosielam do cloudu…','pending');
+  try{
+    const cloudPromise=syncToCloud();
+    // Pri potvrdení prejazdu preskočiť bežné 900 ms čakanie a spustiť odoslanie hneď.
+    clearTimeout(autoCloudSyncTimer);
+    const flushPromise=flushAutoCloudSync();
+    await Promise.all([cloudPromise,flushPromise]);
+    if(cloudSyncPending){
+      alert('Výsledok sekcie je uložený v tomto počítači, ale cloud ho zatiaľ nepotvrdil. Nezatváraj stránku; skontroluj internet a stav synchronizácie. Celkové body: '+total);
+    }else{
+      alert((record.status==='dnf'?'Jazda uložená ako DNF.':'Výsledok jazdy bol uložený a zápis do cloudu potvrdený.')+' Celkové body: '+total);
+    }
+  }catch(err){
+    console.error('Uloženie výsledku sekcie zlyhalo:',err);
+    alert('Výsledok zostal uložený lokálne, ale cloudový zápis sa nepodarilo potvrdiť. Nezatváraj stránku a skontroluj stav synchronizácie.');
+  }finally{
+    raceResultSaving=false;
+    buttons.forEach(b=>b.disabled=false);
+    resetTimer();
+    if($('race-run-status'))$('race-run-status').value='completed';
+    renderStats();
+  }
+}
 function stopMarshal(){resetTimer();delete sectionOccupancy[`${currentEvent}_${currentSection}`];syncToCloud();$('marshal-timer-card').style.display='none';$('marshal-login-section').style.display='block';renderSectionsStatus()}
 function formatTime(ms){let sec=Math.floor((ms||0)/1000),min=Math.floor(sec/60);sec%=60;const cs=Math.floor(((ms||0)%1000)/10);return `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}.${String(cs).padStart(2,'0')}`}
 function loadResultsEvents(){$('results-event-select').innerHTML=events.map(e=>`<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');loadResultsCategories()}
