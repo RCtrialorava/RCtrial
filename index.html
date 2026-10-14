@@ -169,7 +169,76 @@ async function addPreparingItem(){
 function resizePreparingImage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',0.78))};img.src=reader.result};reader.readAsDataURL(file)})}
 function deletePreparingItem(id){if(!adminAuthenticated)return alert('Len administrátor môže mazať príspevky.');if(!confirm('Vymazať tento príspevok?'))return;preparingItems=preparingItems.filter(x=>String(x.id)!==String(id));syncToCloud();renderPreparing()}
 function switchTab(tabId,btn){document.querySelectorAll('.page-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const pane=$('pane-'+tabId);if(pane)pane.classList.add('active');if(btn)btn.classList.add('active');else{const b=[...document.querySelectorAll('.nav-btn')].find(x=>x.getAttribute('onclick')?.includes("'"+tabId+"'"));if(b)b.classList.add('active')}const labels={calendar:'Dashboard & kalendár',rules:'Pravidlá pretekov',startlist:'Listina prihlásených','driver-portal':'Účet pretekára',marshal:'Časomiera komisára',results:'Výsledky pretekov',overall:'Celkové poradie',live:'Živé výsledky',history:'História jazdcov',preparing:'Pripravujeme',admin:'Administrácia'};$('top-title').textContent=labels[tabId]||'RCTRIAL ORAVA';$('crumb-label').textContent=labels[tabId]||'Prehľad';closeMenu();if(tabId==='calendar')renderCalendar();if(tabId==='startlist')loadStartListEvents();if(tabId==='driver-portal')checkDriverAuth();if(tabId==='marshal')checkMarshalAuth();if(tabId==='results')loadResultsEvents();if(tabId==='overall')renderOverallResults();if(tabId==='live')loadLiveResults();if(tabId==='history')loadDriverHistory();if(tabId==='preparing')renderPreparing();if(tabId==='admin')renderAdminLists()}
-async function loadFromCloud(options={}){let discardPendingAfterFetch=false;if(cloudSyncPending&&!options.force){if(options.manual){if(!confirm('V tomto zariadení sú lokálne zmeny, ktoré ešte nie sú potvrdené v Google tabuľkách. Najprv stiahni JSON zálohu, ak ich chceš zachovať. Pokračovaním sa načítajú cloudové dáta a lokálne neodoslané zmeny v tejto aplikácii sa zahodia. Pokračovať?'))return false;discardPendingAfterFetch=true}else{setCloudStatus('Lokálne zmeny čakajú · najprv ich skontroluj alebo odošli','warn');return false}}if(!GOOGLE_SCRIPT_URL){setCloudStatus('Chýba URL Google Apps Script','error');return false}setCloudStatus('Načítavam Google tabuľky…','pending');try{const res=await fetch(GOOGLE_SCRIPT_URL+(GOOGLE_SCRIPT_URL.includes('?')?'&':'?')+'_ts='+Date.now(),{cache:'no-store'});if(!res.ok)throw new Error('HTTP '+res.status);const response=await res.json();if(response&&response._meta){cloudRevision=Number(response._meta.revision)||0;localStorage.setItem('rct_cloud_revision',String(cloudRevision))}const data=response&&response.data?response.data:response;if(data&&Object.keys(data).length){if(discardPendingAfterFetch){cloudSyncPending=false;localStorage.removeItem('rct_cloud_sync_pending')}if(data.events)events=data.events;if(data.users)registeredUsers=data.users;if(data.marshals)marshalsList=data.marshals;if(data.regs)raceRegistrations=data.regs;if(data.results)raceResults=data.results;if(data.correctionRequests)correctionRequests=data.correctionRequests;if(data.tpmRecords)tpmRecords=data.tpmRecords;if(data.preparingItems)preparingItems=data.preparingItems;if(data.occupancy)sectionOccupancy=data.occupancy;persistLocal();renderCalendar();if($('pane-preparing')?.classList.contains('active'))renderPreparing();if($('pane-live')?.classList.contains('active'))loadLiveResults();if($('pane-history')?.classList.contains('active'))loadDriverHistory();setCloudStatus('Google tabuľky načítané · verzia '+cloudRevision,'ok');return true}else{setCloudStatus('Tabuľky vrátili prázdne dáta','warn');return false}}catch(e){console.warn('Cloud sync unavailable; local data remains active.',e);setCloudStatus('Cloud nedostupný – používajú sa lokálne dáta','error');return false}}
+async function loadFromCloud(options={}){
+  let discardPendingAfterFetch=false;
+  if(cloudSyncPending&&!options.force){
+    if(options.manual){
+      if(!confirm('V tomto zariadení sú lokálne zmeny, ktoré ešte nie sú potvrdené v Google tabuľkách. Najprv stiahni JSON zálohu, ak ich chceš zachovať. Pokračovaním sa načítajú cloudové dáta a lokálne neodoslané zmeny v tejto aplikácii sa zahodia. Pokračovať?'))return false;
+      discardPendingAfterFetch=true;
+    }else{
+      if(options.silent)return false;
+      setCloudStatus('Lokálne zmeny čakajú · najprv ich skontroluj alebo odošli','warn');
+      return false;
+    }
+  }
+  if(!GOOGLE_SCRIPT_URL){setCloudStatus('Chýba URL Google Apps Script','error');return false;}
+  if(!options.silent)setCloudStatus('Načítavam spoločné údaje z Google úložiska…','pending');
+  try{
+    const res=await fetch(GOOGLE_SCRIPT_URL+(GOOGLE_SCRIPT_URL.includes('?')?'&':'?')+'_ts='+Date.now(),{cache:'no-store'});
+    if(!res.ok)throw new Error('HTTP '+res.status);
+    const response=await res.json();
+    if(response&&response._meta){cloudRevision=Number(response._meta.revision)||0;localStorage.setItem('rct_cloud_revision',String(cloudRevision));}
+    const data=response&&response.data?response.data:response;
+    if(!data||!Object.keys(data).some(k=>!['_meta','meta'].includes(k))){
+      if(!options.silent)setCloudStatus('Google úložisko zatiaľ neobsahuje údaje','warn');
+      return false;
+    }
+    if(discardPendingAfterFetch){cloudSyncPending=false;localStorage.removeItem('rct_cloud_sync_pending');}
+    // Google úložisko je hlavný zdroj pravdy. Prázdne polia sa tiež načítajú,
+    // aby sa v tomto prehliadači nezobrazovali staré lokálne záznamy.
+    if(Array.isArray(data.events))events=data.events;
+    if(Array.isArray(data.users))registeredUsers=data.users;
+    if(Array.isArray(data.marshals))marshalsList=data.marshals;
+    if(Array.isArray(data.regs))raceRegistrations=data.regs;
+    if(Array.isArray(data.results))raceResults=data.results;
+    if(Array.isArray(data.correctionRequests))correctionRequests=data.correctionRequests;
+    if(Array.isArray(data.tpmRecords))tpmRecords=data.tpmRecords;
+    if(Array.isArray(data.preparingItems))preparingItems=data.preparingItems;
+    if(data.occupancy&&typeof data.occupancy==='object')sectionOccupancy=data.occupancy;
+    persistLocal();
+    refreshActiveCloudView();
+    if(!options.silent)setCloudStatus('Údaje načítané zo spoločného Google úložiska · verzia '+cloudRevision,'ok');
+    return true;
+  }catch(e){
+    console.warn('Načítanie Google úložiska zlyhalo.',e);
+    if(!options.silent)setCloudStatus('Google úložisko nedostupné – skontroluj pripojenie a nasadenie Apps Script','error');
+    return false;
+  }
+}
+function refreshActiveCloudView(){
+  renderCalendar();
+  if($('pane-startlist')?.classList.contains('active'))renderStartList();
+  if($('pane-results')?.classList.contains('active'))renderRaceResults();
+  if($('pane-overall')?.classList.contains('active'))renderOverallResults();
+  if($('pane-preparing')?.classList.contains('active'))renderPreparing();
+  if($('pane-live')?.classList.contains('active'))loadLiveResults();
+  if($('pane-history')?.classList.contains('active'))loadDriverHistory();
+  if($('pane-admin')?.classList.contains('active'))renderAdminLists();
+  if($('pane-marshal')?.classList.contains('active')&&loggedMarshal)renderSectionsStatus();
+}
+function startCloudPolling(){
+  // Každý otvorený prehliadač si pravidelne načíta poslednú potvrdenú verziu.
+  setInterval(()=>{
+    if(document.visibilityState==='visible'&&navigator.onLine&&!cloudSyncPending&&!cloudSyncInProgress){
+      loadFromCloud({silent:true});
+    }
+  },10000);
+  document.addEventListener('visibilitychange',()=>{
+    if(document.visibilityState==='visible'&&navigator.onLine&&!cloudSyncPending&&!cloudSyncInProgress){
+      loadFromCloud({silent:true});
+    }
+  });
+}
 function setCloudStatus(message,state='pending'){const t=document.getElementById('cloud-status-text'),d=document.getElementById('cloud-status-dot');if(t)t.textContent=message;if(d)d.style.background=state==='ok'?'#22c55e':state==='error'?'#ef4444':state==='warn'?'#f59e0b':'#60a5fa'}
 function persistLocal(){localStorage.setItem('rct_events',JSON.stringify(events));localStorage.setItem('rct_users',JSON.stringify(registeredUsers));localStorage.setItem('rct_marshals',JSON.stringify(marshalsList));localStorage.setItem('rct_race_regs',JSON.stringify(raceRegistrations));localStorage.setItem('rct_results',JSON.stringify(raceResults));localStorage.setItem('rct_correction_requests',JSON.stringify(correctionRequests));localStorage.setItem('rct_tpm_records',JSON.stringify(tpmRecords));localStorage.setItem('rct_preparing_items',JSON.stringify(preparingItems));localStorage.setItem('rct_section_occupancy',JSON.stringify(sectionOccupancy))}
 let autoCloudSyncTimer=null;
@@ -376,7 +445,7 @@ function adminChangeMarshalPassword(id){const m=marshalsList.find(x=>x.id===id);
 function adminDeleteMarshal(id){if(!confirm('Vymazať tohto komisára?'))return;marshalsList=marshalsList.filter(m=>m.id!==id);syncToCloud();renderAdminLists();renderStats()}
 function adminResetSections(){if(!confirm('Uvoľniť všetky obsadené sekcie?'))return;sectionOccupancy={};syncToCloud();if(loggedMarshal)renderSectionsStatus();alert('Všetky sekcie boli uvoľnené.')}
 function renderAdminLists(){renderCorrectionRequests();renderTpmAdminList();const adminResultsBody=$('admin-results-list');if(adminResultsBody)adminResultsBody.innerHTML=raceResults.map((r,i)=>`<tr><td>${esc(r.eventName||'—')}</td><td>${esc(r.section||'—')}</td><td><strong>${esc(r.driverName||'—')}</strong></td><td>${r.status==='dnf'?'DNF / nehodnotený':'Dokončená'}</td><td>${r.status==='dnf'?'—':(Number(r.penalties)||0)+' b'}</td><td>${r.status==='dnf'?'—':formatTime(r.time)}</td><td>${esc(r.marshal||'—')}</td><td><button onclick="adminDeleteResult(${i})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>`).join('')||'<tr><td colspan="8" class="empty-state">Nie sú uložené žiadne výsledky.</td></tr>';$('admin-events-list').innerHTML=events.map(e=>`<tr><td><strong>${esc(e.name)}</strong><br><span class="subtext">${esc(e.date)}</span></td><td>${e.sectionsCount||4}</td><td>${(e.categories||[]).map(esc).join(', ')}</td><td><button onclick="adminDeleteEvent(${Number(e.id)})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>`).join('')||'<tr><td colspan="4" class="empty-state">Žiadne udalosti.</td></tr>';$('admin-marshals-list').innerHTML=marshalsList.map(m=>`<tr><td><strong>${esc(m.name)}</strong></td><td><span class="${m.approved?'badge-free':'badge-busy'}">${m.approved?'Schválený':'Čaká na schválenie'}</span></td><td><button onclick="adminToggleApproveMarshal(${Number(m.id)})" class="btn ${m.approved?'btn-warning':'btn-success'} btn-sm">${m.approved?'Zrušiť schválenie':'Schváliť'}</button><button onclick="adminChangeMarshalPassword(${Number(m.id)})" class="btn btn-sm">Zmeniť heslo</button><button onclick="adminDeleteMarshal(${Number(m.id)})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>`).join('')||'<tr><td colspan="3" class="empty-state">Žiadni registrovaní komisári.</td></tr>';$('admin-users-list').innerHTML=registeredUsers.map(u=>`<tr><td><strong>${esc(u.username)}</strong></td><td>${esc(u.car)}</td><td><button onclick="adminChangeUserPassword(${Number(u.id)})" class="btn btn-sm">Zmeniť heslo</button><button onclick="adminDeleteUser(${Number(u.id)})" class="btn btn-danger btn-sm">Vymazať</button></td></tr>`).join('')||'<tr><td colspan="3" class="empty-state">Žiadni registrovaní pretekári.</td></tr>'}
-document.addEventListener('DOMContentLoaded',()=>{loadTheme();renderCalendar();loadFromCloud();switchTab('calendar');setInterval(()=>{if(document.visibilityState==='visible'&&document.getElementById('pane-live')?.classList.contains('active')&&navigator.onLine)refreshLiveResults(true)},30000);updateNetworkStatus()});
+document.addEventListener('DOMContentLoaded',()=>{loadTheme();renderCalendar();switchTab('calendar');loadFromCloud();startCloudPolling();setInterval(()=>{if(document.visibilityState==='visible'&&document.getElementById('pane-live')?.classList.contains('active')&&navigator.onLine)refreshLiveResults(true)},30000);updateNetworkStatus()});
 </script>
 </body>
 </html>
