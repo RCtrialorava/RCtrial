@@ -73,8 +73,8 @@ table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surf
 .vtp-foot{display:flex;justify-content:space-between;gap:8px;font-size:8px;margin-top:10px;border-top:1px solid #aeb9aa;padding-top:6px;position:relative;z-index:1}
 @media(max-width:500px){.vtp-fields{grid-template-columns:1fr 1fr;gap:4px}.vtp-card{aspect-ratio:auto;min-height:260px}.vtp-head strong{font-size:10px}}
 
-/* STK: kontrolný zoznam používa iba fajku pri vyhovujúcich položkách.
-   Neoznačená položka zostáva prázdna, nezobrazuje krížik. */
+/* STK: všetky položky kontrolného zoznamu zostávajú zobrazené.
+   Každú položku možno označiť fajkou (vyhovuje) alebo krížikom (nevyhovuje). */
 #stk-checklist .tpm-row {
   align-items: center;
   cursor: pointer;
@@ -96,15 +96,19 @@ table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surf
   position: relative;
   flex: 0 0 22px;
 }
-#stk-checklist .tpm-row input[data-stk-check]:checked::after {
-  content: "✓";
+#stk-checklist .tpm-row input[data-stk-check]::after {
+  content: "✗";
   position: absolute;
   inset: -5px 0 0 0;
-  color: #16a34a;
+  color: #dc2626;
   font-size: 25px;
   line-height: 27px;
   font-weight: 900;
   text-align: center;
+}
+#stk-checklist .tpm-row input[data-stk-check]:checked::after {
+  content: "✓";
+  color: #16a34a;
 }
 #stk-checklist .tpm-row input[data-stk-check]:focus-visible {
   outline: 2px solid var(--blue);
