@@ -118,6 +118,57 @@ table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surf
 
 .admin-category-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:16px}.admin-category-btn{display:flex;align-items:center;justify-content:space-between;text-align:left;padding:16px;border:1px solid var(--border,#d5dce5);border-radius:12px;background:var(--card,#fff);color:var(--text,inherit);cursor:pointer;font-weight:700;min-height:58px}.admin-category-btn:hover{border-color:var(--primary,#2563eb);transform:translateY(-1px)}.contact-details{display:grid;gap:8px}.contact-details a{overflow-wrap:anywhere}
 </style>
+
+<style id="rctrial-modern-redesign">
+:root{
+ --bg:#f3f6fb;--surface:#fff;--surface2:#f8fafc;--text:#172033;--muted:#718096;--line:#e2e8f0;
+ --nav:#0b1220;--nav2:#172338;--blue:#3478f6;--blue2:#1d5ed6;--green:#16a34a;--red:#dc2626;--amber:#d97706;
+ --shadow:0 8px 28px #1018280a;--radius:18px;color-scheme:light
+}
+body.dark-mode{color-scheme:dark;--bg:#0b1120;--surface:#131d2e;--surface2:#19253a;--text:#e8eef9;--muted:#9aa9c0;--line:#2a3850;--nav:#070c16;--nav2:#1b2940;--blue:#60a5fa;--blue2:#3b82f6;--shadow:0 8px 28px #0003}
+body{background:var(--bg);letter-spacing:.005em}
+.sidebar{background:linear-gradient(180deg,var(--nav) 0%,var(--nav2) 100%);border-right:1px solid #ffffff0b}
+.brand-mark{background:linear-gradient(135deg,#60a5fa,#2563eb);color:#fff;box-shadow:0 7px 20px #2563eb33}
+.nav-btn.active{background:linear-gradient(105deg,var(--blue),var(--blue2));color:#fff;box-shadow:0 8px 22px #2563eb2b}
+.nav-btn:hover{background:#ffffff0e}
+.theme-btn{border-color:color-mix(in srgb,var(--blue) 30%,transparent);background:color-mix(in srgb,var(--blue) 7%,var(--surface));color:var(--text)}
+.main{padding-top:28px}
+.topbar{padding-bottom:17px;border-bottom:1px solid var(--line)}
+.topbar h1{font-size:clamp(21px,2vw,28px);font-weight:800;letter-spacing:-.8px}
+.hero{background:radial-gradient(circle at 88% 18%,#60a5fa2b 0,transparent 27%),linear-gradient(120deg,#111a27 0%,#202b3a 62%,#253f62 140%);border:1px solid #ffffff0e;box-shadow:0 18px 45px #0002}
+.hero:after{border-color:#60a5fa10}
+.hero-kicker{color:#a9ccff}
+.hero .btn{background:linear-gradient(120deg,#60a5fa,#2563eb);color:#fff}
+.btn{background:linear-gradient(120deg,#4f8df8,#2563eb);color:#fff;box-shadow:0 4px 12px #2563eb18}
+.btn:hover{filter:brightness(1.06);transform:translateY(-1px)}
+.btn-success{background:#16834a;color:#fff}.btn-danger{background:#c93c3c;color:#fff}.btn-warning{background:#c87912;color:#fff}.btn-secondary{background:var(--surface2);color:var(--text);border:1px solid var(--line);box-shadow:none}
+.stat,.card{box-shadow:var(--shadow)}
+.stat{border-top:2px solid color-mix(in srgb,var(--blue) 55%,var(--line))}
+.stat-icon{background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue)}
+h1:after{background:linear-gradient(90deg,#60a5fa,#2563eb);width:52px}
+input:focus,select:focus{border-color:var(--blue);box-shadow:0 0 0 3px color-mix(in srgb,var(--blue) 20%,transparent)}
+.admin-category-btn{background:var(--surface2);border-color:var(--line);color:var(--text);border-radius:13px;min-height:64px;transition:transform .16s,border-color .16s,background .16s;gap:12px}
+.admin-category-btn span:last-child{display:grid;place-items:center;flex:0 0 28px;width:28px;height:28px;border-radius:9px;background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue)}
+.admin-category-btn:hover{background:color-mix(in srgb,var(--blue) 5%,var(--surface));border-color:var(--blue);transform:translateY(-2px)}
+.driver-tag{background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue);border:1px solid color-mix(in srgb,var(--blue) 22%,var(--line))}
+table{box-shadow:0 4px 16px #00000008}th{background:var(--surface2)}tbody tr:hover{background:color-mix(in srgb,var(--blue) 5%,transparent)}
+.status-pill{background:var(--surface);border-color:var(--line)}
+.badge-neutral{border:1px solid var(--line)}
+.dashboard-highlights{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;margin:0 0 22px}
+.dashboard-highlight-card{margin-bottom:0;display:flex;flex-direction:column;align-items:stretch}
+.dashboard-highlight-card .btn{align-self:flex-start;margin-top:auto}
+.dashboard-event-list,.dashboard-result-list{display:grid;gap:9px;margin:2px 0 16px;flex:1}
+.dashboard-event-item,.dashboard-result-item{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px;background:var(--surface2)}
+.dashboard-event-item strong,.dashboard-result-item strong{display:block;font-size:12px;line-height:1.45}
+.dashboard-event-item small,.dashboard-result-item small{display:block;color:var(--muted);font-size:11px;margin-top:3px}
+.dashboard-date{flex:0 0 auto;min-width:70px;text-align:center;border-radius:10px;background:color-mix(in srgb,var(--blue) 12%,var(--surface));color:var(--blue);font-size:11px;font-weight:850;padding:8px 6px}
+.dashboard-empty{padding:16px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:12px;text-align:center}
+@media(max-width:950px){.dashboard-highlights{grid-template-columns:1fr}}
+@media(max-width:800px){.main{padding:15px 12px 28px}.topbar{align-items:flex-start}.hero{border-radius:17px}.stats{grid-template-columns:repeat(2,minmax(0,1fr))}.card{border-radius:15px}.dashboard-highlight-card .card-head{align-items:flex-start}}
+@media(max-width:420px){.stats{grid-template-columns:1fr 1fr}.stat{padding:12px}.stat-top{font-size:10px}.stat-value{font-size:22px}.dashboard-event-item,.dashboard-result-item{gap:8px;padding:10px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
+</style>
+
 </head>
 <body>
 <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
@@ -151,6 +202,10 @@ table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surf
     <div class="stat"><div class="stat-top">Registrovaní jazdci <span class="stat-icon">🚙</span></div><div class="stat-value" id="stat-drivers">0</div><div class="stat-note">Vytvorené jazdecké účty</div></div>
     <div class="stat"><div class="stat-top">Zaznamenané jazdy <span class="stat-icon">⏱</span></div><div class="stat-value" id="stat-results">0</div><div class="stat-note">Uložené výsledky sekcií</div></div>
     <div class="stat"><div class="stat-top">Traťoví komisári <span class="stat-icon">🧭</span></div><div class="stat-value" id="stat-marshals">0</div><div class="stat-note">Registrované účty</div></div>
+  </div>
+  <div class="dashboard-highlights">
+    <div class="card dashboard-highlight-card"><div class="card-head"><div><h2>🏁 Najbližšie preteky</h2><div class="subtext">Najbližšie termíny evidované v kalendári</div></div><span class="badge-neutral">KALENDÁR</span></div><div id="dashboard-upcoming" class="dashboard-event-list"></div><button class="btn btn-secondary btn-sm" type="button" onclick="switchTab('driver-portal')">Prihlásiť sa / účet pretekára →</button></div>
+    <div class="card dashboard-highlight-card"><div class="card-head"><div><h2>🏆 Posledné zaznamenané jazdy</h2><div class="subtext">Aktuálne údaje z výsledkovej databázy</div></div><span class="badge-neutral">VÝSLEDKY</span></div><div id="dashboard-latest-results" class="dashboard-result-list"></div><button class="btn btn-secondary btn-sm" type="button" onclick="switchTab('results')">Otvoriť výsledky →</button></div>
   </div>
   <div class="card"><div class="card-head"><div><h2>Kalendár udalostí</h2><div class="subtext">Prehľad naplánovaných RC trial pretekov</div></div><span class="badge-neutral">KALENDÁR</span></div><div class="table-wrap"><table><thead><tr><th>Názov pretekov</th><th>Miesto</th><th>Dátum</th><th>Sekcií</th><th>Kategórie</th></tr></thead><tbody id="calendar-body"></tbody></table></div></div>
 
@@ -383,7 +438,15 @@ async function syncPendingChanges(){if(!cloudSyncPending)return alert('Nie sú e
 function exportBackup(){const payload={format:'RCTRIAL_ORAVA_BACKUP',version:1,createdAt:new Date().toISOString(),events,users:registeredUsers,marshals:marshalsList,regs:raceRegistrations,results:raceResults,correctionRequests,tpmRecords,stkRecords,vehicleTpRecords,preparingItems,occupancy:sectionOccupancy};const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='rctrial-orava-zaloha-'+new Date().toISOString().slice(0,10)+'.json';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url)}
 function importBackup(event){const file=event.target.files&&event.target.files[0];if(!file)return;const reader=new FileReader();reader.onload=async()=>{try{const d=JSON.parse(reader.result);if(!d||d.format!=='RCTRIAL_ORAVA_BACKUP')throw new Error('Toto nie je záloha RCTRIAL ORAVA.');if(!confirm('Obnova prepíše aktuálne údaje v aplikácii a odošle ich do Google tabuliek. Pred pokračovaním odporúčam stiahnuť aktuálnu zálohu. Pokračovať?'))return;events=Array.isArray(d.events)?d.events:[];registeredUsers=Array.isArray(d.users)?d.users:[];marshalsList=Array.isArray(d.marshals)?d.marshals:[];raceRegistrations=Array.isArray(d.regs)?d.regs:[];raceResults=Array.isArray(d.results)?d.results:[];correctionRequests=Array.isArray(d.correctionRequests)?d.correctionRequests:[];tpmRecords=Array.isArray(d.tpmRecords)?d.tpmRecords:[];stkRecords=Array.isArray(d.stkRecords)?d.stkRecords:[];vehicleTpRecords=Array.isArray(d.vehicleTpRecords)?d.vehicleTpRecords:[];preparingItems=Array.isArray(d.preparingItems)?d.preparingItems:[];sectionOccupancy=d.occupancy&&typeof d.occupancy==='object'?d.occupancy:{};persistLocal();await syncToCloud();renderCalendar();renderAdminLists();renderRaceResults();renderOverallResults();alert('Záloha bola načítaná do aplikácie. Stav zápisu do Google tabuliek si over v indikátore synchronizácie.')}catch(err){alert('Zálohu sa nepodarilo obnoviť: '+err.message)}finally{event.target.value=''}};reader.readAsText(file)}
 function renderStats(){$('stat-events').textContent=events.length;$('stat-drivers').textContent=registeredUsers.length;$('stat-results').textContent=raceResults.length;$('stat-marshals').textContent=marshalsList.length}
-function renderCalendar(){$('calendar-body').innerHTML=events.map(e=>`<tr><td><strong>${esc(e.name)}</strong></td><td>${esc(e.location)}</td><td>${esc(e.date)}</td><td><strong>${e.sectionsCount||4} ks</strong></td><td>${(e.categories||[]).map(esc).join(', ')}</td></tr>`).join('')||'<tr><td colspan="5" class="empty-state">Zatiaľ nie sú naplánované žiadne udalosti.</td></tr>';renderStats()}
+function renderDashboardInsights(){
+ const upcoming=$('dashboard-upcoming'),latest=$('dashboard-latest-results');if(!upcoming||!latest)return;
+ const today=new Date();today.setHours(0,0,0,0);
+ const future=events.filter(e=>{if(!e.date)return false;const d=new Date(String(e.date)+'T00:00:00');return !Number.isNaN(d.getTime())&&d>=today}).sort((a,b)=>String(a.date).localeCompare(String(b.date))).slice(0,3);
+ upcoming.innerHTML=future.map(e=>{const d=new Date(String(e.date)+'T00:00:00');const dateLabel=d.toLocaleDateString('sk-SK',{day:'2-digit',month:'short'});return `<div class="dashboard-event-item"><div><strong>${esc(e.name)}</strong><small>📍 ${esc(e.location||'Miesto bude upresnené')} · ${Number(e.sectionsCount)||4} sekcií</small><small>${(e.categories||[]).map(esc).join(' · ')||'Kategórie budú upresnené'}</small></div><div class="dashboard-date">${dateLabel}</div></div>`}).join('')||'<div class="dashboard-empty">Momentálne nie sú v kalendári naplánované budúce preteky. Nové termíny sa zobrazia po ich pridaní administrátorom.</div>';
+ const recent=raceResults.slice().sort((a,b)=>String(b.recordedAt||'').localeCompare(String(a.recordedAt||''))).slice(0,4);
+ latest.innerHTML=recent.map(r=>{const result=r.status==='dnf'?'DNF / nedokončil':`${Number(r.penalties)||0} trestných bodov`;const date=r.recordedAt?new Date(r.recordedAt).toLocaleDateString('sk-SK'):'Dátum nezadaný';return `<div class="dashboard-result-item"><div><strong>${esc(r.driverName||'Neznámy pretekár')}</strong><small>${esc(r.eventName||'Preteky')} · ${esc(r.section||'Sekcia bez názvu')}</small><small>${date}</small></div><div class="dashboard-date">${esc(result)}</div></div>`}).join('')||'<div class="dashboard-empty">Zatiaľ nie sú uložené žiadne jazdy. Po zaznamenaní jazdy komisárom sa tu zobrazia aktuálne údaje.</div>';
+}
+function renderCalendar(){$('calendar-body').innerHTML=events.map(e=>`<tr><td><strong>${esc(e.name)}</strong></td><td>${esc(e.location)}</td><td>${esc(e.date)}</td><td><strong>${e.sectionsCount||4} ks</strong></td><td>${(e.categories||[]).map(esc).join(', ')}</td></tr>`).join('')||'<tr><td colspan="5" class="empty-state">Zatiaľ nie sú naplánované žiadne udalosti.</td></tr>';renderStats();renderDashboardInsights()}
 function loadStartListEvents(){$('startlist-event-select').innerHTML=events.map(e=>`<option value="${esc(e.name)}">${esc(e.name)}</option>`).join('');renderStartList()}
 function renderStartList(){const name=$('startlist-event-select').value;const ev=events.find(e=>e.name===name);const cats=ev?.categories||['Profi','Hobby'];const regs=raceRegistrations.filter(r=>r.eventName===name);$('startlist-container').innerHTML=cats.map(cat=>{const rows=regs.filter(r=>r.category===cat);return `<h3>${esc(cat)} <span class="badge-neutral">${rows.length} jazdcov</span></h3>`+(rows.length?`<div class="table-wrap"><table><thead><tr><th>#</th><th>Jazdec</th><th>Model auta</th></tr></thead><tbody>${rows.map((d,i)=>`<tr><td>${i+1}</td><td><strong>${esc(d.username)}</strong></td><td>${esc(d.car)}</td></tr>`).join('')}</tbody></table></div>`:'<p class="empty-state">V tejto kategórii zatiaľ nie sú prihlásení pretekári.</p>')}).join('')||'<p class="empty-state">Zatiaľ žiadne prihlášky.</p>'}
 function registerDriver(){const u=$('reg-username').value.trim(),p=$('reg-password').value.trim(),c=$('reg-car').value.trim();if(!u||!p)return alert('Zadajte meno a heslo!');if(registeredUsers.some(x=>x.username===u))return alert('Meno už existuje!');const nextNo=Math.max(0,...registeredUsers.map(x=>Number(x.startNumber)||0))+1;registeredUsers.push({id:Date.now(),username:u,password:p,car:c||'Neznámy',startNumber:nextNo});syncToCloud();alert('Účet bol úspešne vytvorený!');['reg-username','reg-password','reg-car'].forEach(id=>$(id).value='');renderStats()}
