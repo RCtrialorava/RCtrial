@@ -544,7 +544,7 @@ const VTP_ACCESSORY_OPTIONS=[...new Set(Object.values(VTP_ACCESSORY_GROUPS).flat
 function renderVehicleTpAccessoryChecklist(selected=[]){
  const box=$('vtp-accessories-checklist');if(!box)return;
  const values=Array.isArray(selected)?selected:(String(selected||'').split(/[,;|]/).map(x=>x.trim()).filter(Boolean));
- box.innerHTML=Object.entries(VTP_ACCESSORY_GROUPS).map(([group,items])=>`<section class="vtp-accessory-group"><h4>${esc(group)}</h4>${items.map(label=>`<label class="tpm-row" data-vtp-accessory-label="${esc(label.toLowerCase())}"><span>${esc(label)}</span><input type="checkbox" data-vtp-accessory="${VTP_ACCESSORY_OPTIONS.indexOf(label)}" value="${esc(label)}" ${values.includes(label)?'checked':''} onchange="updateVehicleTpAccessoryCount();renderVehicleTpPreview()"></label>`).join('')}</section>`).join('');
+ box.innerHTML=Object.entries(VTP_ACCESSORY_GROUPS).map(([group,items])=>`<section class="vtp-accessory-group"><h4>${esc(group)}</h4>${items.map(label=>`<label class="tpm-row" data-vtp-accessory-label="${esc(label.toLowerCase())}"><span>${esc(label)}</span><input type="checkbox" data-vtp-accessory="${VTP_ACCESSORY_OPTIONS.indexOf(label)}" value="${esc(label)}" ${values.includes(label)?'checked':''} onchange="vehicleTpFormDirty=true;updateVehicleTpAccessoryCount();renderVehicleTpPreview()"></label>`).join('')}</section>`).join('');
  filterVehicleTpAccessories();updateVehicleTpAccessoryCount();
 }
 let vtpShowSelectedOnly=false;
