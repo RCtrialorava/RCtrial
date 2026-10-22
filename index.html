@@ -716,7 +716,37 @@ document.addEventListener('input',e=>{if(e.target&&e.target.closest&&e.target.cl
 document.addEventListener('change',e=>{if(e.target&&e.target.closest&&e.target.closest('#tpm-form'))scheduleTpmAutoSave()});
 document.addEventListener('pointerup',e=>{if(e.target?.id==='tpm-admin-sign-pad')scheduleTpmAutoSave();if(e.target?.id==='tpm-driver-sign-pad')scheduleDriverSignatureAutoSave()});
 function renderPublicContact(){let storedContact={};try{storedContact=JSON.parse(localStorage.getItem('rct_public_contact')||'{}')}catch(e){}const currentContact=publicContact&&typeof publicContact==='object'?publicContact:{};const hasCurrent=Object.values(currentContact).some(v=>String(v??'').trim()!=='');const c=hasCurrent?currentContact:storedContact;const ids={phone:'contact-phone',email:'contact-email',address:'contact-address',web:'contact-web',note:'contact-note'};Object.entries(ids).forEach(([k,id])=>{if($(id))$(id).value=c[k]||''});const el=$('public-contact-details');if(!el)return;const rows=[];if(c.phone)rows.push('<div>📱 <strong>Telefón:</strong> <a href="tel:'+esc(c.phone)+'">'+esc(c.phone)+'</a></div>');if(c.email)rows.push('<div>✉️ <strong>E-mail:</strong> <a href="mailto:'+esc(c.email)+'">'+esc(c.email)+'</a></div>');if(c.address)rows.push('<div>📍 <strong>Adresa / miesto:</strong> '+esc(c.address)+'</div>');if(c.web){let w=c.web.trim();let href=/^https?:\/\//i.test(w)?w:'https://'+w;rows.push('<div>🌐 <strong>Web / sociálna sieť:</strong> <a href="'+esc(href)+'" target="_blank" rel="noopener">'+esc(w)+'</a></div>')}if(c.note)rows.push('<div>ℹ️ '+esc(c.note)+'</div>');el.innerHTML=rows.join('')||'Kontakt zatiaľ nie je vyplnený.';}
-async function savePublicContact(){if(!adminAuthenticated)return alert('Kontakt môže upravovať iba administrátor.');const btn=document.querySelector('#admin-contact-card button[onclick="savePublicContact()"]');const oldText=btn?btn.textContent:'';const c={phone:$('contact-phone').value.trim(),email:$('contact-email').value.trim(),address:$('contact-address').value.trim(),web:$('contact-web').value.trim(),note:$('contact-note').value.trim()};publicContact=c;localStorage.setItem('rct_public_contact',JSON.stringify(c));renderPublicContact();if(btn){btn.disabled=true;btn.textContent='Ukladám…';}try{const ok=await syncToCloud();if(btn)btn.textContent=ok?'✓ Uložené':'Uložené lokálne · čaká na synchronizáciu';}catch(e){if(btn)btn.textContent='Uložené lokálne · čaká na synchronizáciu';}finally{if(btn){btn.disabled=false;setTimeout(()=>{if(btn.isConnected)btn.textContent=oldText||'💾 Uložiť kontakt';},3500);}}}
+async function savePublicContact(){
+ if(!adminAuthenticated||$('admin-panel').style.display==='none')return alert('Kontakt môže upravovať iba prihlásený administrátor.');
+ const btn=document.querySelector('#admin-contact-card button[onclick="savePublicContact()"]');
+ const oldText=btn?btn.textContent:'💾 Uložiť kontakt';
+ const c={
+  phone:$('contact-phone').value.trim(),
+  email:$('contact-email').value.trim(),
+  address:$('contact-address').value.trim(),
+  web:$('contact-web').value.trim(),
+  note:$('contact-note').value.trim()
+ };
+ // Rovnaký postup ako pri pridaní príspevku v sekcii Pripravujeme:
+ // zmena sa uloží do spoločného dátového modelu a odošle cez syncToCloud().
+ publicContact=c;
+ try{localStorage.setItem('rct_public_contact',JSON.stringify(c));}catch(e){console.warn('Lokálne uloženie kontaktu zlyhalo:',e);}
+ renderPublicContact();
+ if(btn){btn.disabled=true;btn.textContent='Ukladám kontakt…';}
+ try{
+  persistLocal();
+  const ok=await syncToCloud();
+  if(btn)btn.textContent=ok?'✓ Kontakt uložený a synchronizovaný':'Kontakt uložený lokálne · cloud čaká';
+  if(!ok)setCloudStatus('Kontakt je lokálne uložený, ale cloudová synchronizácia nie je potvrdená.','warn');
+ }catch(e){
+  console.error('Uloženie kontaktu zlyhalo:',e);
+  if(btn)btn.textContent='Kontakt lokálne uložený · chyba cloudu';
+  setCloudStatus('Kontakt je uložený lokálne, cloudové uloženie sa nepodarilo.','error');
+ }finally{
+  if(btn){btn.disabled=false;setTimeout(()=>{if(btn.isConnected)btn.textContent=oldText;},4000);}
+ }
+}
+
 function setupAdminCategoryMenu(){const panel=$('admin-panel'),menu=$('admin-category-menu'),buttons=$('admin-category-buttons');if(!panel||!menu||!buttons)return;const cards=Array.from(panel.children).filter(x=>x.classList.contains('card')&&x.id!=='admin-category-menu');const labelFor=card=>{const h=card.querySelector('h1,h2,h3');return (h?.innerText||card.id||'Nastavenia').replace(/\s+/g,' ').trim()};buttons.innerHTML='';cards.forEach((card,i)=>{if(!card.dataset.adminLabel)card.dataset.adminLabel=labelFor(card);const b=document.createElement('button');b.type='button';b.className='admin-category-btn';b.innerHTML='<span>'+String(card.dataset.adminLabel).replace(/&/g,'&amp;').replace(/</g,'&lt;')+'</span><span>→</span>';b.onclick=()=>{cards.forEach(c=>c.style.display='none');menu.style.display='none';card.style.display='block';menu.querySelector('h1').textContent='Administrácia · '+card.dataset.adminLabel;let back=card.querySelector('.admin-back-button');if(!back){back=document.createElement('button');back.type='button';back.className='btn btn-secondary admin-back-button';back.textContent='← Späť na kategórie';back.style.marginBottom='14px';back.onclick=()=>{card.style.display='none';cards.forEach(c=>c.style.display='none');menu.style.display='block';menu.querySelector('h1').textContent='Administrácia'};card.insertBefore(back,card.firstChild)}};buttons.appendChild(b);});cards.forEach(c=>c.style.display='none');menu.style.display='block';}
 function loginAdmin(){if($('admin-user').value==='admin'&&$('admin-pass').value==='admin123'){adminAuthenticated=true;$('admin-login-card').style.display='none';$('admin-panel').style.display='block';$('admin-contact-card').style.display='block';setupAdminCategoryMenu();renderPublicContact();updateAdminDiplomaControls();renderAdminLists();renderPreparing()}else alert('Nesprávne heslo admina!')}
 function logoutAdmin(){adminAuthenticated=false;$('admin-login-card').style.display='block';$('admin-panel').style.display='none';$('admin-contact-card').style.display='none';$('admin-pass').value='';updateAdminDiplomaControls();renderPreparing()}
