@@ -354,6 +354,8 @@ async function loadFromCloud(options={}){
   }
 }
 function refreshActiveCloudView(){
+  // Po načítaní cloudu obnov aj verejnú kontaktnú sekciu a polia administrácie.
+  renderPublicContact();
   renderCalendar();
   if($('pane-startlist')?.classList.contains('active'))renderStartList();
   if($('pane-results')?.classList.contains('active'))renderRaceResults();
