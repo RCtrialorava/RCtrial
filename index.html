@@ -186,7 +186,7 @@ table{box-shadow:0 4px 16px #00000008}th{background:var(--surface2)}tbody tr:hov
   <button class="nav-btn" onclick="switchTab('live',this)"><span class="ico">🔴</span> Živé výsledky</button>
   <button class="nav-btn" onclick="switchTab('history',this)"><span class="ico">📈</span> História jazdcov</button>
   <button class="nav-btn" onclick="switchTab('preparing',this)"><span class="ico">🛠️</span> Pripravujeme</button>
-  <button class="nav-btn" onclick="switchTab('contact',this)"><span class="ico">📞</span> Kontakt</button>
+  <button class="nav-btn" onclick="switchTab('contact',this)"><span class="ico">📩</span> Kontaktujte nás</button>
   <div class="nav-spacer"></div>
   <button class="nav-btn" onclick="switchTab('admin',this)"><span class="ico">⚙</span> Administrácia</button>
   <div class="sidebar-footer"><button class="theme-btn" onclick="toggleTheme()" id="theme-btn-text">☾ Tmavý režim</button></div>
@@ -211,7 +211,25 @@ table{box-shadow:0 4px 16px #00000008}th{background:var(--surface2)}tbody tr:hov
 
 </section>
 
-<section id="pane-contact" class="page-pane"><div class="card" id="public-contact-card"><div class="card-head"><div><h2>📞 Kontakt</h2><p class="subtext">Kontakt na organizátora RCTRIAL ORAVA</p></div></div><div id="public-contact-details" class="contact-details">Kontakt zatiaľ nie je vyplnený.</div></div><div class="card" id="admin-contact-card" style="display:none"><h2>📞 Kontakt na hlavnej stránke</h2><p class="subtext">Tieto údaje sa zobrazia návštevníkom na hlavnej stránke. Ulož ich po úprave.</p><div class="grid-2"><div class="form-group"><label>Telefón</label><input id="contact-phone" placeholder="napr. +421 900 123 456"></div><div class="form-group"><label>E-mail</label><input id="contact-email" type="email" placeholder="napr. info@rctrialorava.sk"></div><div class="form-group"><label>Adresa / miesto</label><input id="contact-address" placeholder="Miesto konania alebo adresa"></div><div class="form-group"><label>Web / sociálna sieť</label><input id="contact-web" placeholder="Odkaz alebo názov profilu"></div></div><div class="form-group"><label>Ďalšie informácie</label><textarea id="contact-note" rows="2" placeholder="Kedy nás kontaktovať…"></textarea></div><button class="btn btn-success" onclick="savePublicContact()">💾 Uložiť kontakt</button></div></section>
+<section id="pane-contact" class="page-pane">
+<div class="card">
+  <h1>📩 Kontaktujte nás</h1>
+  <p class="subtext">Máte otázky k RCTRIAL ORAVA? Ozvite sa nám prostredníctvom uvedených kontaktných údajov.</p>
+  <div id="public-contact-details" class="contact-details">Kontaktné údaje pripravujeme.</div>
+</div>
+<div class="card" id="admin-contact-card" style="display:none">
+  <h2>✏️ Správa sekcie „Kontaktujte nás“</h2>
+  <p class="subtext">Tieto údaje sa zobrazia všetkým návštevníkom. Po úprave kliknite na Uložiť kontakt.</p>
+  <div class="grid-2">
+    <div class="form-group"><label>Telefón</label><input id="contact-phone" placeholder="napr. +421 900 123 456"></div>
+    <div class="form-group"><label>E-mail</label><input id="contact-email" type="text" inputmode="email" autocomplete="email" placeholder="napr. info@rctrialorava.sk"></div>
+    <div class="form-group"><label>Adresa / miesto</label><input id="contact-address" placeholder="Miesto konania alebo adresa"></div>
+    <div class="form-group"><label>Web / sociálna sieť</label><input id="contact-web" placeholder="Odkaz alebo názov profilu"></div>
+  </div>
+  <div class="form-group"><label>Ďalšie informácie</label><textarea id="contact-note" rows="3" placeholder="Napíšte nám, kedy a ako nás možno kontaktovať…"></textarea></div>
+  <button class="btn btn-success" onclick="savePublicContact()">💾 Uložiť kontaktné údaje</button>
+</div>
+</section>
 
 <section id="pane-rules" class="page-pane"><div class="card"><h1>Pravidlá pretekov</h1><p class="subtext">Oficiálne pravidlá a bodovanie RCTRIAL ORAVA.</p><h3>Trestné body za priestupky</h3><div class="table-wrap"><table><thead><tr><th>Priestupok / úkon</th><th>Trestné body</th><th>Popis</th></tr></thead><tbody>
 <tr><td><strong>Navijak / lano</strong></td><td><strong style="color:var(--red)">+10 b</strong></td><td>Použitie navijaku alebo ťažného lana v sekcii</td></tr><tr><td><strong>Dotyk bránky</strong></td><td><strong style="color:var(--red)">+25 b</strong></td><td>Akýkoľvek dotyk tyčky bránky vozidlom</td></tr><tr><td><strong>Zlomenie tyčky</strong></td><td><strong style="color:var(--red)">+125 b</strong></td><td>Zlomenie alebo vyvrátenie tyčky bránky</td></tr><tr><td><strong>Neprejazdená bránka</strong></td><td><strong style="color:var(--red)">+250 b</strong></td><td>Vynechanie bránky alebo nesprávny smer</td></tr><tr><td><strong>Oprava v depe</strong></td><td><strong style="color:var(--red)">+300 b</strong></td><td>Oprava vozidla počas prejazdu</td></tr><tr><td><strong>Pomoc rukou</strong></td><td><strong style="color:var(--red)">+500 b</strong></td><td>Fyzické dotknutie sa vozidla v sekcii</td></tr>
@@ -304,7 +322,7 @@ async function addPreparingItem(){
 }
 function resizePreparingImage(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onerror=reject;reader.onload=()=>{const img=new Image();img.onerror=reject;img.onload=()=>{const max=1200,scale=Math.min(1,max/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.round(img.width*scale);canvas.height=Math.round(img.height*scale);canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);resolve(canvas.toDataURL('image/jpeg',0.78))};img.src=reader.result};reader.readAsDataURL(file)})}
 function deletePreparingItem(id){if(!adminAuthenticated)return alert('Len administrátor môže mazať príspevky.');if(!confirm('Vymazať tento príspevok?'))return;preparingItems=preparingItems.filter(x=>String(x.id)!==String(id));syncToCloud();renderPreparing()}
-function switchTab(tabId,btn){document.querySelectorAll('.page-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const pane=$('pane-'+tabId);if(pane)pane.classList.add('active');if(btn)btn.classList.add('active');else{const b=[...document.querySelectorAll('.nav-btn')].find(x=>x.getAttribute('onclick')?.includes("'"+tabId+"'"));if(b)b.classList.add('active')}const labels={calendar:'Dashboard & kalendár',rules:'Pravidlá pretekov',startlist:'Listina prihlásených','driver-portal':'Účet pretekára',marshal:'Časomiera komisára',results:'Výsledky pretekov',overall:'Celkové poradie',live:'Živé výsledky',history:'História jazdcov',preparing:'Pripravujeme',contact:'Kontakt',admin:'Administrácia'};$('top-title').textContent=labels[tabId]||'RCTRIAL ORAVA';$('crumb-label').textContent=labels[tabId]||'Prehľad';closeMenu();if(tabId==='calendar')renderCalendar();if(tabId==='startlist')loadStartListEvents();if(tabId==='driver-portal')checkDriverAuth();if(tabId==='marshal')checkMarshalAuth();if(tabId==='results')loadResultsEvents();if(tabId==='overall')renderOverallResults();if(tabId==='live')loadLiveResults();if(tabId==='history')loadDriverHistory();if(tabId==='preparing')renderPreparing();if(tabId==='contact')renderPublicContact();if(tabId==='admin')renderAdminLists()}
+function switchTab(tabId,btn){document.querySelectorAll('.page-pane').forEach(p=>p.classList.remove('active'));document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));const pane=$('pane-'+tabId);if(pane)pane.classList.add('active');if(btn)btn.classList.add('active');else{const b=[...document.querySelectorAll('.nav-btn')].find(x=>x.getAttribute('onclick')?.includes("'"+tabId+"'"));if(b)b.classList.add('active')}const labels={calendar:'Dashboard & kalendár',rules:'Pravidlá pretekov',startlist:'Listina prihlásených','driver-portal':'Účet pretekára',marshal:'Časomiera komisára',results:'Výsledky pretekov',overall:'Celkové poradie',live:'Živé výsledky',history:'História jazdcov',preparing:'Pripravujeme',contact:'Kontaktujte nás',admin:'Administrácia'};$('top-title').textContent=labels[tabId]||'RCTRIAL ORAVA';$('crumb-label').textContent=labels[tabId]||'Prehľad';closeMenu();if(tabId==='calendar')renderCalendar();if(tabId==='startlist')loadStartListEvents();if(tabId==='driver-portal')checkDriverAuth();if(tabId==='marshal')checkMarshalAuth();if(tabId==='results')loadResultsEvents();if(tabId==='overall')renderOverallResults();if(tabId==='live')loadLiveResults();if(tabId==='history')loadDriverHistory();if(tabId==='preparing')renderPreparing();if(tabId==='contact')renderPublicContact();if(tabId==='admin')renderAdminLists()}
 async function loadFromCloud(options={}){
   let discardPendingAfterFetch=options.discardPending===true;
   if(cloudSyncPending&&!options.force){
