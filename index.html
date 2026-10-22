@@ -72,6 +72,45 @@ table{width:100%;border-collapse:separate;border-spacing:0;background:var(--surf
 .vtp-field{border-bottom:1px solid #b0c8dc;padding:3px 2px;min-width:0}.vtp-field small{display:block;font-size:8px;text-transform:uppercase;letter-spacing:.5px;color:#456986}.vtp-field b{display:block;font-size:clamp(9px,1.6vw,13px);overflow-wrap:anywhere}
 .vtp-foot{display:flex;justify-content:space-between;gap:8px;font-size:8px;margin-top:10px;border-top:1px solid #aeb9aa;padding-top:6px;position:relative;z-index:1}
 @media(max-width:500px){.vtp-fields{grid-template-columns:1fr 1fr;gap:4px}.vtp-card{aspect-ratio:auto;min-height:260px}.vtp-head strong{font-size:10px}}
+
+/* STK: kontrolný zoznam používa iba fajku pri vyhovujúcich položkách.
+   Neoznačená položka zostáva prázdna, nezobrazuje krížik. */
+#stk-checklist .tpm-row {
+  align-items: center;
+  cursor: pointer;
+}
+#stk-checklist .tpm-row input[data-stk-check] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 22px;
+  min-width: 22px;
+  height: 22px;
+  min-height: 22px;
+  margin: 0 2px 0 0;
+  padding: 0;
+  border: 0;
+  border-radius: 4px;
+  background: transparent;
+  box-shadow: none;
+  cursor: pointer;
+  position: relative;
+  flex: 0 0 22px;
+}
+#stk-checklist .tpm-row input[data-stk-check]:checked::after {
+  content: "✓";
+  position: absolute;
+  inset: -5px 0 0 0;
+  color: #16a34a;
+  font-size: 25px;
+  line-height: 27px;
+  font-weight: 900;
+  text-align: center;
+}
+#stk-checklist .tpm-row input[data-stk-check]:focus-visible {
+  outline: 2px solid var(--blue);
+  outline-offset: 2px;
+}
+
 </style>
 </head>
 <body>
