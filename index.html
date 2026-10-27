@@ -169,6 +169,39 @@ table{box-shadow:0 4px 16px #00000008}th{background:var(--surface2)}tbody tr:hov
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important}}
 </style>
 
+
+<style id="rctrial-rules-polish">
+#pane-rules .rules-intro{padding:clamp(20px,3vw,32px);border-radius:20px;background:linear-gradient(125deg,#10243d,#1d4f86);color:#fff;margin-bottom:20px}
+#pane-rules .rules-intro h1{color:#fff;margin-bottom:10px}
+#pane-rules .rules-intro h1:after{background:#79b5ff}
+#pane-rules .rules-intro p{color:#d9e9ff;max-width:760px}
+#public-rules-body{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,340px),1fr));gap:16px;margin-top:20px}
+#public-rules-body .rule-public-card{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow);min-width:0}
+.rule-public-card .rule-card-head{padding:18px 20px 12px;border-bottom:1px solid var(--line);background:var(--surface2)}
+.rule-public-card .rule-card-head h3{font-size:17px;line-height:1.35;margin:0;color:var(--text)}
+.rule-public-card .rule-card-body{padding:18px 20px}
+.rule-public-card .rule-description{white-space:pre-wrap;overflow-wrap:anywhere;line-height:1.75;color:var(--text)}
+.rule-attachments{display:grid!important;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px!important;margin-top:18px!important}
+.rule-attachments figure{max-width:none!important;min-width:0;border:1px solid var(--line);background:var(--surface2);border-radius:12px;padding:8px;overflow:hidden}
+.rule-attachments figure a{display:block}
+.rule-attachments figure img{width:100%;height:170px;max-width:none!important;max-height:none!important;object-fit:contain;border:0!important;border-radius:7px;background:#eef2f7}
+.rule-attachments figcaption{font-size:12px!important;padding:5px 2px 0;color:var(--muted)}
+#admin-rules-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:12px;margin-top:12px}
+#admin-rules-list .admin-rule-card{margin:0;background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+.admin-rule-card h4{font-size:14px;margin-bottom:7px;overflow-wrap:anywhere}
+.admin-rule-card .admin-rule-preview{font-size:12px;color:var(--muted);white-space:pre-wrap;overflow-wrap:anywhere;max-height:95px;overflow:hidden;margin-bottom:10px}
+#rule-existing-attachments{margin-top:12px}
+#admin-rules-editor .rule-editor-grid{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+#admin-rules-editor textarea{width:100%;min-height:140px;padding:12px;background:var(--surface);color:var(--text);border:1px solid var(--line);border-radius:10px;resize:vertical}
+#admin-rules-editor input[type=file]{padding:10px;height:auto}
+#pane-rules .rules-section-title{margin:28px 0 12px;font-size:19px}
+#pane-rules .scoring-table-card{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+#pane-rules .scoring-table-card table{margin:0;border:0;border-radius:0}
+#pane-rules .time-rule{display:flex;gap:12px;align-items:flex-start;padding:15px;border:1px solid var(--line);border-radius:12px;background:var(--surface2);margin-top:10px}
+#pane-rules .time-rule strong{display:block;margin-bottom:3px}
+@media(max-width:650px){#admin-rules-editor .rule-editor-grid{grid-template-columns:1fr}.rule-attachments figure img{height:135px}#public-rules-body{grid-template-columns:1fr}}
+</style>
+
 </head>
 <body>
 <div class="mobile-overlay" id="mobile-overlay" onclick="closeMenu()"></div>
@@ -232,9 +265,29 @@ table{box-shadow:0 4px 16px #00000008}th{background:var(--surface2)}tbody tr:hov
 </section>
 
 <section id="pane-rules" class="page-pane">
- <div class="card"><h1>Pravidlá pretekov</h1><p class="subtext">Oficiálne pravidlá, vysvetlenia, fotografie a dokumenty k RCTRIAL ORAVA.</p><div id="public-rules-body"></div><h3>Trestné body za priestupky</h3><div class="table-wrap"><table><thead><tr><th>Priestupok / úkon</th><th>Trestné body</th><th>Popis</th></tr></thead><tbody id="public-scoring-body"></tbody></table></div><h3>Časové limity</h3><div class="table-wrap"><table><thead><tr><th>Časový interval</th><th>Penalizácia</th></tr></thead><tbody><tr><td>Do 11:00 minút</td><td><strong>0 b</strong> – bez penalizácie</td></tr><tr><td>Nad 11:00 minút</td><td><strong style="color:var(--amber)">+0,5 b za každú započatú minútu</strong></td></tr></tbody></table></div></div>
- <div class="card" id="admin-rules-editor" style="display:none"><h2>✏️ Správa pravidiel</h2><p class="subtext">Po prihlásení ako administrátor môžeš pravidlá pridávať, upravovať a mazať. Zmeny sa uložia do spoločného Google úložiska.</p><input type="hidden" id="rule-edit-id"><div class="form-group"><label>Názov pravidla / dokumentu</label><input id="rule-name" maxlength="120" placeholder="Napr. Oficiálne pravidlá pretekov"></div><div class="form-group"><label>Popis alebo text pravidla</label><textarea id="rule-description" rows="5" maxlength="10000" placeholder="Napíš sem pravidlo alebo vysvetlenie k fotografii/PDF…"></textarea></div><div class="form-group"><label>Prílohy k pravidlu (fotografie alebo PDF)</label><input id="rule-files" type="file" accept="image/*,application/pdf" multiple><p class="subtext">Najviac 5 nových súborov naraz, každý do 500 KB. Fotografie sa zobrazia s názvom a popisom, PDF sa otvorí po kliknutí. Prílohy sa ukladajú spolu s pravidlom.</p><div id="rule-existing-attachments"></div></div><button class="btn btn-success" onclick="saveRule()">💾 Uložiť pravidlo</button><button class="btn btn-secondary" style="margin-top:8px" onclick="resetRuleForm()">Vyčistiť formulár</button><h3>Existujúce pravidlá</h3><div id="admin-rules-list"></div></div>
- </section>
+ <div class="card">
+  <div class="rules-intro"><h1>Pravidlá pretekov</h1><p>Oficiálne pravidlá, vysvetlenia, fotografie a dokumenty RCTRIAL ORAVA na jednom mieste.</p></div>
+  <div id="public-rules-body"></div>
+  <h2 class="rules-section-title">Trestné body za priestupky</h2>
+  <p class="subtext" style="margin-bottom:12px">Platné bodovanie používané aj komisárom pri zaznamenávaní jazdy.</p>
+  <div class="scoring-table-card"><div class="table-wrap"><table><thead><tr><th>Priestupok / úkon</th><th>Trestné body</th><th>Popis</th></tr></thead><tbody id="public-scoring-body"></tbody></table></div></div>
+  <h2 class="rules-section-title">Časové limity</h2>
+  <div class="time-rule"><span>🟢</span><div><strong>Do 11:00 minút — 0 bodov</strong><span class="subtext">Bez časovej penalizácie.</span></div></div>
+  <div class="time-rule"><span>⏱️</span><div><strong>Nad 11:00 minút — +0,5 bodu</strong><span class="subtext">Za každú započatú minútu nad limit.</span></div></div>
+ </div>
+ <div class="card" id="admin-rules-editor" style="display:none">
+  <div class="card-head"><div><h2>✏️ Správa pravidiel</h2><p class="subtext">Zmeny sa po potvrdení synchronizujú so spoločným Google úložiskom.</p></div></div>
+  <input type="hidden" id="rule-edit-id">
+  <div class="rule-editor-grid">
+   <div class="form-group"><label for="rule-name">Názov pravidla / dokumentu</label><input id="rule-name" maxlength="120" placeholder="Napr. Oficiálne pravidlá pretekov"></div>
+   <div class="form-group"><label for="rule-files">Fotografie alebo PDF</label><input id="rule-files" type="file" accept="image/*,application/pdf" multiple><p class="subtext" style="margin-top:7px">Max. 5 príloh naraz. Fotografie sa automaticky zmenšia, aby sa spoľahlivejšie synchronizovali medzi zariadeniami. PDF: max. 500 KB na súbor.</p></div>
+  </div>
+  <div class="form-group"><label for="rule-description">Text pravidla alebo vysvetlenie</label><textarea id="rule-description" rows="6" maxlength="10000" placeholder="Napíš sem pravidlo, postup alebo vysvetlenie k fotografii…"></textarea></div>
+  <div id="rule-existing-attachments"></div>
+  <div class="toolbar"><button class="btn btn-success btn-inline" onclick="saveRule()">💾 Uložiť pravidlo</button><button class="btn btn-secondary btn-inline" onclick="resetRuleForm()">Vyčistiť formulár</button></div>
+  <h3>Uložené pravidlá</h3><div id="admin-rules-list"></div>
+ </div>
+</section>
 
 <section id="pane-startlist" class="page-pane"><div class="card"><h1>Listina prihlásených</h1><div class="form-group"><label>Vyberte preteky</label><select id="startlist-event-select" onchange="renderStartList()"></select></div><div id="startlist-container"></div></div></section>
 
@@ -507,12 +560,67 @@ function filterMarshalDrivers(){const cat=$('marshal-category-filter').value,fil
 function toggleTimer(){const btn=$('timer-btn');if(!isRunning){startTime=Date.now()-elapsedTime;timerInterval=setInterval(()=>{elapsedTime=Date.now()-startTime;$('stopwatch').textContent=formatTime(elapsedTime);calculateTimePenalty()},100);isRunning=true;btn.textContent='Ⅱ Stop';btn.className='btn btn-danger'}else{clearInterval(timerInterval);timerInterval=null;isRunning=false;btn.textContent='▶ Štart';btn.className='btn btn-success'}}
 function resetTimer(){clearInterval(timerInterval);timerInterval=null;isRunning=false;elapsedTime=0;manualPenalties=0;timePenalties=0;penaltyHistory=[];$('stopwatch').textContent='00:00.00';$('penalty-count').textContent='0';$('time-penalty-count').textContent='0 b';$('total-section-pts').textContent='0 b';$('timer-btn').textContent='▶ Štart';$('timer-btn').className='btn btn-success';const undo=$('undo-last-penalty-btn');if(undo)undo.disabled=true}
 function calculateTimePenalty(){timePenalties=elapsedTime>660000?Math.ceil((elapsedTime-660000)/60000)*.5:0;$('time-penalty-count').textContent=`+${timePenalties} b`;$('total-section-pts').textContent=`${manualPenalties+timePenalties} b`}
-function renderRuleAttachments(r,admin=false){const files=Array.isArray(r.attachments)?r.attachments:[];if(!files.length)return '';return '<div class="rule-attachments" style="margin-top:10px;display:flex;gap:10px;flex-wrap:wrap">'+files.map((f,i)=>{const href=String(f.data||f.url||'');const name=esc(f.name||('Príloha '+(i+1)));const type=String(f.type||'');if(/^data:image\//.test(href)||/^image\//.test(type)){return '<figure style="margin:0;max-width:180px"><a href="'+href+'" target="_blank" rel="noopener" title="'+name+'"><img src="'+href+'" alt="'+name+'" style="display:block;max-width:180px;max-height:150px;object-fit:contain;border-radius:8px;border:1px solid var(--border)"></a><figcaption style="font-size:.85em;margin-top:4px;overflow-wrap:anywhere">'+name+'</figcaption></figure>'}if(/^data:application\/pdf;base64,/.test(href)||/\.pdf$/i.test(name)||type==='application/pdf'){return '<a class="btn btn-secondary btn-sm" href="'+href+'" target="_blank" rel="noopener">📄 Otvoriť PDF: '+name+'</a>'}return ''}).join('')+'</div>'}
-function renderRules(){const body=$('public-rules-body'),editor=$('admin-rules-editor'),list=$('admin-rules-list'),scoreBody=$('public-scoring-body');if(body)body.innerHTML=rules.map(r=>`<article class="feature-note" style="margin:12px 0"><h3 style="margin-top:0">${esc(r.title||r.name||'Pravidlo')}</h3><div style="white-space:pre-wrap;overflow-wrap:anywhere">${esc(r.description||'')}</div>${renderRuleAttachments(r)}</article>`).join('')||'<p class="empty-state">Pravidlá zatiaľ nie sú zverejnené.</p>';if(scoreBody)scoreBody.innerHTML=scoringRules.map(r=>`<tr><td><strong>${esc(r.name)}</strong></td><td><strong style="color:var(--red)">+${Number(r.points)||0} b</strong></td><td>${esc(r.description||'')}</td></tr>`).join('')||'<tr><td colspan="3" class="empty-state">Bodovanie zatiaľ nie je nastavené.</td></tr>';if(editor)editor.style.display=adminAuthenticated?'block':'none';if(list)list.innerHTML=rules.map(r=>`<div class="feature-note"><strong>${esc(r.title||r.name||'Pravidlo')}</strong><br>${esc(r.description||'')}${renderRuleAttachments(r,true)}<div style="margin-top:8px"><button class="btn btn-sm" onclick="editRule('${String(r.id)}')">Upraviť</button><button class="btn btn-danger btn-sm" onclick="deleteRule('${String(r.id)}')">Vymazať</button></div></div>`).join('')||'<p class="empty-state">Zatiaľ nie sú vytvorené pravidlá.</p>';}
-function renderExistingRuleAttachments(r){const box=$('rule-existing-attachments');if(!box)return;box.innerHTML=r?renderRuleAttachments(r,true):'';}
+function renderRuleAttachments(r,admin=false){
+ const files=Array.isArray(r.attachments)?r.attachments:[];
+ if(!files.length)return '';
+ return '<div class="rule-attachments">'+files.map((f,i)=>{
+  const href=String(f.data||f.url||'');const name=esc(f.name||('Príloha '+(i+1)));const type=String(f.type||'');
+  if(/^data:image\//i.test(href)||/^image\//i.test(type)){
+   return '<figure><a href="'+href+'" target="_blank" rel="noopener" title="'+name+'"><img loading="lazy" src="'+href+'" alt="'+name+'"></a><figcaption>'+name+'</figcaption></figure>';
+  }
+  if(/^data:application\/pdf;base64,/i.test(href)||/\.pdf$/i.test(name)||type==='application/pdf'){
+   return '<div><a class="btn btn-secondary btn-sm" href="'+href+'" target="_blank" rel="noopener">📄 Otvoriť PDF: '+name+'</a></div>';
+  }
+  return '';
+ }).join('')+'</div>';
+}
+function renderRules(){
+ const body=$('public-rules-body'),editor=$('admin-rules-editor'),list=$('admin-rules-list'),scoreBody=$('public-scoring-body');
+ if(body)body.innerHTML=rules.map(r=>'<article class="rule-public-card"><div class="rule-card-head"><h3>'+esc(r.title||r.name||'Pravidlo')+'</h3></div><div class="rule-card-body"><div class="rule-description">'+esc(r.description||'')+'</div>'+renderRuleAttachments(r)+'</div></article>').join('')||'<p class="empty-state">Pravidlá zatiaľ nie sú zverejnené.</p>';
+ if(scoreBody)scoreBody.innerHTML=scoringRules.map(r=>'<tr><td><strong>'+esc(r.name)+'</strong></td><td><strong style="color:var(--red)">+'+(Number(r.points)||0)+' b</strong></td><td>'+esc(r.description||'')+'</td></tr>').join('')||'<tr><td colspan="3" class="empty-state">Bodovanie zatiaľ nie je nastavené.</td></tr>';
+ if(editor)editor.style.display=adminAuthenticated?'block':'none';
+ if(list)list.innerHTML=rules.map(r=>`<div class="admin-rule-card"><h4>${esc(r.title||r.name||'Pravidlo')}</h4><div class="admin-rule-preview">${esc(r.description||'')}</div>${renderRuleAttachments(r,true)}<div class="toolbar"><button class="btn btn-sm btn-inline" onclick="editRule('${String(r.id)}')">Upraviť</button><button class="btn btn-danger btn-sm btn-inline" onclick="deleteRule('${String(r.id)}')">Vymazať</button></div></div>`).join('')||'<p class="empty-state">Zatiaľ nie sú vytvorené pravidlá.</p>';
+ // Po každom obnovení dát udrž verejné bodovanie a komisárove tlačidlá v súlade.
+ renderMarshalScoring();
+}
+function renderExistingRuleAttachments(r){const box=$('rule-existing-attachments');if(!box)return;box.innerHTML=r?'<p class="subtext">Aktuálne uložené prílohy (pri úprave sa zachovajú):</p>'+renderRuleAttachments(r,true):'';}
 function resetRuleForm(){if($('rule-edit-id'))$('rule-edit-id').value='';if($('rule-name'))$('rule-name').value='';if($('rule-description'))$('rule-description').value='';if($('rule-files'))$('rule-files').value='';renderExistingRuleAttachments(null);}
-function fileAsDataUrl(file){return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve({name:file.name,type:file.type,data:String(reader.result)});reader.onerror=()=>reject(new Error('Súbor '+file.name+' sa nepodarilo načítať.'));reader.readAsDataURL(file)})}
-async function saveRule(){if(!adminAuthenticated||$('admin-panel').style.display==='none')return alert('Pravidlá môže upravovať iba prihlásený administrátor.');const id=$('rule-edit-id').value,name=$('rule-name').value.trim(),description=$('rule-description').value.trim();if(!name)return alert('Zadaj názov pravidla.');const old=id?rules.find(r=>String(r.id)===String(id)):null;const chosen=Array.from(($('rule-files')&&$('rule-files').files)||[]);if(chosen.length>5)return alert('Naraz môžeš pridať najviac 5 súborov.');if(chosen.some(f=>f.size>500*1024))return alert('Každý obrázok alebo PDF musí mať najviac 500 KB.');if(chosen.some(f=>!(/^image\//.test(f.type)||f.type==='application/pdf')))return alert('Povolené sú iba obrázky a PDF.');try{const newFiles=await Promise.all(chosen.map(fileAsDataUrl));const item={id:id||( 'rule-'+Date.now()),title:name,description,attachments:[...(old&&Array.isArray(old.attachments)?old.attachments:[]),...newFiles]};if(id)rules=rules.map(r=>String(r.id)===String(id)?item:r);else rules.push(item);persistLocal();renderRules();resetRuleForm();const ok=await syncToCloud();if(ok===false)alert('Pravidlo je uložené v tomto zariadení, ale cloud nepotvrdil synchronizáciu. Skontroluj stav cloudu.');else alert('Pravidlo bolo uložené a synchronizácia potvrdená.')}catch(e){alert('Pravidlo sa nepodarilo uložiť: '+e.message)}}
+function resizeRuleImage(file){
+ return new Promise((resolve,reject)=>{
+  const reader=new FileReader();reader.onerror=()=>reject(new Error('Súbor '+file.name+' sa nepodarilo načítať.'));
+  reader.onload=()=>{const img=new Image();img.onerror=()=>reject(new Error('Obrázok '+file.name+' sa nepodarilo otvoriť.'));
+   img.onload=()=>{const max=1400,scale=Math.min(1,max/Math.max(img.width,img.height)),canvas=document.createElement('canvas');canvas.width=Math.max(1,Math.round(img.width*scale));canvas.height=Math.max(1,Math.round(img.height*scale));const ctx=canvas.getContext('2d');if(!ctx)return reject(new Error('Prehliadač nevie spracovať obrázok.'));
+    ctx.drawImage(img,0,0,canvas.width,canvas.height);let data=canvas.toDataURL('image/jpeg',0.72);
+    if(data.length>420000)data=canvas.toDataURL('image/jpeg',0.52);
+    resolve({name:file.name.replace(/\.[^.]+$/,'')+'.jpg',type:'image/jpeg',data});
+   };img.src=String(reader.result);
+  };reader.readAsDataURL(file);
+ });
+}
+function fileAsDataUrl(file){
+ if(/^image\//.test(file.type))return resizeRuleImage(file);
+ return new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve({name:file.name,type:file.type,data:String(reader.result)});reader.onerror=()=>reject(new Error('Súbor '+file.name+' sa nepodarilo načítať.'));reader.readAsDataURL(file)});
+}
+async function saveRule(){
+ if(!adminAuthenticated||$('admin-panel').style.display==='none')return alert('Pravidlá môže upravovať iba prihlásený administrátor.');
+ const id=$('rule-edit-id').value,name=$('rule-name').value.trim(),description=$('rule-description').value.trim();
+ if(!name)return alert('Zadaj názov pravidla.');
+ const old=id?rules.find(r=>String(r.id)===String(id)):null,chosen=Array.from(($('rule-files')&&$('rule-files').files)||[]);
+ if(chosen.length>5)return alert('Naraz môžeš pridať najviac 5 súborov.');
+ if(chosen.some(f=>/^application\/pdf$/.test(f.type)&&f.size>500*1024))return alert('Každé PDF musí mať najviac 500 KB.');
+ if(chosen.some(f=>!(/^image\//.test(f.type)||f.type==='application/pdf')))return alert('Povolené sú iba obrázky a PDF.');
+ if(chosen.some(f=>f.size>12*1024*1024))return alert('Obrázok môže mať pred spracovaním najviac 12 MB.');
+ try{
+  const newFiles=await Promise.all(chosen.map(fileAsDataUrl));
+  const item={id:id||( 'rule-'+Date.now()),title:name,description,attachments:[...(old&&Array.isArray(old.attachments)?old.attachments:[]),...newFiles]};
+  const candidate=id?rules.map(r=>String(r.id)===String(id)?item:r):[...rules,item];
+  if(JSON.stringify({rules:candidate,scoringRules}).length>7000000)return alert('Prílohy by prekročili bezpečnú veľkosť spoločného úložiska. Skús pridať menej alebo menšie súbory.');
+  rules=candidate;persistLocal();renderRules();resetRuleForm();
+  const ok=await syncToCloud();
+  if(ok===false)alert('Pravidlo je uložené v tomto zariadení, ale cloud nepotvrdil synchronizáciu. Skontroluj stav cloudu pred použitím na druhom PC.');
+  else alert('Pravidlo bolo uložené a synchronizácia potvrdená.');
+ }catch(e){alert('Pravidlo sa nepodarilo uložiť: '+e.message)}
+}
 function editRule(id){if(!adminAuthenticated)return alert('Len administrátor môže upravovať pravidlá.');const r=rules.find(x=>String(x.id)===String(id));if(!r)return;$('rule-edit-id').value=r.id;$('rule-name').value=r.title||r.name||'';$('rule-description').value=r.description||'';if($('rule-files'))$('rule-files').value='';renderExistingRuleAttachments(r);$('rule-name').focus();}
 async function deleteRule(id){if(!adminAuthenticated)return alert('Len administrátor môže mazať pravidlá.');const r=rules.find(x=>String(x.id)===String(id));if(!r||!confirm('Naozaj vymazať pravidlo „'+(r.title||r.name)+'“?'))return;rules=rules.filter(x=>String(x.id)!==String(id));persistLocal();renderRules();const ok=await syncToCloud();if(ok===false)alert('Vymazanie je uložené lokálne, ale cloud ho zatiaľ nepotvrdil.');}
 function renderMarshalScoring(){const box=$('marshal-scoring-buttons');if(!box)return;box.innerHTML=scoringRules.map(r=>`<button type="button" class="score-btn" onclick="addPts(${Number(r.points)||0})"><span style="color:var(--text)">${esc(r.name)}</span><span>+${Number(r.points)||0} b</span></button>`).join('')||'<div class="empty-state">Bodovanie zatiaľ nie je nastavené.</div>'}
